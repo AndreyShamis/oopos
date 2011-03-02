@@ -175,7 +175,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Paint1.cpp"
+				RelativePath=".\Paint.cpp"
 				>
 			</File>
 		</Filter>
@@ -201,7 +201,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Paint1.h"
+				RelativePath=".\Paint.h"
 				>
 			</File>
 		</Filter>
