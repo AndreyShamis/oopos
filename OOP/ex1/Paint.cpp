@@ -9,19 +9,20 @@
 //
 //
 
+
 #include "Paint.h"
 
-using namespace std;
 Paint::Paint()
 {
-
+		/////
+	;
 }
 
 void Paint::display()
 {
 	for(int i=0;i<(int)_obj.size();i++)
 	{
-		_obj[i]->Drow();
+		_obj[i]->Draw();
 	}
 }
 
@@ -32,20 +33,24 @@ void Paint::selectFromMenu(const int &id)
 
 void Paint::idle()
 {
-;
+	static int x;
+	if(x != 10)
+	{
+		x = 10;
+		Bar *bar;
+		bar = new  Bar();
+
+		cout << "Create \n";
+	}
 }
 void Paint::mouseButton(const int &button,const int &state, const float &x , const float &y)
 {
-	
-	cout << button << " - " << state << " - " << x << " - " << y << "\n";
-	if(button == 0 && state == 1)
-		ShowMenu();
+	cout << "Button:" << button << " State:" << state << " X:"<<x<<" Y:"<<y << "\n";
+
 }
 void Paint::ShowMenu()
 {
-	
-
-	
+;
 }
 
 void Paint::DrowByStatus()

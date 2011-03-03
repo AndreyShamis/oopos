@@ -21,4 +21,4 @@ public:
 	virtual void Draw()=0;
 };
 
-#endif  //_SHAPES_H
+#endif  //_SHAPE_H
