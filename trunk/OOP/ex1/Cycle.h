@@ -13,11 +13,9 @@
 #if !defined(_CYCLE_H)
 #define _CYCLE_H
 
-#include "Shape.h"
 
 class Cycle
 {
-
 };
 
 #endif  //_CYCLE_H

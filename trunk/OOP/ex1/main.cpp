@@ -1,6 +1,8 @@
 #include "macros.h"
 #include "Paint.h"
 
+//ohad
+
 Paint paint;
 // Window size in pixels
 int WindowHeight;
@@ -41,7 +43,7 @@ int main(int argc, char** argv){
 	glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB);
 	glutInitWindowSize (500,500); 
 	glutInitWindowPosition (100,100);
-	glutCreateWindow ("Paint - Andrey Shamis & Ilia Gaysinski");
+	glutCreateWindow ("Paint");
 	glPointSize(3);
 	glClearColor(1.0, 1.0, 1.0, 0.0);
 	glutReshapeFunc(resizeWindow);
@@ -54,12 +56,11 @@ int main(int argc, char** argv){
 	glutAddMenuEntry ("Square\ts", 2);
 	glutAddMenuEntry ("Circle\tc", 3);
 	glutAddMenuEntry ("Wheel\tw", 4);
-	
+	int menu = glutCreateMenu (selectFromMenu);
 	glutAddSubMenu ("Shape", shapesMenu);
 	glutAddMenuEntry ("Next Shape", 5);
 	glutAddMenuEntry ("Prev Shape", 6);
 	glutAddMenuEntry ("Exit\tEsc", 7);
-	int menu = glutCreateMenu (selectFromMenu);
 	glutAttachMenu (GLUT_RIGHT_BUTTON);
 	glutMainLoop();
 	return 0;
