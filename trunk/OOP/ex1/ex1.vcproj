@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="ex1"
 	ProjectGUID="{9B29A398-957A-41D8-A973-26FEB58A59B1}"
 	RootNamespace="ex1"
@@ -178,6 +178,10 @@
 				RelativePath=".\Paint.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\Shape.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -193,15 +197,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Figures.h"
-				>
-			</File>
-			<File
 				RelativePath=".\macros.h"
 				>
 			</File>
 			<File
 				RelativePath=".\Paint.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Shape.h"
 				>
 			</File>
 		</Filter>
