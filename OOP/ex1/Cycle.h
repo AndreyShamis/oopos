@@ -13,9 +13,11 @@
 #if !defined(_CYCLE_H)
 #define _CYCLE_H
 
+#include "Figures.h"
 
 class Cycle
 {
+
 };
 
 #endif  //_CYCLE_H
