@@ -12,9 +12,10 @@
 
 #if !defined(_PAINT_H)
 #define _PAINT_H
+#include <vector>			
+#include "Box.h"
+#include "Cycle.h"
 
-#include "Figures.h"
-#include <vector>
 
 using namespace std;
 

@@ -13,6 +13,7 @@
 #if !defined(_BOX_H)
 #define _BOX_H
 
+#include "Figures.h"
 
 class Box
 {
