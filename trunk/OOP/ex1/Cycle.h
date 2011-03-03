@@ -13,7 +13,7 @@
 #if !defined(_CYCLE_H)
 #define _CYCLE_H
 
-#include "Figures.h"
+#include "Shape.h"
 
 class Cycle
 {
