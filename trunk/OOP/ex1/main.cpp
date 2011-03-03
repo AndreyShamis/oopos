@@ -48,7 +48,17 @@ int main(int argc, char** argv){
 	glutIdleFunc(idle);
 	glutDisplayFunc(display);  
 	glutMouseFunc (mouseButton);
-
+	int shapesMenu = glutCreateMenu (selectFromMenu);
+	glutAddMenuEntry ("Point\tp", 0);
+	glutAddMenuEntry ("Rect\tr", 1);
+	glutAddMenuEntry ("Square\ts", 2);
+	glutAddMenuEntry ("Circle\tc", 3);
+	glutAddMenuEntry ("Wheel\tw", 4);
+	
+	glutAddSubMenu ("Shape", shapesMenu);
+	glutAddMenuEntry ("Next Shape", 5);
+	glutAddMenuEntry ("Prev Shape", 6);
+	glutAddMenuEntry ("Exit\tEsc", 7);
 	int menu = glutCreateMenu (selectFromMenu);
 	glutAttachMenu (GLUT_RIGHT_BUTTON);
 	glutMainLoop();

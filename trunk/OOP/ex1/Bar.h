@@ -5,5 +5,6 @@ class Bar :public Shape
 {
 public:
 	Bar(void);
+	void Draw();
 	~Bar(void);
 };

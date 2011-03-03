@@ -18,7 +18,7 @@ class Shape
 {
 public:
 	Shape();
-	virtual void Drow()=0;
+	virtual void Draw()=0;
 };
 
 #endif  //_SHAPES_H
