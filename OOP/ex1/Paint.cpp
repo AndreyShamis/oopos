@@ -14,12 +14,15 @@
 using namespace std;
 Paint::Paint()
 {
-;
+
 }
 
 void Paint::display()
 {
-;
+	for(int i=0;i<(int)_obj.size();i++)
+	{
+		_obj[i]->Drow();
+	}
 }
 
 void Paint::selectFromMenu(const int &id)
@@ -41,17 +44,7 @@ void Paint::mouseButton(const int &button,const int &state, const float &x , con
 void Paint::ShowMenu()
 {
 	
-	//int shapesMenu = glutCreateMenu (selectFromMenu);
-	//glutAddMenuEntry ("Point\tp", 0);
-	//glutAddMenuEntry ("Rect\tr", 1);
-	//glutAddMenuEntry ("Square\ts", 2);
-	//glutAddMenuEntry ("Circle\tc", 3);
-	//glutAddMenuEntry ("Wheel\tw", 4);
-	
-	//glutAddSubMenu ("Shape", shapesMenu);
-	glutAddMenuEntry ("Next Shape", 5);
-	glutAddMenuEntry ("Prev Shape", 6);
-	glutAddMenuEntry ("Exit\tEsc", 7);
+
 	
 }
 
