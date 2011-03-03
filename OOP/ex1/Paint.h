@@ -13,25 +13,25 @@
 #if !defined(_PAINT_H)
 #define _PAINT_H
 #include <vector>			
-#include "Box.h"
+#include "Bar.h"
 #include "Cycle.h"
 
 
 using namespace std;
 
-struct UndoRedoFigures
+struct UndoRedoShape
 {
-	Figures *_old;
-	Figures *_real;
+	Shape *_old;
+	Shape *_real;
 };
 
 
 class Paint 
 {
 public:
-	vector <Figures *> _obj;
+	vector <Shape *> _obj;
 	//vector <_obj *> _objs;
-	vector <Figures *> _undo_redo_obj;
+	vector <Shape *> _undo_redo_obj;
 	int menu_status;
 	Paint();
 	void ShowMenu();
@@ -41,7 +41,7 @@ public:
 	void idle();
 	void selectFromMenu(const int &id);
 private:
-	vector <UndoRedoFigures>  _undo_redo;
+	vector <UndoRedoShape>  _undo_redo;
 };
 
 #endif  //_PAINT_H
