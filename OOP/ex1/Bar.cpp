@@ -1,11 +1,11 @@
 #include "Bar.h"
 
-Bar::Bar(void)
+Bar::Bar()
 {
 	;
 }
 
-Bar::~Bar(void)
+Bar::~Bar()
 {
 	;
 }

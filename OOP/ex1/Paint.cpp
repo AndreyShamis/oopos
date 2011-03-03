@@ -12,6 +12,7 @@
 
 #include "Paint.h"
 
+using namespace std;
 Paint::Paint()
 {
 ;
@@ -33,7 +34,7 @@ void Paint::idle()
 }
 void Paint::mouseButton(const int &button,const int &state, const float &x , const float &y)
 {
-;
+	
 }
 void Paint::ShowMenu()
 {
