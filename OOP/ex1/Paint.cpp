@@ -9,7 +9,6 @@
 //
 //
 
-
 #include "Paint.h"
 
 using namespace std;
@@ -35,10 +34,25 @@ void Paint::idle()
 void Paint::mouseButton(const int &button,const int &state, const float &x , const float &y)
 {
 	
+	cout << button << " - " << state << " - " << x << " - " << y << "\n";
+	if(button == 0 && state == 1)
+		ShowMenu();
 }
 void Paint::ShowMenu()
 {
-;
+	
+	//int shapesMenu = glutCreateMenu (selectFromMenu);
+	//glutAddMenuEntry ("Point\tp", 0);
+	//glutAddMenuEntry ("Rect\tr", 1);
+	//glutAddMenuEntry ("Square\ts", 2);
+	//glutAddMenuEntry ("Circle\tc", 3);
+	//glutAddMenuEntry ("Wheel\tw", 4);
+	
+	//glutAddSubMenu ("Shape", shapesMenu);
+	glutAddMenuEntry ("Next Shape", 5);
+	glutAddMenuEntry ("Prev Shape", 6);
+	glutAddMenuEntry ("Exit\tEsc", 7);
+	
 }
 
 void Paint::DrowByStatus()

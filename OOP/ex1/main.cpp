@@ -41,24 +41,15 @@ int main(int argc, char** argv){
 	glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB);
 	glutInitWindowSize (500,500); 
 	glutInitWindowPosition (100,100);
-	glutCreateWindow ("Paint");
+	glutCreateWindow ("Paint - Andrey Shamis & Ilia Gaysinski");
 	glPointSize(3);
 	glClearColor(1.0, 1.0, 1.0, 0.0);
 	glutReshapeFunc(resizeWindow);
 	glutIdleFunc(idle);
 	glutDisplayFunc(display);  
 	glutMouseFunc (mouseButton);
-	int shapesMenu = glutCreateMenu (selectFromMenu);
-	glutAddMenuEntry ("Point\tp", 0);
-	glutAddMenuEntry ("Rect\tr", 1);
-	glutAddMenuEntry ("Square\ts", 2);
-	glutAddMenuEntry ("Circle\tc", 3);
-	glutAddMenuEntry ("Wheel\tw", 4);
+
 	int menu = glutCreateMenu (selectFromMenu);
-	glutAddSubMenu ("Shape", shapesMenu);
-	glutAddMenuEntry ("Next Shape", 5);
-	glutAddMenuEntry ("Prev Shape", 6);
-	glutAddMenuEntry ("Exit\tEsc", 7);
 	glutAttachMenu (GLUT_RIGHT_BUTTON);
 	glutMainLoop();
 	return 0;
