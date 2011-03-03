@@ -12,7 +12,7 @@
 
 #include "Paint.h"
 
-void Paint::Paint()
+Paint::Paint()
 {
 ;
 }
@@ -22,7 +22,7 @@ void Paint::display()
 ;
 }
 
-void Paint::selectFromMenu()
+void Paint::selectFromMenu(const int &id)
 {
 ;
 }
@@ -31,7 +31,7 @@ void Paint::idle()
 {
 ;
 }
-void Paint::mouseButton()
+void Paint::mouseButton(const int &button,const int &state, const float &x , const float &y)
 {
 ;
 }

@@ -18,22 +18,29 @@
 
 using namespace std;
 
+struct UndoRedoFigures
+{
+	Figures *_old;
+	Figures *_real;
+};
+
+
 class Paint 
 {
 public:
-	vector < Figures *> _obj;
-	vector <_obj *> _objs;
+	vector <Figures *> _obj;
+	//vector <_obj *> _objs;
 	vector <Figures *> _undo_redo_obj;
 	int menu_status;
-	void Paint();
+	Paint();
 	void ShowMenu();
 	void DrowByStatus();
 	void display();
-	void mouseButton();
+	void mouseButton(const int &button,const int &state, const float &x , const float &y);
 	void idle();
-	void selectFromMenu();
+	void selectFromMenu(const int &id);
 private:
-	vector <UndoRedoFigures*>  _undo_redo;
+	vector <UndoRedoFigures>  _undo_redo;
 };
 
 #endif  //_PAINT_H
