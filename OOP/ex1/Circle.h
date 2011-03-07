@@ -16,11 +16,15 @@
 #include <math.h>
 #include "macros.h"
 
+#define DEFAULT_RADIUS 0.1
 class Circle : public Shape
 {
 public:
-	Circle(float x,float y);
+	Circle(float x,float y,bool hole);
 	void Draw();
+private:
+	bool _haveHole;
+	float _radius;
 };
 
 #endif  //_CIRCLE_H
