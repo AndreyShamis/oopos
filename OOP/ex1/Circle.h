@@ -12,9 +12,11 @@
 
 #if !defined(_CIRCLE_H)
 #define _CIRCLE_H
+#include "shape.h"
+#include <math.h>
+#include "macros.h"
 
-
-class Circle
+class Circle : public Shape
 {
 public:
 	Circle(float x,float y);

@@ -14,9 +14,9 @@ void Bar::Draw()
 	glBegin(GL_QUADS); // Start drawing a quad primitive
 
         glColor3f(0.0f,1.0f,0.0f);              // Синий
-		glVertex2f (_x, _y-SIDE_SIZE);           //left down
-		glVertex2f (_x+SIDE_SIZE, _y-_x+SIDE_SIZE);			// right down
-		glVertex2f (_x+SIDE_SIZE, _y);			//	right up
-		glVertex2f (_x, _y);			//	left up
+		glVertex2f (_x, _y);           //left down
+		glVertex2f (_x+SIDE_SIZE, _y);			// right down
+		glVertex2f (_x+SIDE_SIZE, _y-SIDE_SIZE);			//	right up
+		glVertex2f (_x, _y-SIDE_SIZE);			//	left up
 	glEnd();
 }

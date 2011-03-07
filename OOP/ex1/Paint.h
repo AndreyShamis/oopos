@@ -12,10 +12,11 @@
 
 #if !defined(_PAINT_H)
 #define _PAINT_H
-
+#include "macros.h"
 #include <iostream>
 #include "Shape.h"
 #include "Bar.h"
+#include "Circle.h"
 #include <vector>
 
 using namespace std;

@@ -1,19 +1,29 @@
 #include "Circle.h"
 
-Circle::Cycle(float x,float y)
+Circle::Circle(float x,float y)
 {
 	_x=0.4;
 	_y=0.6;
 }
 
-Circle::Draw()
+void Circle::Draw()
 {
-	glBegin(GL_POLYGON); // Start drawing a quad primitive
-
-        glColor3f(0.0f,1.0f,0.0f);              // Синий
-		glVertex2f (_x, _y-SIDE_SIZE);           //left down
-		glVertex2f (_x+SIDE_SIZE, _y-_x+SIDE_SIZE);			// right down
-		glVertex2f (_x+SIDE_SIZE, _y);			//	right up
-		glVertex2f (_x, _y);			//	left up
+	glBegin(GL_LINES); // Start drawing a quad primitive
+	
+	float r = 0.2;
+	float k = _x;
+	float h = _y;
+     
+  for (int i = 0; i < 180; i++)
+    {
+		   glColor3f(0.0f,1.0f,0.0f);              // Синий
+    float x = (float)(r*cos((float)i)) - h;
+    float y = (float)(r*sin((float)i)) + k;
+    glVertex3f(x+k,y - h,0);
+    
+    x = (float)(r*cos((float)i + 0.1)) - h;
+    y = (float)(r*sin((float)i + 0.1)) + k;
+    glVertex3f(x+k,y - h,0);
+    }
 	glEnd();	
 }
