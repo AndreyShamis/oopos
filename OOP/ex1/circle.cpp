@@ -10,20 +10,13 @@ void Circle::Draw()
 {
 	glBegin(GL_LINES); // Start drawing a quad primitive
 	
-	float r = 0.2;
-	float k = _x;
-	float h = _y;
-     
-  for (int i = 0; i < 180; i++)
-    {
-		   glColor3f(0.0f,1.0f,0.0f);              // Синий
-    float x = (float)(r*cos((float)i)) - h;
-    float y = (float)(r*sin((float)i)) + k;
-    glVertex3f(x+k,y - h,0);
-    
-    x = (float)(r*cos((float)i + 0.1)) - h;
-    y = (float)(r*sin((float)i + 0.1)) + k;
-    glVertex3f(x+k,y - h,0);
-    }
+	float r = 0.2;  
+	glColor3f(0.4f,1.4f,0.3f);              // Синий
+	for (int i = 0; i < 180; i++)
+	{
+		glVertex2f(r*cos((float)i)+_x,r*sin((float)i)+_y);
+		//glVertex2f(r*cos((float)-i)+_x,r*sin((float)-i)+_y);
+	}
+
 	glEnd();	
 }
