@@ -1,0 +1,58 @@
+/*
+ * EX1:: Making file parsing and distribution components.
+ * ===========================================================================
+ * Writen by: Ilia Gaisinsky, 	id: 309480051, login: iliaga
+	      Andrey Shamis,  	id: 321470882, login: andreysh
+ *      
+ * ===========================================================================
+ *
+ *		to compile : 
+ 					gcc -Wall ex7_server.c -o ex7_server
+ 					gcc -Wall ex7_client.c -o ex7_client
+ *
+ *		to run:	
+ 		
+ 			Server:
+ 				./ex7_server X Y Z
+			X		-  id of internal queue comunication
+			Y		-  working time
+			Z		-  memory size be used in server
+		 		
+ 			Client
+	 			./ex7_client X Y
+	 		X		-  id of internal queue comunication
+ 			Y		-  multple of pai calculation.	
+ *
+ */
+
+============================= ex1.cc ==========================================
+## Input: text File.
+#*
+## Output: 3 text sorted Files and sumery on standart uotput.
+	
+## Script Description: This sprogram is called input data file.
+#* The program will receive through Name of a file which will serve as an
+#* input of the program. This file reading program the data. Beyond that the
+#* program will receive through her other arguments names
+#* Three output files:
+#* Output file to send strings of letters that the plan call (input file)
+#* (argv [2])
+#* (argv [3]) 2. Output file to be sent to the numbers (all types) plan call
+#* (Argv [4]) 3. Output file to send junk strings
+
+
+
+============================= ex1.pl ==========================================
+# The script do exacly the same, like the program ex1.cc
+
+///////////////////////////////////////////////////////////////////////////////
+//---------------------------------------------------------------------------//
+Files used
+
+ex1.cc					//	C ++ lenguage
+ex1.pl	 				//	PERL script
+
+ReadMe-os1-ex1-2011-andreysh_iliaga	//	readme
+
+===============================================================================
+
