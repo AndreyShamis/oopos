@@ -12,7 +12,7 @@ void Circle::Draw()
 	
 	float r = 0.2;  
 	glColor3f(0.4f,1.4f,0.3f);              // Синий
-	for (int i = 0; i < 180; i++)
+	for (int i = 0; i < 3000; i++)
 	{
 		glVertex2f(r*cos((float)i)+_x,r*sin((float)i)+_y);
 		//glVertex2f(r*cos((float)-i)+_x,r*sin((float)-i)+_y);
