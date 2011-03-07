@@ -41,13 +41,14 @@ void Paint::idle()
 	{
 		x = 10;
 		Bar *bar;
-		Circle *cir;
+		Circle *cir,*cir_nohole;
 		bar = new  Bar(120,130);
-		cir = new Circle(1,1);
-
+		cir = new Circle(0.8,0.2,true);
+		cir_nohole = new Circle(0.6,0.7,false);
 		cout << "Create \n";
 		_obj.push_back(cir);
 		_obj.push_back(bar);
+		_obj.push_back(cir_nohole);
 
 	}
 }
