@@ -9,23 +9,22 @@
 //
 //
 
-#include "macros.h"
+
 #include "Paint.h"
 
 Paint::Paint()
 {
 	glMatrixMode(GL_PROJECTION);  
     glLoadIdentity();
-    gluOrtho2D(0, 850, 0, 600);
+    gluOrtho2D(0, 500, 0, 500);
 }
 
 void Paint::display()
 {
 	glClear(GL_COLOR_BUFFER_BIT ); 
 	for(int i=0;i<(int)_obj.size();i++)
-	{
 		_obj[i]->Draw();
-	}
+
 	glFlush() ; 
 	glutSwapBuffers();
 }
@@ -42,10 +41,13 @@ void Paint::idle()
 	{
 		x = 10;
 		Bar *bar;
+		Circle *cir;
 		bar = new  Bar(120,130);
+		cir = new Circle(1,1);
 
 		cout << "Create \n";
 		_obj.push_back(bar);
+		_obj.push_back(cir);
 	}
 }
 void Paint::mouseButton(const int &button,const int &state, const float &x , const float &y)

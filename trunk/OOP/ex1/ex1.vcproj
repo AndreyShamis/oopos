@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="ex1"
 	ProjectGUID="{9B29A398-957A-41D8-A973-26FEB58A59B1}"
 	RootNamespace="ex1"
@@ -175,6 +175,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\circle.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main.cpp"
 				>
 			</File>
@@ -197,7 +201,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Cycle.h"
+				RelativePath=".\Circle.h"
 				>
 			</File>
 			<File
