@@ -19,6 +19,10 @@ class Shape
 public:
 	Shape();
 	virtual void Draw()=0;
+
+protected:
+	double _x;
+	double _y;
 };
 
 #endif  //_SHAPE_H

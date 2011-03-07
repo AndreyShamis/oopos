@@ -14,12 +14,12 @@
 #if !defined(_BOX_H)
 #define _BOX_H
 
-
+#define SIDE_SIZE 0.1
 
 class Bar :public Shape 
 {
 public:
-	Bar();
+	Bar(float x, float y);
 	void Draw();
 };
 
