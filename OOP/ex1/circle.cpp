@@ -1,22 +1,19 @@
+#include "Circle.h"
 
-#include "macros.h"
-#include "bar.h"
-
-Bar::Bar(float x, float y)
+Circle::Cycle(float x,float y)
 {
-	_x=0.2;
-	_y=0.3;
+	_x=0.4;
+	_y=0.6;
 }
 
-
-void Bar::Draw()
+Circle::Draw()
 {
-	glBegin(GL_QUADS); // Start drawing a quad primitive
+	glBegin(GL_POLYGON); // Start drawing a quad primitive
 
         glColor3f(0.0f,1.0f,0.0f);              // Синий
 		glVertex2f (_x, _y-SIDE_SIZE);           //left down
 		glVertex2f (_x+SIDE_SIZE, _y-_x+SIDE_SIZE);			// right down
 		glVertex2f (_x+SIDE_SIZE, _y);			//	right up
 		glVertex2f (_x, _y);			//	left up
-	glEnd();
+	glEnd();	
 }
