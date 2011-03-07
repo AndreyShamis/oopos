@@ -46,8 +46,9 @@ void Paint::idle()
 		cir = new Circle(1,1);
 
 		cout << "Create \n";
-		_obj.push_back(bar);
 		_obj.push_back(cir);
+		_obj.push_back(bar);
+
 	}
 }
 void Paint::mouseButton(const int &button,const int &state, const float &x , const float &y)
