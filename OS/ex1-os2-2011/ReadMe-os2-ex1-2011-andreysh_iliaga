@@ -2,26 +2,29 @@
  * EX1:: Making file parsing and distribution components.
  * ===========================================================================
  * Writen by: Ilia Gaisinsky, 	id: 309480051, login: iliaga
-	      Andrey Shamis,  	id: 321470882, login: andreysh
+ *	      Andrey Shamis,  	id: 321470882, login: andreysh
  *      
  * ===========================================================================
  *
- *		to compile : 
- 					gcc -Wall ex7_server.c -o ex7_server
- 					gcc -Wall ex7_client.c -o ex7_client
+ *	to compile : 
+ *		C++:
+ *				g++ -Wall ex1.cc -o ex1
+ *	
+	to make executable (for ex1.pl): 
+
+				chmod u+x ex1.pl		
+ *	to run:	
+ *		C++:
+ *			 	./ex1 X Y Z W
  *
- *		to run:	
- 		
- 			Server:
- 				./ex7_server X Y Z
-			X		-  id of internal queue comunication
-			Y		-  working time
-			Z		-  memory size be used in server
-		 		
- 			Client
-	 			./ex7_client X Y
-	 		X		-  id of internal queue comunication
- 			Y		-  multple of pai calculation.	
+ *		PERL:
+ *				./ex1.pl X Y Z W
+ *
+ *			X		-  input file path / name
+ *			Y		-  output words file path / name 
+ *			Z		-  output numbers file path / name 
+ * 			W		-  output garbeg file path / name 
+ *		 		
  *
  */
 
