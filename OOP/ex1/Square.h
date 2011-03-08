@@ -14,7 +14,7 @@
 #if !defined(_SQUARE_H)
 #define _SQUARE_H
 
-#define DEFAULT_SIZE 0.1f
+#define DEFAULT_SIZE_SH 0.1
 
 class Square :public Shape 
 {

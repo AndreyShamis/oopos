@@ -15,10 +15,12 @@
 #include "macros.h"
 #include <iostream>
 #include "Shape.h"
+#include "Horizontal.h"
+#include "Rectangle.h"
 #include "Square.h"
 #include "Circle.h"
 #include "Wheel.h"
-
+#include "Vertical.h"
 #include <vector>
 
 using namespace std;

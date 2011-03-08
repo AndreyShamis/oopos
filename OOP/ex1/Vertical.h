@@ -14,7 +14,7 @@
 #if !defined(_VERTICAL_H)
 #define _VERTICAL_H
 
-#define DEFAULT_SIZE 0.2f
+#define DEFAULT_SIZE_SH2 0.2
 
 class Vertical :public Shape 
 {

@@ -8,10 +8,7 @@
 //  @ Author : 
 //
 //
-
-
 #include "Paint.h"
-
 Paint::Paint()
 {
 	glMatrixMode(GL_PROJECTION);  
@@ -36,22 +33,35 @@ void Paint::selectFromMenu(const int &id)
 
 void Paint::idle()
 {
+	//	Rectangle *emRectangl=NULL;
+	//	Rectangle *pectan=NULL;
+		Horizontal *horizonta;
+		Vertical *vertica;
+		Square *squer;
+		Circle *cir,*cir_nohole;
+		Wheel *weel;
 	static int x;
 	if(x != 10)
 	{
 		x = 10;
-		Square *squer;
-		Circle *cir,*cir_nohole;
-		Wheel *weel;
-		squer = new  Square(0.2,0.3);
-		weel = new  Wheel(0.3,0.7);
-		cir = new Circle(0.7,0.3,true);
-		cir_nohole = new Circle(0.7,0.7,false);
+
+		horizonta = new Horizontal(0.4,0.5);
+		vertica = new Vertical(0.5,0.4);
+		squer = new  Square(0.1,0.1);
+		weel = new  Wheel(0.2,0.8);
+		//rectangl = new Rectangle(0.2,5.0,false);
+		//emRectangl = new Rectangle(0.6,5.0,true);
+		cir = new Circle(0.8,0.2,false);
+		cir_nohole = new Circle(0.8,0.8,true);
 		cout << "Create \n";
 		_obj.push_back(cir);
 		_obj.push_back(squer);
 		_obj.push_back(cir_nohole);
 		_obj.push_back(weel);
+		_obj.push_back(horizonta);
+		_obj.push_back(vertica);
+	//	_obj.push_back(emRectangl);
+	//	_obj.push_back(rectangl);
 
 	}
 }
