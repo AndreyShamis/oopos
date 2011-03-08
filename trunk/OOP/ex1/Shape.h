@@ -18,7 +18,7 @@ class Shape
 {
 public:
 	Shape();
-	virtual void Draw() = 0;
+	virtual void Draw()=0;
 
 protected:
 	float _x;

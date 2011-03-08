@@ -12,7 +12,7 @@ void Wheel::Draw()
 {
 	glBegin(GL_LINE_LOOP);
 	glLineWidth(100);
-	//glColor3f(0.4f, 1.4f, 0.3f);			//green
+	//glColor3f(0.4f, 1.4f, 0.3f);				//green
 	glColor3f(0.0f, 0.0f, 0.0f);				// black
 	float x, y;
 	for(int i=(int)(_size * 3000); i < (int)(_size * 3000 * 2); i++)
