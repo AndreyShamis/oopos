@@ -15,8 +15,10 @@
 #include "macros.h"
 #include <iostream>
 #include "Shape.h"
-#include "Bar.h"
+#include "Square.h"
 #include "Circle.h"
+#include "Wheel.h"
+
 #include <vector>
 
 using namespace std;

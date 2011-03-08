@@ -11,16 +11,16 @@
 
 #include "shape.h"
 
-#if !defined(_BOX_H)
-#define _BOX_H
+#if !defined(_SQUARE_H)
+#define _SQUARE_H
 
-#define SIDE_SIZE 0.1
+#define DEFAULT_SIZE 0.1f
 
-class Bar :public Shape 
+class Square :public Shape 
 {
 public:
-	Bar(float x, float y);
+	Square(float x, float y);
 	void Draw();
 };
 
-#endif  //_BOX_H
+#endif  //_SQUARE_H

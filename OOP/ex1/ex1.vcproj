@@ -171,11 +171,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\Bar.cpp"
+				RelativePath=".\circle.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\circle.cpp"
+				RelativePath=".\Equiangular.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Horizontal.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Itriangle.cpp"
 				>
 			</File>
 			<File
@@ -187,7 +195,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Rectangle.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Shape.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Square.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Vertical.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Wheel.cpp"
 				>
 			</File>
 		</Filter>
@@ -197,11 +221,19 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\Bar.h"
+				RelativePath=".\Circle.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Circle.h"
+				RelativePath=".\Equiangular.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Horizontal.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Itriangle.h"
 				>
 			</File>
 			<File
@@ -213,7 +245,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Rectangle.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Shape.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Square.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Vertical.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Wheel.h"
 				>
 			</File>
 		</Filter>
