@@ -4,9 +4,9 @@
 
 Square::Square(float x, float y)
 {
-	_x = x;
-	_y = y;
-	_size = DEFAULT_SIZE;
+	_x		= x;
+	_y		= y;
+	_size	= DEFAULT_SIZE;
 }
 
 
