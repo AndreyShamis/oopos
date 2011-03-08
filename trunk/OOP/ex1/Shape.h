@@ -21,8 +21,9 @@ public:
 	virtual void Draw()=0;
 
 protected:
-	double _x;
-	double _y;
+	float _x;
+	float _y;
+	float _size;
 };
 
 #endif  //_SHAPE_H

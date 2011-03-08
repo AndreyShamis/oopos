@@ -40,15 +40,18 @@ void Paint::idle()
 	if(x != 10)
 	{
 		x = 10;
-		Bar *bar;
+		Square *squer;
 		Circle *cir,*cir_nohole;
-		bar = new  Bar(120,130);
-		cir = new Circle(0.8,0.2,true);
-		cir_nohole = new Circle(0.6,0.7,false);
+		Wheel *weel;
+		squer = new  Square(0.2,0.3);
+		weel = new  Wheel(0.3,0.7);
+		cir = new Circle(0.7,0.3,true);
+		cir_nohole = new Circle(0.7,0.7,false);
 		cout << "Create \n";
 		_obj.push_back(cir);
-		_obj.push_back(bar);
+		_obj.push_back(squer);
 		_obj.push_back(cir_nohole);
+		_obj.push_back(weel);
 
 	}
 }

@@ -10,21 +10,19 @@
 //
 
 
-#if !defined(_CIRCLE_H)
-#define _CIRCLE_H
+#if !defined(_WHEEL_H)
+#define _WHEEL_H
 #define _USE_MATH_DEFINES
 #include "shape.h"
 #include <math.h>
 #include "macros.h"
 
 #define DEFAULT_RADIUS 0.1
-class Circle : public Shape
+class Wheel : public Shape
 {
 public:
-	Circle(float x, float y, bool isEmpty);
+	Wheel(float x,float y);
 	void Draw();
-private:
-	bool _isEmpty;
 };
 
-#endif  //_CIRCLE_H
+#endif  //_WHEEL_H
