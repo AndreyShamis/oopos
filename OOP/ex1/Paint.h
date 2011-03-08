@@ -25,8 +25,8 @@ using namespace std;
 
 struct UndoRedoShape
 {
-	Shape *_old;
-	Shape *_real;
+	Shape * _old;
+	Shape * _real;
 };
 
 
@@ -41,7 +41,7 @@ public:
 	void ShowMenu();
 	void DrowByStatus();
 	void display();
-	void mouseButton(const int &button,const int &state, const float &x , const float &y);
+	void mouseButton(const int &button, const int &state, const float &x, const float &y);
 	void idle();
 	void selectFromMenu(const int &id);
 private:
