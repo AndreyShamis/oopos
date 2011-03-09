@@ -16,7 +16,8 @@
 #include <iostream>
 #include "Shape.h"
 #include "Horizontal.h"
-#include "Rectangle.h"
+#include "Rectanglle.h"
+//#include "Rectangle.h"
 #include "Square.h"
 #include "Circle.h"
 #include "Wheel.h"
@@ -35,10 +36,7 @@ struct UndoRedoShape
 class Paint 
 {
 public:
-	vector <Shape *> _obj;
-	//vector <_obj *> _objs;
-	vector <Shape *> _undo_redo_obj;
-	int menu_status;
+
 	Paint();
 	void ShowMenu();
 	void DrowByStatus();
@@ -48,6 +46,16 @@ public:
 	void selectFromMenu(const int &id);
 private:
 	vector <UndoRedoShape>  _undo_redo;
+	int _draw_figure;
+	void ClearDB();
+	void SetNextShape();
+	void SetPreviousShape();
+	vector <Shape *> _obj;
+	//vector <_obj *> _objs;
+	vector <Shape *> _undo_redo_obj;
+	int menu_status;
+
+	unsigned int _actual_shape;
 };
 
 #endif  //_PAINT_H

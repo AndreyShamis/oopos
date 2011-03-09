@@ -8,15 +8,13 @@
 //  @ Author : 
 //
 //
-
 #include "shape.h"
-
 #if !defined(_HORIZONTAL_H)
 #define _HORIZONTAL_H
 
 #define DEFAULT_SIZE_SH1 0.2
 
-class Horizontal :public Shape 
+class Horizontal :public Shape
 {
 public:
 	Horizontal(float x, float y);
