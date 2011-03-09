@@ -21,7 +21,7 @@
 class Wheel : public Shape
 {
 public:
-	Wheel(float x ,float y);
+	Wheel(float x ,float y,const RgbColor &color);
 	void Draw();
 };
 

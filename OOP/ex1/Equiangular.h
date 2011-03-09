@@ -19,7 +19,7 @@
 class Equiangular :public Shape 
 {
 public:
-	Equiangular(float x, float y);
+	Equiangular(float x, float y,RgbColor &color);
 	void Draw();
 };
 

@@ -20,8 +20,10 @@
 //#include "Rectangle.h"
 #include "Square.h"
 #include "Circle.h"
+#include "Dot.h"
 #include "Wheel.h"
 #include "Vertical.h"
+#include "Itriangle.h"
 #include <vector>
 
 using namespace std;
@@ -38,12 +40,13 @@ class Paint
 public:
 
 	Paint();
-	void ShowMenu();
-	void DrowByStatus();
 	void display();
 	void mouseButton(const int &button, const int &state, const float &x, const float &y);
 	void idle();
 	void selectFromMenu(const int &id);
+	void mnuSetColor(const int &color_value);
+	void mnuResize(const int &commandID);
+	void clearFromMenu(const int &id)	;
 private:
 	vector <UndoRedoShape>  _undo_redo;
 	int _draw_figure;
@@ -54,8 +57,15 @@ private:
 	//vector <_obj *> _objs;
 	vector <Shape *> _undo_redo_obj;
 	int menu_status;
+	
 
-	unsigned int _actual_shape;
+	int _actual_shape;
+
+	RgbColor _colors[5];
+	int		_color_id;
+	void LoadColorsToMemory();	
+	void ShrinkSelectedShape();
+	void GrowSelectedShape();
 };
 
 #endif  //_PAINT_H

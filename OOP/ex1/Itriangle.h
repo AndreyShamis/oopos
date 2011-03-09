@@ -19,7 +19,7 @@
 class Itriangle :public Shape 
 {
 public:
-	Itriangle(float x, float y);
+	Itriangle(float x, float y,const RgbColor &color);
 	void Draw();
 };
 

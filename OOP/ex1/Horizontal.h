@@ -17,7 +17,7 @@
 class Horizontal :public Shape
 {
 public:
-	Horizontal(float x, float y);
+	Horizontal(float x, float y,const RgbColor &color);
 	void Draw();
 };
 

@@ -1,6 +1,3 @@
-
-
-
 #include "shape.h"
 #if !defined(_RECTANGLLE_H)
 #define _RECTANGLLE_H
@@ -10,7 +7,7 @@
 class Rectanglle :public Shape
 {
 public:
-	Rectanglle(float x, float y, bool isEmpty);
+	Rectanglle(float x, float y,const RgbColor &color, bool isEmpty);
 	void Draw();
 
 private:

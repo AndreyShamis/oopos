@@ -1,11 +1,12 @@
 #include "Circle.h"
 
-Circle::Circle(float x, float y, bool isEmpty)
+Circle::Circle(float x, float y,RgbColor &color, bool isEmpty)
 {
 	_x			= x;
 	_y			= y;
 	_isEmpty	= isEmpty;
 	_size		= DEFAULT_RADIUS;
+	_color = color;
 
 }
 
@@ -19,7 +20,7 @@ void Circle::Draw()
 	float x, y;
 
 	//glColor3f(0.4f, 1.4f, 0.3f);				//green
-	glColor3f(0.0f, 0.0f, 0.0f);				// black
+	glColor3f(_color.r, _color.g, _color.b);				// black
 		
 	x = (float)_size * cos(359 * M_PI/180.0f);	
 	y = (float)_size * sin(359 * M_PI/180.0f);	
