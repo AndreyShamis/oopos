@@ -14,61 +14,144 @@ Paint::Paint()
 	glMatrixMode(GL_PROJECTION);  
     glLoadIdentity();
     gluOrtho2D(0, 500, 0, 500);
+	_actual_shape = -1;
 }
 
 void Paint::display()
 {
 	glClear(GL_COLOR_BUFFER_BIT ); 
+
 	for(int i=0;i<(int)_obj.size();i++)
 		_obj[i]->Draw();
 
 	glFlush() ; 
 	glutSwapBuffers();
+
+
 }
 
+void Paint::ClearDB()
+{
+	cout << "Clearing Data Base\n";
+	_obj.clear();
+}
 void Paint::selectFromMenu(const int &id)
 {
-;
+	cout << "Selected " << id << "\n";
+	_draw_figure = id;
+	if(_draw_figure > 100)
+	{
+		cout << "Menu Main\n";
+		switch(_draw_figure)
+		{
+		case 101:
+			SetPreviousShape();
+			break;
+		case 102:
+			SetNextShape();
+			break;	
+		case 103:
+			ClearDB();
+			break;
+		}
+	}
+	//glutDetachMenu (GLUT_RIGHT_BUTTON);
 }
 
 void Paint::idle()
 {
-	//	Rectangle *emRectangl=NULL;
-	//	Rectangle *pectan=NULL;
-		Horizontal *horizonta;
-		Vertical *vertica;
-		Square *squer;
-		Circle *cir,*cir_nohole;
-		Wheel *weel;
 	static int x;
 	if(x != 10)
 	{
 		x = 10;
-
-		horizonta = new Horizontal(0.4,0.5);
-		vertica = new Vertical(0.5,0.4);
-		squer = new  Square(0.1,0.1);
-		weel = new  Wheel(0.2,0.8);
-		//rectangl = new Rectangle(0.2,5.0,false);
-		//emRectangl = new Rectangle(0.6,5.0,true);
-		cir = new Circle(0.8,0.2,false);
-		cir_nohole = new Circle(0.8,0.8,true);
+		Rectanglle *emRectan;
+		emRectan = new Rectanglle(0.7,7.0,true);
 		cout << "Create \n";
-		_obj.push_back(cir);
-		_obj.push_back(squer);
-		_obj.push_back(cir_nohole);
-		_obj.push_back(weel);
-		_obj.push_back(horizonta);
-		_obj.push_back(vertica);
-	//	_obj.push_back(emRectangl);
-	//	_obj.push_back(rectangl);
-
+		_obj.push_back(emRectan);
 	}
+	display();
 }
 void Paint::mouseButton(const int &button,const int &state, const float &x , const float &y)
 {
 	cout << "Button:" << button << " State:" << state << " X:"<<x<<" Y:"<<y << "\n";
+	if(button == 0 && _draw_figure && _draw_figure < 100)
+	{
+		switch(_draw_figure)
+		{
+		case 1:
+			break;
+		case 2:
+			Rectanglle *rectan;
+			rectan = new Rectanglle(x,y,false);
+			_obj.push_back(rectan);
+			break;
+		case 3:
+			Square *squer;
+			squer = new  Square(x,y);
+			_obj.push_back(squer);
+			break;
+		case 4:
+			Circle *cir;
+			cir = new Circle(x,y,false);
+			_obj.push_back(cir);
+			break;
+		case 5:
+			Wheel *weel; 
+			weel = new  Wheel(x,y);
+			_obj.push_back(weel);
+			break;
+		case 6:
+			Circle *cir_nohole;
+			cir_nohole = new Circle(x,y,true);
+			_obj.push_back(cir_nohole);
+			break;
+		case 7:
+			Horizontal *horizonta;
+			horizonta = new Horizontal(x,y);
+			_obj.push_back(horizonta);
+			break;
+		case 8:
+			Vertical *vertica;
+			vertica = new Vertical(x,y);
+			_obj.push_back(vertica);
+			break;
 
+		}
+
+		_actual_shape = _obj.size();
+	//glutAttachMenu (GLUT_RIGHT_BUTTON);
+	//_draw_figure= 0;
+	}
+
+
+
+
+
+
+}
+
+void Paint::SetNextShape()
+{
+	if(_actual_shape == _obj.size())
+	{
+		_actual_shape = 0;
+	}
+	else if(_actual_shape < _obj.size() && _obj.size()>0)
+		_actual_shape++;
+	else
+		_actual_shape = -1;
+}
+
+void Paint::SetPreviousShape()
+{
+	if(_obj.size()>0 && _actual_shape == 0)
+	{
+		_actual_shape = _obj.size() -1;
+	}
+	else if(_actual_shape >0 && _obj.size()>0)
+		_actual_shape--;
+	else
+		_actual_shape = -1;
 }
 void Paint::ShowMenu()
 {

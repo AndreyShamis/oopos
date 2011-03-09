@@ -199,6 +199,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Rectanglle.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Shape.cpp"
 				>
 			</File>
@@ -246,6 +250,10 @@
 			</File>
 			<File
 				RelativePath=".\Rectangle.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Rectanglle.h"
 				>
 			</File>
 			<File
