@@ -175,6 +175,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Dot.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Equiangular.cpp"
 				>
 			</File>
@@ -226,6 +230,10 @@
 			>
 			<File
 				RelativePath=".\Circle.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Dot.h"
 				>
 			</File>
 			<File

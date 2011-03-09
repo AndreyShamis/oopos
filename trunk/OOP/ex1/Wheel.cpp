@@ -1,10 +1,11 @@
 #include "Wheel.h"
 
-Wheel::Wheel(float x,float y)
+Wheel::Wheel(float x,float y,const RgbColor &color)
 {
 	_x		= x;
 	_y		= y;
 	_size	= DEFAULT_RADIUS;
+	_color = color;
 
 }
 
@@ -12,8 +13,7 @@ void Wheel::Draw()
 {
 	glBegin(GL_LINE_LOOP);
 	glLineWidth(100);
-	//glColor3f(0.4f, 1.4f, 0.3f);				//green
-	glColor3f(0.0f, 0.0f, 0.0f);				// black
+	glColor3f(_color.r, _color.g, _color.b);  
 	float x, y;
 	for(int i=(int)(_size * 3000); i < (int)(_size * 3000 * 2); i++)
 	{

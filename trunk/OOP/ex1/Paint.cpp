@@ -9,14 +9,45 @@
 //
 //
 #include "Paint.h"
+
+//=============================================================================
+//
 Paint::Paint()
 {
+	LoadColorsToMemory();
 	glMatrixMode(GL_PROJECTION);  
     glLoadIdentity();
     gluOrtho2D(0, 500, 0, 500);
-	_actual_shape = -1;
+	_actual_shape = 0;
+
+
 }
 
+
+void Paint::LoadColorsToMemory()
+{
+	_colors[_GREEN].r = 0.0;
+	_colors[_GREEN].g = 1.0;
+	_colors[_GREEN].b = 0.0;
+
+	_colors[_BLACK].r = 0.0;
+	_colors[_BLACK].g = 0.0;
+	_colors[_BLACK].b = 0.0;
+
+	_colors[_WHITE].r = 1.0;
+	_colors[_WHITE].g = 1.0;
+	_colors[_WHITE].b = 1.0;
+
+	_colors[_RED].r = 1.0;
+	_colors[_RED].g = 0.8;
+	_colors[_RED].b = 0.5;
+
+	_colors[_BLUE].r = 0.3;
+	_colors[_BLUE].g = 0.4;
+	_colors[_BLUE].b = 0.5;
+}
+//=============================================================================
+//
 void Paint::display()
 {
 	glClear(GL_COLOR_BUFFER_BIT ); 
@@ -29,137 +60,185 @@ void Paint::display()
 
 
 }
-
+//=============================================================================
+//	Function to clear all object from the memory
 void Paint::ClearDB()
 {
-	cout << "Clearing Data Base\n";
-	_obj.clear();
+	_obj.clear();		//	delete all objects
 }
+
+//=============================================================================
+//
 void Paint::selectFromMenu(const int &id)
 {
-	cout << "Selected " << id << "\n";
 	_draw_figure = id;
 	if(_draw_figure > 100)
 	{
-		cout << "Menu Main\n";
 		switch(_draw_figure)
 		{
-		case 101:
+		case _PREV_SHAPE:
 			SetPreviousShape();
 			break;
-		case 102:
+		case _NEXT_SHAPE:
 			SetNextShape();
 			break;	
-		case 103:
+		case _CLEAR_SCREEN:
 			ClearDB();
+			break;
+		case _EXIT_PROGRAM:
+			ClearDB();
+			exit(EXIT_SUCCESS);
 			break;
 		}
 	}
 	//glutDetachMenu (GLUT_RIGHT_BUTTON);
 }
+//=============================================================================
+//
+void Paint::clearFromMenu(const int &id)
+{
 
+	switch(id)
+	{
+
+
+	case _CLR_SELECTED:
+
+		break;
+	case _CLR_SAME_TYPE:
+
+		break;
+
+	case _CLR_SAME_COLOR:
+
+		break;
+
+	case _CLEAR_SCREEN:
+		ClearDB();
+		break;
+}
+}
+
+void Paint::mnuSetColor(const int &color_value)
+{
+	_color_id = color_value;	
+}
+
+void Paint::GrowSelectedShape()
+{
+	float val= 0.1;
+
+	if(_actual_shape > 0)
+		_obj[_actual_shape-1]->IncreaseSize(val);
+
+}
+
+void Paint::ShrinkSelectedShape()
+{
+	float val= 0.1;
+
+	if(_actual_shape > 0)
+		_obj[_actual_shape-1]->ShrinkSize(val);
+
+}
+void Paint::mnuResize(const int &commandID)
+{
+	switch(commandID)	
+	{
+	case _GROW_SELETED:
+		GrowSelectedShape();
+		break;
+	case _SHRINK_SELETED:
+		ShrinkSelectedShape();
+		break;
+	case _SAME_SIZE:
+		
+		break;
+	}
+}
+//=============================================================================
+//
 void Paint::idle()
 {
 	static int x;
 	if(x != 10)
 	{
 		x = 10;
-		Rectanglle *emRectan;
-		emRectan = new Rectanglle(0.7,7.0,true);
-		cout << "Create \n";
-		_obj.push_back(emRectan);
+		//Rectanglle *emRectan;
+		//emRectan = new Rectanglle(0.7,7.0,_colors[_color_id],true);
+		//cout << "Create \n";
+		//_obj.push_back(emRectan);
 	}
+	_actual_shape = _obj.size();
 	display();
 }
-void Paint::mouseButton(const int &button,const int &state, const float &x , const float &y)
+
+//=============================================================================
+//
+void Paint::mouseButton(const int &button,const int &state, const float &x , 
+						const float &y)
 {
 	cout << "Button:" << button << " State:" << state << " X:"<<x<<" Y:"<<y << "\n";
-	if(button == 0 && _draw_figure && _draw_figure < 100)
+	if(button == 0 && state==1 && _draw_figure && _draw_figure < 100)
 	{
+		Shape *_new_sh;
 		switch(_draw_figure)
 		{
-		case 1:
+		case _DOT:
+			_new_sh = new Dot(x,y,_colors[_color_id]);
 			break;
-		case 2:
-			Rectanglle *rectan;
-			rectan = new Rectanglle(x,y,false);
-			_obj.push_back(rectan);
+		case _RECTANGLE:
+			_new_sh = new Rectanglle(x,y,_colors[_color_id],false);
 			break;
-		case 3:
-			Square *squer;
-			squer = new  Square(x,y);
-			_obj.push_back(squer);
+		case _SQUARE:
+			_new_sh = new  Square(x,y,_colors[_color_id]);	
 			break;
-		case 4:
-			Circle *cir;
-			cir = new Circle(x,y,false);
-			_obj.push_back(cir);
+		case _CIRCLE:
+			_new_sh = new Circle(x,y,_colors[_color_id],false);
 			break;
-		case 5:
-			Wheel *weel; 
-			weel = new  Wheel(x,y);
-			_obj.push_back(weel);
+		case _WHEEL:
+			_new_sh = new  Wheel(x,y,_colors[_color_id]);
 			break;
-		case 6:
-			Circle *cir_nohole;
-			cir_nohole = new Circle(x,y,true);
-			_obj.push_back(cir_nohole);
+		case _CIRCLE_HOLE:
+			_new_sh = new Circle(x,y,_colors[_color_id],true);
 			break;
-		case 7:
-			Horizontal *horizonta;
-			horizonta = new Horizontal(x,y);
-			_obj.push_back(horizonta);
+		case _H_LINE:
+			_new_sh = new Horizontal(x,y,_colors[_color_id]);
 			break;
-		case 8:
-			Vertical *vertica;
-			vertica = new Vertical(x,y);
-			_obj.push_back(vertica);
+		case _V_LINE:
+			_new_sh = new Vertical(x,y,_colors[_color_id]);
 			break;
-
+		case _TRIANGLE:
+			_new_sh = new Itriangle(x,y,_colors[_color_id]);
+			break;
 		}
+		
+		if(_new_sh)
+			_obj.push_back(_new_sh);
+		
 
-		_actual_shape = _obj.size();
-	//glutAttachMenu (GLUT_RIGHT_BUTTON);
-	//_draw_figure= 0;
 	}
-
-
-
-
-
-
 }
 
+//=============================================================================
+//
 void Paint::SetNextShape()
 {
-	if(_actual_shape == _obj.size())
-	{
-		_actual_shape = 0;
-	}
-	else if(_actual_shape < _obj.size() && _obj.size()>0)
+	if(_actual_shape < (int)_obj.size())
 		_actual_shape++;
-	else
-		_actual_shape = -1;
+
+	cout << "Actual Shape ID is: " << _actual_shape-1 << "\n";
 }
 
+//=============================================================================
+//
 void Paint::SetPreviousShape()
 {
-	if(_obj.size()>0 && _actual_shape == 0)
-	{
-		_actual_shape = _obj.size() -1;
-	}
-	else if(_actual_shape >0 && _obj.size()>0)
-		_actual_shape--;
-	else
-		_actual_shape = -1;
-}
-void Paint::ShowMenu()
-{
-;
-}
 
-void Paint::DrowByStatus()
-{
-;
+	cout << "Real Shape ID is: " << _actual_shape << "\n";
+	if(_actual_shape >0)
+		_actual_shape--;
+
+	cout << "Actual Shape ID is: " << _actual_shape-1 << "\n";
 }
 

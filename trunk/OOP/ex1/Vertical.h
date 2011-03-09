@@ -19,7 +19,7 @@
 class Vertical :public Shape 
 {
 public:
-	Vertical(float x, float y);
+	Vertical(float x, float y,const RgbColor &color);
 	void Draw();
 };
 

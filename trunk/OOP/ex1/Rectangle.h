@@ -1,4 +1,4 @@
-
+//  @ Author : Andrey Shamis Ilia Gaysinski
 
 
 #include "shape.h"
@@ -11,7 +11,7 @@
 class Rectangle :public Shape 
 {
 public:
-	Rectangle(float x, float y, bool isEmpty);
+	Rectangle(float x, float y,const RgbColor &color, bool isEmpty);
 	void Draw();
 private:
 	bool _isEmpty;

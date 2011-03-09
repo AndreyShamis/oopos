@@ -8,10 +8,11 @@
 //  @ Author : 
 //
 //
-
+#include "macros.h"
 
 #if !defined(_SHAPE_H)
 #define _SHAPE_H
+
 
 
 class Shape
@@ -19,11 +20,13 @@ class Shape
 public:
 	Shape();
 	virtual void Draw()=0;
-
+	void IncreaseSize(const float &bySize);
+	void ShrinkSize(const float &bySize);
 protected:
 	float _x;
 	float _y;
 	float _size;
+	RgbColor _color;
 };
 
 #endif  //_SHAPE_H
