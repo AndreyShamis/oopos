@@ -1,5 +1,7 @@
 #include "Wheel.h"
 
+//=============================================================================
+//
 Wheel::Wheel(float x,float y,const RgbColor &color)
 {
 	_x		= x;
@@ -9,6 +11,8 @@ Wheel::Wheel(float x,float y,const RgbColor &color)
 
 }
 
+//=============================================================================
+//
 void Wheel::Draw()
 {
 	glBegin(GL_LINE_LOOP);
@@ -32,5 +36,3 @@ void Wheel::Draw()
 	glEnd(); 
 	
 } 
-
-

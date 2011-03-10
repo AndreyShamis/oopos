@@ -1,7 +1,7 @@
-
-#include "macros.h"
 #include "Horizontal.h"
 
+//=============================================================================
+//
 Horizontal::Horizontal(float x, float y,const RgbColor &color)
 {
 	_x = x;
@@ -10,7 +10,8 @@ Horizontal::Horizontal(float x, float y,const RgbColor &color)
 	_color = color;
 }
 
-
+//=============================================================================
+//
 void Horizontal::Draw()
 {
 	glBegin(GL_LINES);				// Start drawing a Horizontal
