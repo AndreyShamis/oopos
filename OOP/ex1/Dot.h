@@ -6,7 +6,7 @@
 //  @ Author : Andrey Shamis Ilia Gaysinski
 //
 //
-
+#pragma once
 #include "shape.h"
 #define DEFAULT_SIZE_SH 0.1
 

@@ -1,8 +1,8 @@
-#include "Circle.h"
+#include "EmptyCircle.h"
 
 //=============================================================================
 //
-Circle::Circle(float x, float y,RgbColor &color)
+EmptyCircle::EmptyCircle(float x, float y,RgbColor &color)
 {
 	_x			= x;
 	_y			= y;
@@ -13,9 +13,9 @@ Circle::Circle(float x, float y,RgbColor &color)
 
 //=============================================================================
 //
-void Circle::Draw()
+void EmptyCircle::Draw()
 {
-	glBegin(GL_POLYGON);
+	glBegin(GL_LINE_LOOP);
 
 	float x, y;
 

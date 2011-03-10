@@ -1,5 +1,7 @@
 #include "Equiangular.h"
 
+//=============================================================================
+//
 Equiangular::Equiangular(float x, float y,RgbColor &color)
 {
 	_x			= x;
@@ -8,7 +10,8 @@ Equiangular::Equiangular(float x, float y,RgbColor &color)
 	_color = color;
 }
 
-
+//=============================================================================
+//
 void Equiangular::Draw()
 {
 	// Start drawing a Equiangular

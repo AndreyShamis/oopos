@@ -1,6 +1,6 @@
 //
 //  @ Project : Paint
-//  @ File Name : Wheel.h
+//  @ File Name : Empty Cicle.h
 //  @ Date : 3/3/2011
 //  @ Author : Andrey Shamis Ilia Gaysinski
 //
@@ -11,9 +11,9 @@
 #include <math.h>
 
 #define DEFAULT_RADIUS 0.1
-class Wheel : public Shape
+class EmptyCircle : public Shape
 {
 public:
-	Wheel(float x ,float y,const RgbColor &color);
+	EmptyCircle(float x, float y,RgbColor &color);
 	void Draw();
 };

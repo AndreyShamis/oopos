@@ -16,6 +16,7 @@ void idle(){
 	paint.idle();
 }
 
+
 void selectFromMenu(int commandId){
 	paint.selectFromMenu(commandId);
 }
@@ -36,7 +37,13 @@ void mouseButton(int button, int state, int x, int y){
 	yPos = 1.0f-yPos;
 	paint.mouseButton(button,state,xPos,yPos);
 }
-
+void KeyPress(unsigned char key, int x, int y)
+{
+	float xPos = ((float)x)/((float)(WindowWidth-1));
+	float yPos = ((float)y)/((float)(WindowHeight-1));
+	yPos = 1.0f-yPos;
+	paint.KeyPress(key,xPos,yPos);
+}
 void resizeWindow(int w, int h){
 	WindowHeight = (h>1) ? h : 2;
 	WindowWidth = (w>1) ? w : 2;
@@ -60,48 +67,48 @@ int main(int argc, char** argv){
 	glutIdleFunc(idle);
 	glutDisplayFunc(display);  
 	glutMouseFunc (mouseButton);
+	glutKeyboardFunc(KeyPress);
+
 	int shapesMenu = glutCreateMenu (selectFromMenu);
-	glutAddMenuEntry ("Point\tp",		_DOT);
-	glutAddMenuEntry ("Rect\tr",		_RECTANGLE);
-	glutAddMenuEntry ("Square\ts",		_SQUARE);
-	glutAddMenuEntry ("Circle\tc",		_CIRCLE);
-	glutAddMenuEntry ("Wheel\tw",		_WHEEL);
-	glutAddMenuEntry ("Circle Hole\tw", _CIRCLE_HOLE);
-	glutAddMenuEntry ("Horisontale\tc", _H_LINE);
-	glutAddMenuEntry ("Verticale\tw",	_V_LINE);
-	glutAddMenuEntry ("Triangle\tw",	_TRIANGLE);
+	glutAddMenuEntry ("Point\t",		_DOT);
+	glutAddMenuEntry ("Rectangle\t",		_RECTANGLE);
+	glutAddMenuEntry ("Empty Rectangle\t",	_EMPTY_RECTANGLE);
+	glutAddMenuEntry ("Square\t",		_SQUARE);
+	glutAddMenuEntry ("Circle\t",		_CIRCLE);
+	glutAddMenuEntry ("Wheel\t",		_WHEEL);
+	glutAddMenuEntry ("Empty Circle\t", _EMPTY_CIRCLE);
+	glutAddMenuEntry ("Horisontale\t", _H_LINE);
+	glutAddMenuEntry ("Verticale\t",	_V_LINE);
+	glutAddMenuEntry ("Triangle\t",	_TRIANGLE);
 
 	int colorMenu = glutCreateMenu (mnuSetShapeColor);
-	glutAddMenuEntry ("Red\tp",			_RED);
-	glutAddMenuEntry ("White\tr",		_WHITE);
-	glutAddMenuEntry ("Blue\ts",		_BLUE);
-	glutAddMenuEntry ("Green\tc",		_GREEN);
-	glutAddMenuEntry ("Black\tc",		_BLACK);
-
+	glutAddMenuEntry ("Red\t",			_RED);
+	glutAddMenuEntry ("White\t",		_WHITE);
+	glutAddMenuEntry ("Blue\t",			_BLUE);
+	glutAddMenuEntry ("Green\t",		_GREEN);
+	glutAddMenuEntry ("Black\t",		_BLACK);
 
 	int resizeMenu = glutCreateMenu (mnuResize);
-	glutAddMenuEntry ("Grow selected\tp",		_GROW_SELETED);
-	glutAddMenuEntry ("Shrink selected\tr",		_SHRINK_SELETED);
-	glutAddMenuEntry ("Same size\ts",			_SAME_SIZE);
+	glutAddMenuEntry ("Grow selected\t+",		_GROW_SELETED);
+	glutAddMenuEntry ("Shrink selected\t-",		_SHRINK_SELETED);
+	glutAddMenuEntry ("Same size\tCtrl+_",		_SAME_SIZE);
 
 	int clearMenu	=	glutCreateMenu(mnuClear);
-	glutAddMenuEntry ("Selected\tp",		_CLR_SELECTED);
-	glutAddMenuEntry ("Same type\tr",		_CLR_SAME_TYPE);
-	glutAddMenuEntry ("Same color\ts",		_CLR_SAME_COLOR);
-	glutAddMenuEntry ("All",				_CLEAR_SCREEN);
+	glutAddMenuEntry ("Selected\tDelete",		_CLR_SELECTED);
+	glutAddMenuEntry ("Same type\tShift+d",		_CLR_SAME_TYPE);
+	glutAddMenuEntry ("Same color\tShift+c",	_CLR_SAME_COLOR);
+	glutAddMenuEntry ("All\tShift+a",			_CLEAR_SCREEN);
 
 	int menu = glutCreateMenu (selectFromMenu);
 	glutAddSubMenu ("Shape",		shapesMenu);
-	glutAddMenuEntry ("",		NULL);
 	glutAddSubMenu ("Set Color",	colorMenu);
-	glutAddMenuEntry ("",		NULL);
-	glutAddMenuEntry ("Remove Mark",		_REMOVE_MARK);
-
+	glutAddMenuEntry ("Remove Mark\tSpace",			_REMOVE_MARK);
 	glutAddSubMenu ("Resize",		resizeMenu);
-	glutAddSubMenu ("Clear",	clearMenu);
-	glutAddMenuEntry ("Next Shape",		_NEXT_SHAPE);
-	glutAddMenuEntry ("Prev Shape",		_PREV_SHAPE);
-	glutAddMenuEntry ("Exit\tEsc",		_EXIT_PROGRAM);
+	glutAddSubMenu ("Clear",		clearMenu);
+	glutAddMenuEntry ("Next Shape\tShift+z",		_NEXT_SHAPE);
+	glutAddMenuEntry ("Prev Shape\tShift+x",		_PREV_SHAPE);
+	glutAddMenuEntry ("Undo\tCtrl+z",				_UNDO);
+	glutAddMenuEntry ("Exit\tEsc",					_EXIT_PROGRAM);
 	glutAttachMenu (GLUT_RIGHT_BUTTON);
 	glutMainLoop();
 	return 0;

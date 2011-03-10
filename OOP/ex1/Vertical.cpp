@@ -1,6 +1,7 @@
-#include "macros.h"
 #include "Vertical.h"
 
+//=============================================================================
+//
 Vertical::Vertical(float x, float y,const RgbColor &color)
 {
 	_x		= x;
@@ -9,7 +10,8 @@ Vertical::Vertical(float x, float y,const RgbColor &color)
 	_color = color;
 } 
 
-
+//=============================================================================
+//
 void Vertical::Draw()
 {
 	glBegin(GL_LINES);						// Start drawing a vertical

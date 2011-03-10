@@ -179,6 +179,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\EmptyCircle.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\EmptyRectangle.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Equiangular.cpp"
 				>
 			</File>
@@ -196,10 +204,6 @@
 			</File>
 			<File
 				RelativePath=".\Paint.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Rectangle.cpp"
 				>
 			</File>
 			<File
@@ -237,6 +241,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\EmptyCircle.h"
+				>
+			</File>
+			<File
+				RelativePath=".\EmptyRectangle.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Equiangular.h"
 				>
 			</File>
@@ -254,10 +266,6 @@
 			</File>
 			<File
 				RelativePath=".\Paint.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Rectangle.h"
 				>
 			</File>
 			<File
