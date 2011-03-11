@@ -2,7 +2,7 @@
 
 //=============================================================================
 //
-Itriangle::Itriangle(float x, float y,const RgbColor &color)
+Itriangle::Itriangle(float x, float y, const RgbColor &color)
 {
 	_x			= x;
 	_y			= y;
@@ -21,7 +21,7 @@ void Itriangle::Draw()
 	glBegin(GL_TRIANGLES);
 	glColor3f(_color.r, _color.g, _color.b);                
 	glVertex2f (_x, _y);										
-	glVertex2f (_x  - 0.2/2, _y - _size * 2);		
-	glVertex2f (_x+ 0.2/2, _y - _size * 2);						
+	glVertex2f (_x - (_size-0.1)/2, _y - _size);		
+	glVertex2f (_x + (_size-0.1)/2, _y - _size);						
 	glEnd();
 }

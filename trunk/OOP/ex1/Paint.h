@@ -21,6 +21,7 @@
 #include "Wheel.h"
 #include "Vertical.h"
 #include "Itriangle.h"
+#include "Equiangular.h"
 #include <vector>
 
 using namespace std;
@@ -60,7 +61,7 @@ private:
 	
 	int _actual_shape;
 
-	RgbColor _colors[5];
+	RgbColor _colors[6];
 	int		_color_id;
 
 	void SetNextShape();
