@@ -21,8 +21,6 @@ void Wheel::Draw()
 	float x, y;
 	for(int i=(int)(_size * 3000); i < (int)(_size * 3000 * 2); i++)
 	{
-		//cout <<    ((float)_radius+((float)i/10000))       <<"areefcesagfsgesa\n";		//TEST
-
 		x = ((float)i/3000) * cos(359 * M_PI/180.0f);
 		y = ((float)i/3000) * sin(359 * M_PI/180.0f);
 		for(int j = 0; j < 30; j++)

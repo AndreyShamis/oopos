@@ -6,9 +6,12 @@
 //
 //
 #pragma once
+#define _USE_MATH_DEFINES
 #include "shape.h"
+#include <math.h>
 
-#define DEFAULT_SIZE_SH 0.2
+
+#define DEFAULT_SIZE_R 0.2
 
 class Equiangular :public Shape 
 {

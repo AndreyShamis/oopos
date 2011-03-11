@@ -70,16 +70,17 @@ int main(int argc, char** argv){
 	glutKeyboardFunc(KeyPress);
 
 	int shapesMenu = glutCreateMenu (selectFromMenu);
-	glutAddMenuEntry ("Point\t",		_DOT);
+	glutAddMenuEntry ("Point\t",			_DOT);
 	glutAddMenuEntry ("Rectangle\t",		_RECTANGLE);
 	glutAddMenuEntry ("Empty Rectangle\t",	_EMPTY_RECTANGLE);
-	glutAddMenuEntry ("Square\t",		_SQUARE);
-	glutAddMenuEntry ("Circle\t",		_CIRCLE);
-	glutAddMenuEntry ("Wheel\t",		_WHEEL);
-	glutAddMenuEntry ("Empty Circle\t", _EMPTY_CIRCLE);
-	glutAddMenuEntry ("Horisontale\t", _H_LINE);
-	glutAddMenuEntry ("Verticale\t",	_V_LINE);
-	glutAddMenuEntry ("Triangle\t",	_TRIANGLE);
+	glutAddMenuEntry ("Square\t",			_SQUARE);
+	glutAddMenuEntry ("Circle\t",			_CIRCLE);
+	glutAddMenuEntry ("Wheel\t",			_WHEEL);
+	glutAddMenuEntry ("Empty Circle\t",		_EMPTY_CIRCLE);
+	glutAddMenuEntry ("Horisontale\t",		_H_LINE);
+	glutAddMenuEntry ("Verticale\t",		_V_LINE);
+	glutAddMenuEntry ("Itriangle\t",		_ITRIANGLE);
+	glutAddMenuEntry ("Equiangular\t",		_EQUIANGULAR);
 
 	int colorMenu = glutCreateMenu (mnuSetShapeColor);
 	glutAddMenuEntry ("Red\t",			_RED);
@@ -100,8 +101,8 @@ int main(int argc, char** argv){
 	glutAddMenuEntry ("All\tShift+a",			_CLEAR_SCREEN);
 
 	int menu = glutCreateMenu (selectFromMenu);
-	glutAddSubMenu ("Shape",		shapesMenu);
-	glutAddSubMenu ("Set Color",	colorMenu);
+	glutAddSubMenu ("Shape",						shapesMenu);
+	glutAddSubMenu ("Set Color",					colorMenu);
 	glutAddMenuEntry ("Remove Mark\tSpace",			_REMOVE_MARK);
 	glutAddSubMenu ("Resize",		resizeMenu);
 	glutAddSubMenu ("Clear",		clearMenu);

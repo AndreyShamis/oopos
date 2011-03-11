@@ -12,7 +12,7 @@
 Paint::Paint()
 {
 	LoadColorsToMemory();
-	glMatrixMode(GL_PROJECTION);  
+	glMatrixMode(GL_PROJECTION);   
     glLoadIdentity();
     gluOrtho2D(0, 500, 0, 500);
 	_actual_shape = 0;					//	No shape selected
@@ -55,9 +55,9 @@ void Paint::LoadColorsToMemory()
 	_colors[_BLUE].g = 0.4;
 	_colors[_BLUE].b = 0.5;
 
-	_colors[_GRAY].r = 0.2;
-	_colors[_GRAY].g = 0.1;
-	_colors[_GRAY].b = 0.1;
+	_colors[_GRAY].r = 0.754;
+	_colors[_GRAY].g = 0.754;
+	_colors[_GRAY].b = 0.754;
 }
 //=============================================================================
 //	Dispaly function
@@ -68,7 +68,8 @@ void Paint::display()
 	for(int i=0;i<(int)_obj.size();i++)
 	{
 		if( i == _actual_shape-1)
-		{	RgbColor temp = _obj[i]->GetColor();
+		{	
+			const RgbColor temp = _obj[i]->GetColor();
 			_obj[i]->SetColor(_colors[_GRAY]);
 			_obj[i]->Draw();
 			_obj[i]->SetColor(temp);
@@ -330,8 +331,11 @@ void Paint::mouseButton(const int &button,const int &state, const float &x ,
 		case _V_LINE:
 			_new_sh = new Vertical(x,y,_colors[_color_id]);
 			break;
-		case _TRIANGLE:
+		case _ITRIANGLE:
 			_new_sh = new Itriangle(x,y,_colors[_color_id]);
+			break;
+		case _EQUIANGULAR:
+			_new_sh = new Equiangular(x,y,_colors[_color_id]);
 			break;
 		}
 		

@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <fstream>
+#include <math.h>
 
 using namespace std;
 
@@ -29,8 +30,9 @@ enum{
 	_EMPTY_CIRCLE		=	16,
 	_H_LINE				=	17,
 	_V_LINE				=	18,
-	_TRIANGLE			=	19,
+	_ITRIANGLE			=	19,
 	_EMPTY_RECTANGLE	=	20,
+	_EQUIANGULAR		=	21,
 
 	_CLEAR_SCREEN	=	122,
 	_EXIT_PROGRAM	=	107,
