@@ -48,16 +48,16 @@ void Paint::LoadColorsToMemory()
 	_colors[_WHITE].b = 1.0;
 
 	_colors[_RED].r = 1.0;
-	_colors[_RED].g = 0.8;
-	_colors[_RED].b = 0.5;
+	_colors[_RED].g = 0.0;
+	_colors[_RED].b = 0.0;
 
-	_colors[_BLUE].r = 0.3;
-	_colors[_BLUE].g = 0.4;
-	_colors[_BLUE].b = 0.5;
+	_colors[_BLUE].r = 0.0;
+	_colors[_BLUE].g = 0.0;
+	_colors[_BLUE].b = 1.0;
 
-	_colors[_GRAY].r = 0.754;
-	_colors[_GRAY].g = 0.754;
-	_colors[_GRAY].b = 0.754;
+	_colors[_GRAY].r = 0.7;
+	_colors[_GRAY].g = 0.7;
+	_colors[_GRAY].b = 0.7;
 }
 //=============================================================================
 //	Dispaly function
