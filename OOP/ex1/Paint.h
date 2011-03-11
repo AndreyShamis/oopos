@@ -13,7 +13,7 @@
 #include "Horizontal.h"
 #include "Rectanglle.h"
 #include "EmptyRectangle.h"
-//#include "Rectangle.h"
+#include <windows.h> // for PlaySound()
 #include "Square.h"
 #include "Circle.h"
 #include "EmptyCircle.h"
@@ -63,7 +63,7 @@ private:
 
 	RgbColor _colors[6];
 	int		_color_id;
-
+	void Error_Sound();
 	void SetNextShape();
 	void SetPreviousShape();
 	void LoadColorsToMemory();	

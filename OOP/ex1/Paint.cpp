@@ -59,6 +59,14 @@ void Paint::LoadColorsToMemory()
 	_colors[_GRAY].g = 0.7;
 	_colors[_GRAY].b = 0.7;
 }
+
+//=============================================================================
+//	Play error Sound
+void Paint::Error_Sound()
+{
+	sndPlaySound(L"Error.wav",NULL );
+}
+
 //=============================================================================
 //	Dispaly function
 void Paint::display()
@@ -133,6 +141,8 @@ void Paint::ClearSelectedShape()
 		_obj.erase(_obj.begin()+_actual_shape-1);
 		_actual_shape = 0;			//	set selected shape be nothing
 	}
+	else
+		Error_Sound();
 
 }
 //=============================================================================
@@ -160,6 +170,8 @@ void Paint::ClearBySameType()
 		//_actual_shape -= change_counter;
 		ClearSelectedShape();		//	clear selected shape
 	}
+	else
+		Error_Sound();
 
 }
 
@@ -188,6 +200,8 @@ void Paint::ClearBySameColor()
 		}
 		ClearSelectedShape();
 	}	
+	else
+		Error_Sound();
 }
 //=============================================================================
 //	Clear Menu selection switch
@@ -251,6 +265,8 @@ void Paint::GrowSelectedShape()
 		UndoPrepareChanges(_obj[_actual_shape-1],_actual_shape-1);
 		_obj[_actual_shape-1]->IncreaseSize(val);
 	}
+	else
+		Error_Sound();
 
 }
 //=============================================================================
@@ -264,6 +280,8 @@ void Paint::ShrinkSelectedShape()
 		UndoPrepareChanges(_obj[_actual_shape-1],_actual_shape-1);
 		_obj[_actual_shape-1]->ShrinkSize(val);
 	}
+	else
+		Error_Sound();
 
 }
 //=============================================================================
@@ -284,6 +302,8 @@ void Paint::SameSizeByShape()
 			}
 		}
 	}
+	else
+		Error_Sound();
 }
 
 //=============================================================================
