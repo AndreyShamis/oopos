@@ -55,20 +55,8 @@ void resizeWindow(int w, int h){
 	glLoadIdentity();
 }
 
-int main(int argc, char** argv){
-	glutInit(&argc, argv);
-	glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB);
-	glutInitWindowSize (500,500); 
-	glutInitWindowPosition (100,100);
-	glutCreateWindow ("Paint");
-	glPointSize(3);
-	glClearColor(1.0, 1.0, 1.0, 0.0);
-	glutReshapeFunc(resizeWindow);
-	glutIdleFunc(idle);
-	glutDisplayFunc(display);  
-	glutMouseFunc (mouseButton);
-	glutKeyboardFunc(KeyPress);
-
+void CreateMenuForGlut()
+{
 	int shapesMenu = glutCreateMenu (selectFromMenu);
 	glutAddMenuEntry ("Point\t",			_DOT);
 	glutAddMenuEntry ("Rectangle\t",		_RECTANGLE);
@@ -111,6 +99,27 @@ int main(int argc, char** argv){
 	glutAddMenuEntry ("Undo\tCtrl+z",				_UNDO);
 	glutAddMenuEntry ("Exit\tEsc",					_EXIT_PROGRAM);
 	glutAttachMenu (GLUT_RIGHT_BUTTON);
+
+}
+
+void LoadCallBacksForGlut()
+{
+	glutIdleFunc(idle);
+	glutDisplayFunc(display);  
+	glutMouseFunc (mouseButton);
+	glutKeyboardFunc(KeyPress);
+}
+int main(int argc, char** argv){
+	glutInit(&argc, argv);
+	glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB);
+	glutInitWindowSize (500,500); 
+	glutInitWindowPosition (100,100);
+	glutCreateWindow ("Paint");
+	glPointSize(3);
+	glClearColor(1.0, 1.0, 1.0, 0.0);
+	glutReshapeFunc(resizeWindow);
+	LoadCallBacksForGlut();
+	CreateMenuForGlut();
 	glutMainLoop();
 	return 0;
 }
