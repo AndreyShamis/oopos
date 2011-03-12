@@ -40,8 +40,9 @@ struct UndoShape
 class Paint 
 {
 public:
-
-	Paint();
+	static Paint *getInst();
+	static Paint *_instance;
+	
 	void display();
 	void mouseButton(const int &button, const int &state, const float &x, const float &y);
 	void idle();
@@ -52,7 +53,7 @@ public:
 
 	void KeyPress(unsigned char key, const float  &x, const float  &y);
 private:
-	
+	Paint();
 	int _draw_figure;
 	void ClearDB();
 	vector <UndoShape>  _undo_changes;
