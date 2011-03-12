@@ -6,7 +6,17 @@
 //
 //
 #include "Paint.h"
+Paint *Paint::_instance = NULL;
 
+//=============================================================================
+Paint *Paint::getInst()
+{
+	if(_instance == NULL)
+		_instance = new Paint();
+
+	return(_instance);
+
+}
 //=============================================================================
 //	Constructor
 Paint::Paint()
