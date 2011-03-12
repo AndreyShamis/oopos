@@ -57,7 +57,48 @@ void resizeWindow(int w, int h){
 
 void CreateMenuForGlut()
 {
-;
+	int shapesMenu = glutCreateMenu (selectFromMenu);
+	glutAddMenuEntry ("Point\t",			_DOT);
+	glutAddMenuEntry ("Rectangle\t",		_RECTANGLE);
+	glutAddMenuEntry ("Empty Rectangle\t",	_EMPTY_RECTANGLE);
+	glutAddMenuEntry ("Square\t",			_SQUARE);
+	glutAddMenuEntry ("Circle\t",			_CIRCLE);
+	glutAddMenuEntry ("Wheel\t",			_WHEEL);
+	glutAddMenuEntry ("Empty Circle\t",		_EMPTY_CIRCLE);
+	glutAddMenuEntry ("Horisontale\t",		_H_LINE);
+	glutAddMenuEntry ("Verticale\t",		_V_LINE);
+	glutAddMenuEntry ("Itriangle\t",		_ITRIANGLE);
+	glutAddMenuEntry ("Equiangular\t",		_EQUIANGULAR);
+
+	int colorMenu = glutCreateMenu (mnuSetShapeColor);
+	glutAddMenuEntry ("Red\t",			_RED);
+	glutAddMenuEntry ("White\t",		_WHITE);
+	glutAddMenuEntry ("Blue\t",			_BLUE);
+	glutAddMenuEntry ("Green\t",		_GREEN);
+	glutAddMenuEntry ("Black\t",		_BLACK);
+
+	int resizeMenu = glutCreateMenu (mnuResize);
+	glutAddMenuEntry ("Grow selected\t+",		_GROW_SELETED);
+	glutAddMenuEntry ("Shrink selected\t-",		_SHRINK_SELETED);
+	glutAddMenuEntry ("Same size\tCtrl+_",		_SAME_SIZE);
+
+	int clearMenu	=	glutCreateMenu(mnuClear);
+	glutAddMenuEntry ("Selected\tDelete",		_CLR_SELECTED);
+	glutAddMenuEntry ("Same type\tShift+d",		_CLR_SAME_TYPE);
+	glutAddMenuEntry ("Same color\tShift+c",	_CLR_SAME_COLOR);
+	glutAddMenuEntry ("All\tShift+a",			_CLEAR_SCREEN);
+
+	int menu = glutCreateMenu (selectFromMenu);
+	glutAddSubMenu ("Shape",						shapesMenu);
+	glutAddSubMenu ("Set Color",					colorMenu);
+	glutAddMenuEntry ("Remove Mark\tSpace",			_REMOVE_MARK);
+	glutAddSubMenu ("Resize",		resizeMenu);
+	glutAddSubMenu ("Clear",		clearMenu);
+	glutAddMenuEntry ("Next Shape\tShift+z",		_NEXT_SHAPE);
+	glutAddMenuEntry ("Prev Shape\tShift+x",		_PREV_SHAPE);
+	glutAddMenuEntry ("Undo\tCtrl+z",				_UNDO);
+	glutAddMenuEntry ("Exit\tEsc",					_EXIT_PROGRAM);
+	glutAttachMenu (GLUT_RIGHT_BUTTON);
 
 }
 
