@@ -46,7 +46,7 @@ public:
 	void display();
 	void mouseButton(const int &button, const int &state, const float &x, const float &y);
 	void idle();
-	static void selectFromMenu(const int &id);
+	void selectFromMenu(const int &id);
 	void mnuSetColor(const int &color_value);
 	void mnuResize(const int &commandID);
 	void clearFromMenu(const int &id)	;
