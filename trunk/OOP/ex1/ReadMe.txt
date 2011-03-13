@@ -1,4 +1,17 @@
 
+Keyboard  Control
+-------------------------------------------------------------------------------
+Ctrl+ 	Grow Selected
+-		Shrink selected
+Ctrl_	Change size to same shapes
+Del		Delete selected
+Shift+z	Select previous
+Shift+x	Select next
+Space	Unselect selected
+Shift+a	Delete all
+Shift+c	Delete all by same color
+Shfi+t	Delete all to same types
+ESC		Exit program
 
 
 
