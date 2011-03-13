@@ -11,7 +11,6 @@
 class Shape
 {
 public:
-	Shape();
 	virtual void Draw()=0;
 	void IncreaseSize(const float &bySize);
 	void ShrinkSize(const float &bySize);

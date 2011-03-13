@@ -4,7 +4,7 @@
 #include <vector>
 
 //#include <GL/glut.h>
-#include <glut.h>
+#include <glut.h>				//	TODO
 
 
 #include <stdlib.h>
@@ -14,6 +14,7 @@
 
 using namespace std;
 
+//	Color struct 
 struct RgbColor
 {
 	float r;
@@ -22,6 +23,7 @@ struct RgbColor
 };
 
 enum{
+	//	Menu options for drawing one shape from the avilables
 	_DOT				=	11,
 	_RECTANGLE			=	12,
 	_SQUARE				=	13,
@@ -34,6 +36,7 @@ enum{
 	_EMPTY_RECTANGLE	=	20,
 	_EQUIANGULAR		=	21,
 
+	//	Main menu options see name 
 	_CLEAR_SCREEN	=	122,
 	_EXIT_PROGRAM	=	107,
 	_PREV_SHAPE		=	101,
@@ -41,6 +44,7 @@ enum{
 	_REMOVE_MARK	=	103,
 	_UNDO			=	106,
 
+	//	Colors options 
 	_GREEN			=	0,
 	_WHITE			=	1,
 	_BLUE			=	2,
@@ -48,6 +52,8 @@ enum{
 	_BLACK			=	4,
 	_GRAY			=	5,
 
+	//	Menu options for change
+	//	and clear options
 	_GROW_SELETED	=	201,
 	_SHRINK_SELETED	=	202,
 	_SAME_SIZE		=	203,
@@ -56,7 +62,7 @@ enum{
 	_CLR_SAME_COLOR	=	213,
 
 
-	// UNDO
+	// UNDO	 options
 	_UNDO_NOTHING	=	0,
 	_UNDO_REMOVE	=	1,
 	_UNDO_CHANGES	=	2,
@@ -76,10 +82,5 @@ enum{
 	_CMD_REMOVE_BY_TYPE	=	84,
 	_CMD_REMOVE_BY_COLOR=	67,
 	_CMD_REMOVE_ALL		=	65,
-
-
-
-
-
 
 };

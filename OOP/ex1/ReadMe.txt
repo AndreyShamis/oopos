@@ -14,13 +14,6 @@ Shfi+t	Delete all to same types
 ESC		Exit program
 
 
-
-
-
-
-
-
-
 Points
 /------------------------------------------------------------------------------
 UNDO
