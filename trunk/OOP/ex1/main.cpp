@@ -8,35 +8,49 @@
 int WindowHeight;
 int WindowWidth;
 
+//=============================================================================
+//
 void display() {
 	Paint::getInst()->display();
 }
-
+//=============================================================================
+//
 void idle(){
 	Paint::getInst()->idle();
 }
 
-
+//=============================================================================
+//
 void selectFromMenu(int commandId){
 	Paint::getInst()->selectFromMenu(commandId);
 }
 
+//=============================================================================
+//
 void mnuSetShapeColor(int colorid){
 	Paint::getInst()->mnuSetColor(colorid);
 }
+//=============================================================================
+//
 void mnuClear(int colorid){
 	Paint::getInst()->clearFromMenu(colorid);
 }
 
+//=============================================================================
+//
 void mnuResize(int commandID){
 	Paint::getInst()->mnuResize(commandID);
 }
+//=============================================================================
+//
 void mouseButton(int button, int state, int x, int y){
 	float xPos = ((float)x)/((float)(WindowWidth-1));
 	float yPos = ((float)y)/((float)(WindowHeight-1));
 	yPos = 1.0f-yPos;
 	Paint::getInst()->mouseButton(button,state,xPos,yPos);
 }
+//=============================================================================
+//
 void KeyPress(unsigned char key, int x, int y)
 {
 	float xPos = ((float)x)/((float)(WindowWidth-1));
@@ -44,6 +58,8 @@ void KeyPress(unsigned char key, int x, int y)
 	yPos = 1.0f-yPos;
 	Paint::getInst()->KeyPress(key,xPos,yPos);
 }
+//=============================================================================
+//
 void resizeWindow(int w, int h){
 	WindowHeight = (h>1) ? h : 2;
 	WindowWidth = (w>1) ? w : 2;
@@ -54,7 +70,8 @@ void resizeWindow(int w, int h){
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
-
+//=============================================================================
+//
 void CreateMenuForGlut()
 {
 	int shapesMenu = glutCreateMenu (selectFromMenu);
@@ -101,7 +118,8 @@ void CreateMenuForGlut()
 	glutAttachMenu (GLUT_RIGHT_BUTTON);
 
 }
-
+//=============================================================================
+//
 void LoadCallBacksForGlut()
 {
 	glutIdleFunc(idle);
@@ -109,6 +127,8 @@ void LoadCallBacksForGlut()
 	glutMouseFunc (mouseButton);
 	glutKeyboardFunc(KeyPress);
 }
+//=============================================================================
+//
 int main(int argc, char** argv){
 	glutInit(&argc, argv);
 	glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB);
@@ -123,3 +143,6 @@ int main(int argc, char** argv){
 	glutMainLoop();
 	return 0;
 }
+//=============================================================================
+//=============================================================================
+//=============================================================================
