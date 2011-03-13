@@ -1,9 +1,4 @@
 #include "Shape.h"
-Shape::Shape()
-{
-	;
-}
-
 //=============================================================================
 //
 void Shape::IncreaseSize(const float &bySize)
@@ -16,7 +11,7 @@ void Shape::IncreaseSize(const float &bySize)
 //
 void Shape::ShrinkSize(const float &bySize)
 {
-	if(_size-bySize>0)
+	if(_size-bySize>MINIMAL_SIZE)
 		_size-=bySize;
 	else
 		_size = MINIMAL_SIZE;

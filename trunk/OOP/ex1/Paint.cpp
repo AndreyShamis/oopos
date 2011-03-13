@@ -9,12 +9,13 @@
 Paint *Paint::_instance = NULL;
 
 //=============================================================================
+//	Return pointer to created? class-object
 Paint *Paint::getInst()
 {
-	if(_instance == NULL)
+	if(_instance == NULL)					//	if not created create it
 		_instance = new Paint();
 
-	return(_instance);
+	return(_instance);						//	Return the object pointer
 
 }
 //=============================================================================
@@ -88,7 +89,7 @@ void Paint::Error_Sound()
 //	Dispaly function
 void Paint::display()
 {
-	glClear(GL_COLOR_BUFFER_BIT );				//	Glue
+	glClear(GL_COLOR_BUFFER_BIT );				//	Glut
 
 	//	For all object in vector run draw
 	for(int i=0;i<(int)_obj.size();i++)
@@ -98,9 +99,9 @@ void Paint::display()
 		{	
 			//	Change for time the color of object to gray color
 			const RgbColor temp = _obj[i]->GetColor();
-			_obj[i]->SetColor(_colors[_GRAY]);
-			_obj[i]->Draw();
-			_obj[i]->SetColor(temp);
+			_obj[i]->SetColor(_colors[_GRAY]);  //	Set new color
+			_obj[i]->Draw();					//	Draw
+			_obj[i]->SetColor(temp);			//	Set old color
 		}
 		else
 			_obj[i]->Draw();					//	Draw
@@ -108,8 +109,8 @@ void Paint::display()
 	glFlush() ;									//	Glut
 	glutSwapBuffers();							//	Glut
 
-
 }
+
 //=============================================================================
 //	Function to clear all object from the memory
 void Paint::ClearDB()
@@ -145,13 +146,12 @@ void Paint::selectFromMenu(const int &id)
 		break;
 	}
 
-
 }
+
 //=============================================================================
 //	Clear selected shape if no shape selected do nothing
 void Paint::ClearSelectedShape()
-{
-	
+{	
 	if(_actual_shape)				//	check if the shape is selected
 	{	//	delete the shape from the vector
 
@@ -313,7 +313,9 @@ void Paint::SameSizeByShape()
 	{
 		for(int i=0;i<(int)_obj.size();i++)
 		{
-			if(typeid(*_obj[_actual_shape-1]) == typeid(*_obj[i]) && _actual_shape-1 != i)
+			//	If the i object is same type and not the selected object
+			if(typeid(*_obj[_actual_shape-1]) == typeid(*_obj[i]) 
+						&& _actual_shape-1 != i)
 			{
 				UndoPrepareChanges(_obj[i],i);	//	Set undo		
 				_obj[i]->SetSize(_obj[_actual_shape-1]->GetSize());
@@ -404,6 +406,7 @@ void Paint::UndoRemoved()
 //	Undo function called from menu
 void Paint::Undo()
 {
+	//	Do what is undo type now
 	switch(_UndoType)
 	{
 	case _UNDO_NOTHING:					//	do nothing	
@@ -567,8 +570,10 @@ void Paint::KeyPress(unsigned char key, const float  &x, const float  &y)
 //	Do undo for changes
 void Paint::UndoChangesOnObjects()
 {
+	//	Start do undo for objects in undo vector
 	for(int i=0;i<(int)_undo_changes.size();i++)
 	{
+		//	Set color and size
 		_undo_changes[i].obj->SetColor(_undo_changes[i]._color);
 		_undo_changes[i].obj->SetSize(_undo_changes[i]._size);
 	}
