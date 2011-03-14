@@ -3,7 +3,8 @@
 //  @ File Name : Paint.h
 //  @ Date : 3/3/2011
 //  @ Author : Andrey Shamis Ilia Gaysinski
-//
+//	@ Description : A main class (singeltone) that implimen paint of shapes and
+//	@ ather fichers				
 //
 #pragma once
 

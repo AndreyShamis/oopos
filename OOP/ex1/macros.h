@@ -1,10 +1,18 @@
+//
+//  @ Project : Paint
+//  @ File Name : macros.h
+//  @ Date : 3/3/2011
+//  @ Author : Andrey Shamis Ilia Gaysinski
+//	@ Description : used to associate meaningful identifiers with constants, 
+//	@ keywords, and commonly used statements or expressions and enum.
+//
 #pragma once
 
 #include <windows.h>
 #include <vector>
 
-//#include <GL/glut.h>
-#include <glut.h>				//	TODO
+#include <GL/glut.h>
+//#include <glut.h>				//	USED IN OUR VERSION OF GLUT
 
 
 #include <stdlib.h>
