@@ -6,227 +6,182 @@ if( $#ARGV != 0 )
 	die("Wrong number of arguments\n");
 }
 
-
-
-
 #==============================================================================
 #	Open files block code
+#	Open input file
 open(INFILE, "<$ARGV[0]")  or die("Cannot open file '$ARGV[0]'\n");
-#$out_put_file = $ARGV[0] ;
-#$out_put_file =~ s/\.c$/.doc.c/;
-$out_put_file = CreateOutputFileName($ARGV[0]);
-#print $out_put_file . "\n";
+#	Create file name for output
+$out_put_file = CreateOutputFileName($ARGV[0]);	
+#	Create file name for output file in pdf
+$pdf_file_name= GetPdfFileName($ARGV[0]);
+#	Open file name for output
 open(OUTFILE, ">$out_put_file") or die("Cannot open file $out_put_file \n");
 #	End open files block
 
 
-#==============================================================================
-#binmode INFILE;
-@input = <INFILE>;
-##============== Put array into string
+@input = <INFILE>;			# get input into array
+close INFILE;				# Close inout file
+
 #foreach $str(@input){
 # $input_str .= $str;
 #}
-##====================================
 
-#print "Input file len:" .length($input_str) . "\n";
-#CommentFunction($input_str);
-#GetFunction($input_str);
-#print "Start work with " .$ARGV[0] . "\n";
-
-#print "Have " . @input . " len\n";
-#$werd =  <STDIN>;
-
-$status = 0;
-$sub_seger = 0;
-$pdf_ouput=""; 
-$pdf_counter=0;
+$status 	= 	0;
+$sub_seger 	= 	0;
+$pdf_ouput	=	""; 
+$pdf_counter=	0;
+$main_start = 	0;
+$main_end	=	0;
+$line_indicator	=	0;
+#==============================================================================
+#	Starting search by line line
 foreach $line (@input)
 {
 	chop $line;		# delete \n on the end
 
-	#if($line =~ /^\s*$/ && 2==3)
-	#{
-		
-	#}
-	#else
-	#{
-		if($status == 0 || $status == 1)
+	if($status == 0 || $status == 1)
+	{
+		#Start comment include files
+		if($line =~ /^\s*#include\s*.*/)
 		{
-			if($line =~ /^\s*#include\s*.*/)
+			$line = $line . "\t/* " . GetCommentStr($line) . " */";
+			$status = 1;
+		}
+		else
+		{
+			$status =2;
+		}
+	}
+	elsif($status < 4)
+	{
+		#	Start comment global variables
+		if($line =~ /^\s*\w+\s+\w+.*[^)];\s*$/)
+		{
+			$line = $line . "\t/* " . GetCommentStr($line) . " */";
+			$status = 3;
+		}
+		#else
+		#{
+		#	$status = 3;
+		#}
+		
+		# Start comment Function defenitions
+		if($line =~ /^\s*\w+\s+\w+.*\(.*\);$/)
+		{
+			$line = "/* " . GetCommentStr($line) . " */\n" . $line ;
+			$status = 3;		
+		}
+		#else
+		#{
+		#	$status = 3;
+			#print "End of comm Function\n\n";
+		#}
+	}
+	
+	if($status == 5)
+	{
+		if($line =~ /\{/)
+		{
+			$sub_seger++;
+		}
+		elsif($line =~ /\}/)
+		{
+			$sub_seger--;
+		}		
+		
+		if($sub_seger == 0 && $status == 5)
+		{
+			$main_end = $line_indicator;
+			CommentMainByBlocks();
+			$status = 6;
+		}
+		if($line =~ /^\s*\w+\s+\w+.*[^)];\s*$/)
+		{
+			$line = $line . "\t/* " . GetCommentStr($line) . " */";
+			$main_start = $line_indicator+1;
+		}
+	}
+	
+	if($line =~ /int main\s*\(.*\)/)
+	{
+		$status = 5;
+		$main_start = $line_indicator;
+	}
+	
+	#	looking for enother function
+	if($status == 6)
+	{		
+		#	Start define function variables 
+		if($line =~/^\s*\w+\s+\w+.*\(.*\)$/)
+		{
+			$status = 7;
+			$vars = $line;
+			$function_name = $line;
+			$function_name =~s/\(.*/(...)/;
+			$vars =~ s/^.*\(//;
+			$vars =~ s/\)//;
+			$function_get = "/* \n * The function get:\n";			
+			@func_var = split(/,/,$vars);
+			foreach $variable(@func_var)
 			{
+				$function_get.= " *\t". $variable . " \t-  " 
+					. GetCommentStr("What is the parameter of function $function_name? " 
+					. $variable) . "\n";
+			}
+			$function_ret = " *\n * The function return:\n * \t" 
+				. GetCommentStr("What function $function_name return?") . " \n";
+			$function_perf = " *\n * function performs the following steps:\n * \t" 
+				. GetCommentStr("What this function($function_name) do?") . " \n */\n";	
 				
-				#$line = $line . "\t/* " . GetCommentStr($line) . " */\n";
-				print  $line . "\n";
-				$status = 1;
-			}
-			else
-			{
-				$status =2;
-				#print "Convert status to 2\n\n";
-			}
-		}
-		elsif($status < 4)#if($status == 2 || $status == 3)
-		{
-			#	Variables AGDAA
-			if($line =~ /^\s*\w+\s+\w+.*[^)];\s*$/)
-			{
-				#$line = $line . "\t/* " . GetCommentStr($line) . " */\n";
-				$status = 3;
-				print "$line \n";
-			}
-			else
-			{
-				$status = 3;
-				#print "End of comm variables\n\n";
-			}
+			$line = $function_get . $function_ret . $function_perf . $line;
+			$pdf_ouput[$pdf_counter] = $function_get . $function_ret . $function_perf;
 			
-			# Function AGDARA
-			if($line =~ /^\s*\w+\s+\w+.*\(.*\);$/)
-			{
-				#$line = $line . "\t/* " . GetCommentStr($line) . " */\n";
-				$status = 3;
-				print "$line \n";			
-			}
-			else
-			{
-				$status = 3;
-				#print "End of comm Function\n\n";
-			}
+			$pdf_counter++;
 		}
-		
-		if($status == 5)
+	}
+	
+	#	Looking for another function variable
+	if($status == 7 || $status == 8)
+	{
+		if($line =~ /^\s*\w+\s+\w+.*[^)];\s*$/ && $status ==8)
 		{
-			if($line =~ /\{/)
-			{
-				$sub_seger++;
-				#print "+Seger $sub_seger\n";
-			}
-			if($line =~ /\}/)
-			{
-				$sub_seger--;
-				#print "-Seger $sub_seger\n";
-			}		
-			if($sub_seger == 0 && $status == 5)
-			{
-				#print "Exit from Main";
-				$status = 6;
-			}
-			if($line =~ /^\s*\w+\s+\w+.*[^)];\s*$/)
-			{
-				#$line = $line . "\t/* " . GetCommentStr($line) . " */\n";
-				#print "Found Variable in Main\n $line \n";
-			}
+			$line = $line . "\t/* " . GetCommentStr($line) . " */";
 		}
 
-		
-		if($status == 5)
+		if($line =~ /\{/)
 		{
-			
+			$status = 8;
+			$sub_seger++;
 		}
-		
-		if($line =~ /int main\s*\(.*\)/)
+		elsif($line =~ /\}/)
 		{
-			print "Comment to main\n";
-			
-
-			$status = 5;
-		}
+			$sub_seger--;
+		}	
 		
-		#	looking for enother function
-		if($status == 6)
+		if($sub_seger == 0 && $status == 8)
 		{
-			
-			print "\n";
-			
-			#	Start define function variables 
-			if($line =~/^\s*\w+\s+\w+.*\(.*\)$/)
-			{
-				$status = 7;
-				$vars = $line;
-				$vars =~ s/^.*\(//;
-				$vars =~ s/\)//;
-				print "Enter to function\n";
-				
-				$function_get = "/* \n * The function get:\n";
-				
-				
-				@func_var = split(/,/,$vars);
-				
-				foreach $variable(@func_var)
-				{
-					$function_get.= " *\t". $variable . " \t-  " . GetCommentStr("What is the parameter? " . $variable) . "\n";
-					print "Variable \t\t $variable \n";
-				}
-				#$function_get.="*/";
-				
-				$function_ret = " *\n * The function return:\n * \t" . GetCommentStr("What function return?") . " \n";
-				$function_perf = " *\n * function performs the following steps:\n * \t" . GetCommentStr("What this function do?") . " \n */\n";
-				
-				$line = $function_get . $function_ret . $function_perf . $line;
-				$pdf_ouput[$pdf_counter] = $function_get . $function_ret . $function_perf;
-				$pdf_counter++;
-			}
+			$status = 6;
 		}
-		
-		#	Looking for another function variable
-		if($status == 7 || $status == 8)
-		{
-			
-			if($line =~ /^\s*\w+\s+\w+.*[^)];\s*$/ && $status ==8)
-			{
-				print "\n$line\n";
-				#$line = $line . "\t/* " . GetCommentStr($line) . " */\n";
-			}
-
-			
-			if($line =~ /\{/)
-			{
-				$status = 8;
-				$sub_seger++;
-				#print "+Seger $sub_seger\n";
-			}
-			elsif($line =~ /\}/)
-			{
-				$sub_seger--;
-				#print "-Seger $sub_seger\n";
-			}	
-			
-			if($sub_seger == 0 && $status == 8)
-			{
-				print "Exit from Function";
-				$status = 6;
-			}
-			
-		}
-		
-		
-	#}
-
-
-#	if($line =~ m/(^[A-Za-z_\d]+\s?\(.*\);)/g)
-#	if($line =~ m/^.*[A-Za-z]*\s?\(.*\);/g)
-#	{
-#		print ">>>>";
-#		CommentFunction($line);
-#	}
-#	else
-#	{
-#		print $line . "\n";
-#	}
-
-		
+	}
+	$line_indicator++;					# increase line counter			
 }
-print "----------------------------------------------------\n";
+#==============================================================================
+#	Start output into file
 foreach $line (@input)
 {
-	print $line . "\n";
+	if($line ne "CLEARED")				# check if the line not cleared
+	{
+		print $line . "\n";
+		print OUTFILE $line . "\n";
+	}
 }
+close OUTFILE;
 
-
+#==============================================================================
+#	Creating PDF file
 use PDF::Create;
 
-    my $pdf = new PDF::Create('filename' => 'mypdf.pdf',
+    my $pdf = new PDF::Create('filename' => $pdf_file_name,
                               'Version'  => 1.2,
                               'PageMode' => 'UseOutlines',
                               'Author'   => 'Andrey Shamis & Ilia Gaisinsky',
@@ -244,7 +199,6 @@ use PDF::Create;
     # Prepare a Table of Content
     my $toc=$pdf->new_outline('Title'=>'Document','Destination'=>$page);
 
-    #$page->stringc($f1, 20, 306, 396, "2");
 	$c = 0;
 	print "PDF counter\n".$pdf_counter . "\n";
 	$page_margin = 10;
@@ -267,53 +221,52 @@ use PDF::Create;
 	}
     # Add the missing PDF objects and a the footer then close the file
     $pdf->close;
-#==============================================================================
-sub CommentFunction
-{
-#print $_[0] . "\n";
-	
-	#@blocks = split(/\n{2,}/,$_[0]);
-	
-	#foreach $block(@blocks)
-	#{
-	#	#FindNumberSpaces($block);
-	#	print FindNumberSpaces($block) . "/*             */\n" . $block . "\n";
-	#}
-	print "\n";
-}
-#==============================================================================
-sub GetFunction
-{ 
-	@all_fun = ($_[0] =~ m/(\{(.*)|(\n+)\})/g);
-	$c=0;
-	print "Start func \n";
-	foreach $same_fun(@all_fun)
-	{
-		print $c . "-" . $same_fun. "\n";
-		$c++;		
-	}
 
-}
 #==============================================================================
+#	Function which get some string from program and counting tabulation
+#	from left side. After return string which include needed number of spaces
 sub FindNumberSpaces
 {
-	$ret_str = "";
-	for($i=0;$i<length($_[0]);$i++)
+	$ret_str = "";							# ret value
+	for($i=0;$i<length($_[0]);$i++)			# start search
 	{
-		if(substr($_[0],$i,1) eq " ")
+		if(substr($_[0],$i,1) eq " ")		# check for spaces
 		{
-			$ret_str.= " ";
+			$ret_str.= " ";					# put space to start string
 		}
-		else
+		elsif(substr($_[0],$i,1) eq "\t")	# check for tabs
 		{
-			return($ret_str);
+			$ret_str.= "    ";				# change \t to 4 spaces
+		}
+		else								# found somthing else
+		{
+			return($ret_str);				# return value
 		}
 	}
 }
 
 #==============================================================================
-close INFILE;
-close OUTFILE;
+#	Function for comment main by Blocks
+sub CommentMainByBlocks
+{
+	for($i=$main_start;$i<$main_end;$i++)
+	{
+		$all_main_string .= $input[$i] . "\n";
+		$input[$i]= "CLEARED";
+	}
+	
+	@main_blocks = split(/\n{2,}/,$all_main_string);
+	
+	$all_main_string = "";
+	foreach $main_line(@main_blocks)
+	{
+		$all_main_string.= "\n".FindNumberSpaces($main_line)."/* " 
+			. GetCommentStr(" this main block: \n $main_line \n") 
+			. " */\n" . $main_line . "\n";
+	}
+	
+	$input[$main_start] = $all_main_string;
+}
 
 #==============================================================================
 # Function which get input file name and convert the name to same name with
@@ -330,12 +283,24 @@ sub CreateOutputFileName
 }
 
 #==============================================================================
+#	Function which get input file name and convert the name to 
+#	<file_name>.c => <file_name>.pdf
+#	Return the new file name
+sub GetPdfFileName
+{
+	$out_put_file = $_[0] ;				#	Read input file name
+
+	$out_put_file =~ s/\.c$/.pdf/;	#	Replacing needed by sufix
+	
+	return($out_put_file);				#	return value
+}
+#==============================================================================
 #	Function which egt some string and ask from user which 
 #	comment need to write.
 #	Return comment string
 sub GetCommentStr
 {
-	print "Please write comment for: " . $_[0] . ". And press enter\n";
+	print "Please write comment for:\n" . $_[0] . "\n";
 	$comment = <STDIN> ;
 	chop $comment;
 	return($comment);
