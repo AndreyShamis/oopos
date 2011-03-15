@@ -14,25 +14,40 @@ open(INFILE, "<$ARGV[0]")  or die("Cannot open file '$ARGV[0]'\n");
 $out_put_file = CreateOutputFileName($ARGV[0]);	
 #	Create file name for output file in pdf
 $pdf_file_name= GetPdfFileName($ARGV[0]);
-#	Open file name for output
-open(OUTFILE, ">$out_put_file") or die("Cannot open file $out_put_file \n");
 #	End open files block
 
 
 @input = <INFILE>;			# get input into array
 close INFILE;				# Close inout file
 
-#foreach $str(@input){
-# $input_str .= $str;
-#}
+my $input_str;
+#	Load all array values into string for searching included comments
+foreach $str(@input)
+{
+	$input_str .= $str;		#	Loading to one string
+}
 
-$status 	= 	0;
-$sub_seger 	= 	0;
-$pdf_ouput	=	""; 
-$pdf_counter=	0;
-$main_start = 	0;
-$main_end	=	0;
-$line_indicator	=	0;
+#	Looking for comments
+if($input_str =~ /\s*\/\/.*/ || $input_str =~ /\s*\;\s*\/\/\s*/ 
+|| $input_str =~ /^\s*\/\*/ || $input_str =~ /\;\s*\/\*.*\*\//)
+{
+	#	Found comments - EXIT
+	exit;
+}
+
+#	Open file name for output
+open(OUTFILE, ">$out_put_file") or die("Cannot open file $out_put_file \n");
+
+#==============================================================================
+#	Variables used
+my $status 		= 	0;				#	Parser status
+my $sub_seger 	= 	0;				#	Multi Brackets counter
+my $pdf_ouput	=	""; 			#	Pdf output data
+my $pdf_counter	=	0;				#	Pdf number function be printed
+my $main_start 	= 	0;				#	Line number of start main function
+my $main_end	=	0;				#	Line number of end function
+my $line_indicator	=	0;			#	Line counter
+
 #==============================================================================
 #	Starting search by line line
 foreach $line (@input)
@@ -47,9 +62,8 @@ foreach $line (@input)
 			$line = $line . "\t/* " . GetCommentStr($line) . " */";
 			$status = 1;
 		}
-		else
-		{
-			$status =2;
+		else{	
+			$status =2;				# end of comment included files
 		}
 	}
 	elsif($status < 4)
@@ -60,10 +74,6 @@ foreach $line (@input)
 			$line = $line . "\t/* " . GetCommentStr($line) . " */";
 			$status = 3;
 		}
-		#else
-		#{
-		#	$status = 3;
-		#}
 		
 		# Start comment Function defenitions
 		if($line =~ /^\s*\w+\s+\w+.*\(.*\);$/)
@@ -71,39 +81,36 @@ foreach $line (@input)
 			$line = "/* " . GetCommentStr($line) . " */\n" . $line ;
 			$status = 3;		
 		}
-		#else
-		#{
-		#	$status = 3;
-			#print "End of comm Function\n\n";
-		#}
 	}
 	
 	if($status == 5)
 	{
-		if($line =~ /\{/)
-		{
+		# 	Now located in main function
+		#	Tryng to dect end of main function
+		if($line =~ /\{/){		#	Multi Brackets counter
 			$sub_seger++;
 		}
-		elsif($line =~ /\}/)
-		{
+		elsif($line =~ /\}/){	#	Multi Brackets counter
 			$sub_seger--;
 		}		
 		
+		#	End of main function detected
 		if($sub_seger == 0 && $status == 5)
 		{
-			$main_end = $line_indicator;
-			CommentMainByBlocks();
+			$main_end = $line_indicator;	# set main end line
+			CommentMainByBlocks();			# start work whith comments by block
 			$status = 6;
 		}
+		
 		if($line =~ /^\s*\w+\s+\w+.*[^)];\s*$/)
 		{
 			$line = $line . "\t/* " . GetCommentStr($line) . " */";
-			$main_start = $line_indicator+1;
+			$main_start = $line_indicator+1;# main start counter
 		}
 	}
 	
 	if($line =~ /int main\s*\(.*\)/)
-	{
+	{	#	Starting pearsing main function
 		$status = 5;
 		$main_start = $line_indicator;
 	}
@@ -139,30 +146,26 @@ foreach $line (@input)
 			$pdf_counter++;
 		}
 	}
-	
-	#	Looking for another function variable
-	if($status == 7 || $status == 8)
-	{
+	elsif($status == 7 || $status == 8)
+	{	#	Looking for another function variable
 		if($line =~ /^\s*\w+\s+\w+.*[^)];\s*$/ && $status ==8)
 		{
 			$line = $line . "\t/* " . GetCommentStr($line) . " */";
 		}
 
-		if($line =~ /\{/)
-		{
+		if($line =~ /\{/){			#	Multi Brackets counter
 			$status = 8;
 			$sub_seger++;
 		}
-		elsif($line =~ /\}/)
-		{
+		elsif($line =~ /\}/){		#	Multi Brackets counter
+		
 			$sub_seger--;
 		}	
-		
-		if($sub_seger == 0 && $status == 8)
-		{
+		if($sub_seger == 0 && $status == 8)	{
 			$status = 6;
 		}
 	}
+	
 	$line_indicator++;					# increase line counter			
 }
 #==============================================================================
@@ -222,12 +225,13 @@ use PDF::Create;
     # Add the missing PDF objects and a the footer then close the file
     $pdf->close;
 
+
 #==============================================================================
 #	Function which get some string from program and counting tabulation
 #	from left side. After return string which include needed number of spaces
 sub FindNumberSpaces
 {
-	$ret_str = "";							# ret value
+	my $ret_str = "";						# ret value
 	for($i=0;$i<length($_[0]);$i++)			# start search
 	{
 		if(substr($_[0],$i,1) eq " ")		# check for spaces
@@ -249,6 +253,7 @@ sub FindNumberSpaces
 #	Function for comment main by Blocks
 sub CommentMainByBlocks
 {
+	my $all_main_string = "";
 	for($i=$main_start;$i<$main_end;$i++)
 	{
 		$all_main_string .= $input[$i] . "\n";
@@ -275,7 +280,7 @@ sub CommentMainByBlocks
 # Return created name
 sub CreateOutputFileName
 {
-	$out_put_file = $_[0] ;				#	Read input file name
+	my $out_put_file = $_[0] ;				#	Read input file name
 
 	$out_put_file =~ s/\.c$/.doc.c/;	#	Replacing needed by sufix
 	
@@ -288,7 +293,7 @@ sub CreateOutputFileName
 #	Return the new file name
 sub GetPdfFileName
 {
-	$out_put_file = $_[0] ;				#	Read input file name
+	my $out_put_file = $_[0] ;				#	Read input file name
 
 	$out_put_file =~ s/\.c$/.pdf/;	#	Replacing needed by sufix
 	
@@ -301,7 +306,7 @@ sub GetPdfFileName
 sub GetCommentStr
 {
 	print "Please write comment for:\n" . $_[0] . "\n";
-	$comment = <STDIN> ;
+	my $comment = <STDIN> ;
 	chop $comment;
 	return($comment);
 }
