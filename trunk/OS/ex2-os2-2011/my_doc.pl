@@ -6,6 +6,9 @@ if( $#ARGV != 0 )
 	die("Wrong number of arguments\n");
 }
 
+
+
+
 #==============================================================================
 #	Open files block code
 open(INFILE, "<$ARGV[0]")  or die("Cannot open file '$ARGV[0]'\n");
@@ -36,24 +39,18 @@ open(OUTFILE, ">$out_put_file") or die("Cannot open file $out_put_file \n");
 
 $status = 0;
 $sub_seger = 0;
+$pdf_ouput=""; 
+$pdf_counter=0;
 foreach $line (@input)
 {
-# Filter wards strings and write them to output letters file
-#	@tiud = ($line =~ m/(\/\/)/g);
-
-#	if(@tiud > 0)
-#	{
-#		print "Found tiyd"  . "\n";
-#	}
-
 	chop $line;		# delete \n on the end
 
-	if($line =~ /^\s*$/)
-	{
+	#if($line =~ /^\s*$/ && 2==3)
+	#{
 		
-	}
-	else
-	{
+	#}
+	#else
+	#{
 		if($status == 0 || $status == 1)
 		{
 			if($line =~ /^\s*#include\s*.*/)
@@ -123,6 +120,11 @@ foreach $line (@input)
 		}
 
 		
+		if($status == 5)
+		{
+			
+		}
+		
 		if($line =~ /int main\s*\(.*\)/)
 		{
 			print "Comment to main\n";
@@ -131,9 +133,10 @@ foreach $line (@input)
 			$status = 5;
 		}
 		
+		#	looking for enother function
 		if($status == 6)
 		{
-			#looking for enother function
+			
 			print "\n";
 			
 			#	Start define function variables 
@@ -144,18 +147,32 @@ foreach $line (@input)
 				$vars =~ s/^.*\(//;
 				$vars =~ s/\)//;
 				print "Enter to function\n";
+				
+				$function_get = "/* \n * The function get:\n";
+				
+				
 				@func_var = split(/,/,$vars);
 				
 				foreach $variable(@func_var)
 				{
+					$function_get.= " *\t". $variable . " \t-  " . GetCommentStr("What is the parameter? " . $variable) . "\n";
 					print "Variable \t\t $variable \n";
 				}
+				#$function_get.="*/";
+				
+				$function_ret = " *\n * The function return:\n * \t" . GetCommentStr("What function return?") . " \n";
+				$function_perf = " *\n * function performs the following steps:\n * \t" . GetCommentStr("What this function do?") . " \n */\n";
+				
+				$line = $function_get . $function_ret . $function_perf . $line;
+				$pdf_ouput[$pdf_counter] = $function_get . $function_ret . $function_perf;
+				$pdf_counter++;
 			}
 		}
 		
+		#	Looking for another function variable
 		if($status == 7 || $status == 8)
 		{
-
+			
 			if($line =~ /^\s*\w+\s+\w+.*[^)];\s*$/ && $status ==8)
 			{
 				print "\n$line\n";
@@ -184,7 +201,7 @@ foreach $line (@input)
 		}
 		
 		
-	}
+	#}
 
 
 #	if($line =~ m/(^[A-Za-z_\d]+\s?\(.*\);)/g)
@@ -200,7 +217,56 @@ foreach $line (@input)
 
 		
 }
+print "----------------------------------------------------\n";
+foreach $line (@input)
+{
+	print $line . "\n";
+}
 
+
+use PDF::Create;
+
+    my $pdf = new PDF::Create('filename' => 'mypdf.pdf',
+                              'Version'  => 1.2,
+                              'PageMode' => 'UseOutlines',
+                              'Author'   => 'Andrey Shamis & Ilia Gaisinsky',
+                              'Title'    => '$ARGV[0]',
+                         );
+    my $root = $pdf->new_page('MediaBox' => [ 0, 0, 612, 792 ]);
+
+    # Add a page which inherits its attributes from $root
+    my $page = $root->new_page;
+
+    # Prepare 2 fonts
+    my $f1 = $pdf->font('Subtype'  => 'Type1',
+                        'Encoding' => 'WinAnsiEncoding',
+                        'BaseFont' => 'Helvetica');
+    # Prepare a Table of Content
+    my $toc=$pdf->new_outline('Title'=>'Document','Destination'=>$page);
+
+    #$page->stringc($f1, 20, 306, 396, "2");
+	$c = 0;
+	print "PDF counter\n".$pdf_counter . "\n";
+	$page_margin = 10;
+	$page_fint_size = 12;
+	$page->stringl($f1, 12, $page_fint_size, 772,"/* Main program:");
+	$page->stringl($f1, 12, $page_fint_size, 759,
+								" *     Using the various functions");
+	$page->stringl($f1, 12, $page_fint_size, 747," */");
+
+	foreach $line(@pdf_ouput)
+	{
+		@vals = split(/\n/,$line);
+		
+		foreach $ll(@vals)
+		{
+			$ll =~s/\t/    /;				# space manipulation
+			$page->stringl($f1, 12, $page_margin, 700+$c,$ll);
+			$c-=12;
+		}
+	}
+    # Add the missing PDF objects and a the footer then close the file
+    $pdf->close;
 #==============================================================================
 sub CommentFunction
 {
