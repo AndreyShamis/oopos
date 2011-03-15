@@ -201,7 +201,7 @@ use PDF::Create;
     my $toc=$pdf->new_outline('Title'=>'Document','Destination'=>$page);
 
 	$c = 0;
-	print "PDF counter\n".$pdf_counter . "\n";
+
 	$page_margin = 10;
 	$page_fint_size = 12;
 	$page->line(0, 780, 612, 780);
