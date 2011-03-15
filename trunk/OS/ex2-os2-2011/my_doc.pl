@@ -173,7 +173,6 @@ foreach $line (@input)
 {
 	if($line ne "CLEARED")				# check if the line not cleared
 	{
-		print $line . "\n";
 		print OUTFILE $line . "\n";
 	}
 }
