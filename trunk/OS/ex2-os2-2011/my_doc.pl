@@ -28,8 +28,7 @@ foreach $str(@input)
 }
 
 #	Looking for comments
-if($input_str =~ /\s*\/\/.*/ || $input_str =~ /\s*\;\s*\/\/\s*/ 
-|| $input_str =~ /^\s*\/\*/ || $input_str =~ /\;\s*\/\*.*\*\//)
+if($input_str =~ /\s*\/\/.*/ || $input_str =~ /\s*\;?\s*\/\/\s*/ || $input_str =~ /^\s*\/\*/ || $input_str =~ /.*;?\s*\/\*/)
 {
 	#	Found comments - EXIT
 	exit;
@@ -206,11 +205,12 @@ use PDF::Create;
 	print "PDF counter\n".$pdf_counter . "\n";
 	$page_margin = 10;
 	$page_fint_size = 12;
-	$page->stringl($f1, 12, $page_fint_size, 772,"/* Main program:");
-	$page->stringl($f1, 12, $page_fint_size, 759,
+	$page->line(0, 780, 612, 780);
+	$page->stringl($f1, 12, $page_fint_size, 762,"/* Main program:");
+	$page->stringl($f1, 12, $page_fint_size, 749,
 								" *     Using the various functions");
-	$page->stringl($f1, 12, $page_fint_size, 747," */");
-
+	$page->stringl($f1, 12, $page_fint_size, 737," */");
+	$page->line(0, 734, 612, 730);
 	foreach $line(@pdf_ouput)
 	{
 		@vals = split(/\n/,$line);
@@ -221,6 +221,9 @@ use PDF::Create;
 			$page->stringl($f1, 12, $page_margin, 700+$c,$ll);
 			$c-=12;
 		}
+		
+		$page->line(0, 700+$c, 612, 700+$c);
+		$c-=12;
 	}
     # Add the missing PDF objects and a the footer then close the file
     $pdf->close;
