@@ -1,0 +1,140 @@
+%PDF-1.2
+4 0 obj
+<<
+/Length 5 0 R
+>>
+stream
+BT /F1 12 Tf 12 772 Td (/* Main program:) Tj ET
+BT /F1 12 Tf 12 759 Td ( *     Using the various functions) Tj ET
+BT /F1 12 Tf 12 747 Td ( */) Tj ET
+BT /F1 12 Tf 10 700 Td (/* ) Tj ET
+BT /F1 12 Tf 10 688 Td ( * The function get:) Tj ET
+BT /F1 12 Tf 10 676 Td ( *    ofstream &tfo 	-  ) Tj ET
+BT /F1 12 Tf 10 664 Td ( *     int data 	-  ) Tj ET
+BT /F1 12 Tf 10 652 Td ( *) Tj ET
+BT /F1 12 Tf 10 640 Td ( * The function return:) Tj ET
+BT /F1 12 Tf 10 628 Td ( *      ) Tj ET
+BT /F1 12 Tf 10 616 Td ( *) Tj ET
+BT /F1 12 Tf 10 604 Td ( * function performs the following steps:) Tj ET
+BT /F1 12 Tf 10 592 Td ( *      ) Tj ET
+BT /F1 12 Tf 10 580 Td ( */) Tj ET
+BT /F1 12 Tf 10 568 Td (/* ) Tj ET
+BT /F1 12 Tf 10 556 Td ( * The function get:) Tj ET
+BT /F1 12 Tf 10 544 Td ( *    ifstream &tfi 	-  ) Tj ET
+BT /F1 12 Tf 10 532 Td ( *     char pattern[] 	-  ) Tj ET
+BT /F1 12 Tf 10 520 Td ( *    char text[] 	-  ) Tj ET
+BT /F1 12 Tf 10 508 Td ( *    int &start_postion 	-  ) Tj ET
+BT /F1 12 Tf 10 496 Td ( *    int &mismatch 	-  ) Tj ET
+BT /F1 12 Tf 10 484 Td ( *) Tj ET
+BT /F1 12 Tf 10 472 Td ( * The function return:) Tj ET
+BT /F1 12 Tf 10 460 Td ( *      ) Tj ET
+BT /F1 12 Tf 10 448 Td ( *) Tj ET
+BT /F1 12 Tf 10 436 Td ( * function performs the following steps:) Tj ET
+BT /F1 12 Tf 10 424 Td ( *      ) Tj ET
+BT /F1 12 Tf 10 412 Td ( */) Tj ET
+endstream
+endobj
+
+5 0 obj
+1338
+endobj
+
+3 0 obj
+<<
+/Dest [2 0 R /Fit null null null]
+/Title (Document)
+/Parent 6 0 R
+>>
+endobj
+
+6 0 obj
+<<
+/Last 3 0 R
+/Type /Outlines
+/Count 1
+/First 3 0 R
+>>
+endobj
+
+7 0 obj
+<<
+/Type /Catalog
+/Outlines 6 0 R
+/Pages 8 0 R
+/PageMode /UseOutlines
+>>
+endobj
+
+8 0 obj
+<<
+/Kids [1 0 R]
+/Type /Pages
+/Count 1
+>>
+endobj
+
+9 0 obj
+<<
+/Type /Font
+/Encoding /WinAnsiEncoding
+/Subtype /Type1
+/BaseFont /Helvetica
+/Name /F1
+>>
+endobj
+
+1 0 obj
+<<
+/Kids [2 0 R]
+/Type /Pages
+/Count 1
+/MediaBox [0 0 612 792]
+/Parent 8 0 R
+>>
+endobj
+
+2 0 obj
+<<
+/Contents [4 0 R]
+/Type /Page
+/Resources <<
+/Font <<
+/F1 9 0 R
+>>
+/ProcSet [/PDF /Text]
+>>
+/Parent 1 0 R
+>>
+endobj
+
+10 0 obj
+<<
+/Type /Info
+/Producer (PDF::Create version 1.06)
+/Author (Andrey Shamis & Ilia Gaisinsky)
+/Title ($ARGV[0])
+>>
+endobj
+
+xref
+0 11
+0000000000 65535 f 
+0000001836 00000 n 
+0000001932 00000 n 
+0000001421 00000 n 
+0000000009 00000 n 
+0000001400 00000 n 
+0000001509 00000 n 
+0000001581 00000 n 
+0000001670 00000 n 
+0000001728 00000 n 
+0000002059 00000 n 
+trailer
+<<
+/Size 11
+/Root 7 0 R
+/Info 10 0 R
+>>
+startxref
+2190
+%%EOF
