@@ -4,17 +4,29 @@ Authors:
 	Andrey Shamis,  	id: 321470882, login: andreysh
 	Ilia Gaisinsky, 	id: 309480051, login: iliaga
 =============================================================================== 
-	for run the script
+	for run the script:
+	
 		my_doc.pl <input_file_name>
 	
-	for set executable
+	
+	for set executable:
+	
 		chmod +x my_doc.pl
 
-	Files be created after runing 
+		
+	Files be created after runing:
+	
 		# my_doc.pl <input_file_name>
 				-	<input_file_name>.doc.c
 				-	<input_file_name>.pdf
+
+				
 	The files be created only if input file not include any comments in code!
+	
+===============================================================================
+Main aspekts of unsing the script
+	
+
 
 
 ===============================================================================
