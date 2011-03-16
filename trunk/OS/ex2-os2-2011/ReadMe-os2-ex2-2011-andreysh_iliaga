@@ -1,0 +1,120 @@
+	EX2	::	Parser of c-file for puting comments
+===============================================================================
+Authors:
+	Andrey Shamis,  	id: 321470882, login: andreysh
+	Ilia Gaisinsky, 	id: 309480051, login: iliaga
+=============================================================================== 
+	for run the script:
+	
+		my_doc.pl <input_file_name>
+	
+	
+	for set executable:
+	
+		chmod +x my_doc.pl
+
+		
+	Files be created after runing:
+	
+		# my_doc.pl <input_file_name>
+				-	<input_file_name>.doc.c
+				-	<input_file_name>.pdf
+
+				
+	The files be created only if input file not include any comments in 
+	code!
+	
+======================= description of the script =============================
+
+<<<<<<< abstruct description >>>>>>>>>>
+
+the program get c language file that not include documentation at all. the
+program read the file and analyze of it contents (function, virebals, const and
+more..). the program prisent to the user all the contents of the file
+(function, virebals, const and more..) in serial order and ask the user which
+documentation he\she intresting to add for each content. and the uotput will be:
+(1)	the same c languge file that now have documentation in it.
+(2)	PDF file that contane the documentation only.
+
+
+<<<<<<< main description >>>>>>>>>>
+
+A. the program take and analyze the content of the file and save them at array
+   of strings data structur.
+B. right after the script read all the data - the script will ask the 
+   documentation of each of them: (see the next chapter).
+C. there is 6 aspekts that need to be documening at the destination program:
+   
+	1. all the *.h (all the include files) -- can appear at the begin of 
+	   the file only.
+	2. all the constant can only appear between include files and the main
+	3. documentation of the main function.
+	4. documentation befor each block of code at main function. (in ather 
+	   words btween to adjacent lines - no nessesery to docomenting). this 
+	   aspekt refer to the main function documentation only.
+	5. any function (what it get, what it return and what it dose). and at 
+	   the statement of the function - need only a short documentation 
+	   abuot what that function dose.
+	6. all the virebals -- that appears at the begin of the function only
+	   (this aspect incude all function at the c code, include the main 
+	   function).
+D. A PDF file will contain anly the documentation of the main and other 
+   function.
+
+	
+
+====================== input and output of the script =========================
+
+-	the script have single input (ARGV[0]) - and it is the name of the file
+	of c language. (my_file.c)
+-	the script have tow output files:
+	#	my_file.doc.c - file that will contain exacly the same original
+		program but will include documentation to the program (C).
+	#	my_file.pdf - PDF format file, that will contain anly the 			
+		documentation of the main and other function of the program (C)
+		
+
+
+============================== Files used =====================================
+
+input  file:		sample.c		//	C lenguage
+
+output files:	 	sample.doc.c		//	C lenguage	
+			sample.pdf		//	PDF file
+
+script file:		my_doc.pl		//	PERL script
+
+ReadMe-os2-ex2-2011-andreysh_iliaga		//	txt file
+
+===============================================================================
+
+<<<<<<<<<< Using Pdf creator >>>>>>>>>>>>>
+
+
+  INSTALLATION OF PDF CREATOR
+
+    Quick answer:
+
+        perl -MCPAN -e 'install PDF::Create'
+
+    Long answer:
+
+    To install manually, cd to the directory containing the unpacked
+    distribution and do one of the following:
+
+    a.  Create a makefile by running Makefile.PL using the perl
+        program into whose library you want to install and then run
+        make three times:
+
+            perl Makefile.PL
+            make
+            make test
+            make install
+
+    b.  To install into a private library, for example your home
+        directory:
+
+            perl Makefile.PL INSTALLSITELIB=$HOME/lib INSTALLMAN3DIR=$HOME/man
+            make
+            make test
+            make pure_install

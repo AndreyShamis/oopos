@@ -28,9 +28,11 @@ foreach $str(@input)
 }
 
 #	Looking for comments
-if($input_str =~ /\s*\/\/.*/ || $input_str =~ /\s*\;?\s*\/\/\s*/ || $input_str =~ /^\s*\/\*/ || $input_str =~ /.*;?\s*\/\*/)
+if($input_str =~ /\s*\/\/.*/ || $input_str =~ /\s*\;?\s*\/\/\s*/ 
+	|| $input_str =~ /^\s*\/\*/ || $input_str =~ /.*;?\s*\/\*/)
 {
 	#	Found comments - EXIT
+	print "Found comments.Exit from program.\n";
 	exit;
 }
 
@@ -97,7 +99,7 @@ foreach $line (@input)
 		if($sub_seger == 0 && $status == 5)
 		{
 			$main_end = $line_indicator;	# set main end line
-			CommentMainByBlocks();			# start work whith comments by block
+			CommentMainByBlocks();			# start work whith commnts by block
 			$status = 6;
 		}
 		
@@ -131,23 +133,27 @@ foreach $line (@input)
 			foreach $variable(@func_var)
 			{
 				$function_get.= " *\t". $variable . " \t-  " 
-					. GetCommentStr("What is the parameter of function $function_name? " 
-					. $variable) . "\n";
+				 . GetCommentStr("What is parameter of func $function_name? " 
+				 . $variable) . "\n";
 			}
 			$function_ret = " *\n * The function return:\n * \t" 
-				. GetCommentStr("What function $function_name return?") . " \n";
-			$function_perf = " *\n * function performs the following steps:\n * \t" 
-				. GetCommentStr("What this function($function_name) do?") . " \n */\n";	
+				. GetCommentStr("What function $function_name return?") 
+				. " \n";
+			$function_perf = " *\n * function performs the following"
+				." steps:\n * \t" 
+				. GetCommentStr("What this function($function_name) do?") 
+				. " \n */\n";	
 				
 			$line = $function_get . $function_ret . $function_perf . $line;
-			$pdf_ouput[$pdf_counter] = $function_get . $function_ret . $function_perf;
+			$pdf_ouput[$pdf_counter] = $function_get . $function_ret 
+									. $function_perf;
 			
 			$pdf_counter++;
 		}
 	}
 	elsif($status == 7 || $status == 8)
 	{	#	Looking for another function variable
-		if($line =~ /^\s*\w+\s+\w+.*[^)];\s*$/ && $status ==8)
+		if($line =~ /^\s*\w+\s+\*?\w+.*[^)];\s*$/ && $status ==8)
 		{
 			$line = $line . "\t/* " . GetCommentStr($line) . " */";
 		}
@@ -186,7 +192,7 @@ use PDF::Create;
                               'Version'  => 1.2,
                               'PageMode' => 'UseOutlines',
                               'Author'   => 'Andrey Shamis & Ilia Gaisinsky',
-                              'Title'    => '$ARGV[0]',
+                              'Title'    => $ARGV[0],
                          );
     my $root = $pdf->new_page('MediaBox' => [ 0, 0, 612, 792 ]);
 
@@ -219,10 +225,19 @@ use PDF::Create;
 			$ll =~s/\t/    /;				# space manipulation
 			$page->stringl($f1, 12, $page_margin, 700+$c,$ll);
 			$c-=12;
+			
+			#	Create new page in pdf
+			if($c < -680)
+			{
+				$page = $root->new_page;
+				$c=20;
+			}
 		}
 		
 		$page->line(0, 700+$c, 612, 700+$c);
 		$c-=12;
+		
+		
 	}
     # Add the missing PDF objects and a the footer then close the file
     $pdf->close;
@@ -259,9 +274,10 @@ sub CommentMainByBlocks
 	for($i=$main_start;$i<$main_end;$i++)
 	{
 		$all_main_string .= $input[$i] . "\n";
-		$input[$i]= "CLEARED";
+		$input[$i]= "CLEARED";			#	set not use for output
 	}
 	
+	#	get all blocks
 	@main_blocks = split(/\n{2,}/,$all_main_string);
 	
 	$all_main_string = "";
@@ -272,6 +288,7 @@ sub CommentMainByBlocks
 			. " */\n" . $main_line . "\n";
 	}
 	
+	#	put into array
 	$input[$main_start] = $all_main_string;
 }
 

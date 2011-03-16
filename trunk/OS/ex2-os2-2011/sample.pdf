@@ -1,0 +1,150 @@
+%PDF-1.2
+4 0 obj
+<<
+/Length 5 0 R
+>>
+stream
+0 780 m 612 780 l S
+BT /F1 12 Tf 12 762 Td (/* Main program:) Tj ET
+BT /F1 12 Tf 12 749 Td ( *     Using the various functions) Tj ET
+BT /F1 12 Tf 12 737 Td ( */) Tj ET
+0 734 m 612 730 l S
+BT /F1 12 Tf 10 700 Td (/* ) Tj ET
+BT /F1 12 Tf 10 688 Td ( * The function get:) Tj ET
+BT /F1 12 Tf 10 676 Td ( *) Tj ET
+BT /F1 12 Tf 10 664 Td ( * The function return:) Tj ET
+BT /F1 12 Tf 10 652 Td ( *     The function not return ant thing ) Tj ET
+BT /F1 12 Tf 10 640 Td ( *) Tj ET
+BT /F1 12 Tf 10 628 Td ( * function performs the following steps:) Tj ET
+BT /F1 12 Tf 10 616 Td ( *     This is main cycle function which ask for user what to do ) Tj ET
+BT /F1 12 Tf 10 604 Td ( */) Tj ET
+0 592 m 612 592 l S
+BT /F1 12 Tf 10 580 Td (/* ) Tj ET
+BT /F1 12 Tf 10 568 Td ( * The function get:) Tj ET
+BT /F1 12 Tf 10 556 Td ( *    char *string 	-  The string when need delete new line) Tj ET
+BT /F1 12 Tf 10 544 Td ( *) Tj ET
+BT /F1 12 Tf 10 532 Td ( * The function return:) Tj ET
+BT /F1 12 Tf 10 520 Td ( *     Nothing be returned ) Tj ET
+BT /F1 12 Tf 10 508 Td ( *) Tj ET
+BT /F1 12 Tf 10 496 Td ( * function performs the following steps:) Tj ET
+BT /F1 12 Tf 10 484 Td ( *     Deliting the new line symbol from string ) Tj ET
+BT /F1 12 Tf 10 472 Td ( */) Tj ET
+0 460 m 612 460 l S
+BT /F1 12 Tf 10 448 Td (/* ) Tj ET
+BT /F1 12 Tf 10 436 Td ( * The function get:) Tj ET
+BT /F1 12 Tf 10 424 Td ( *    char *input 	-  Pointer when be located input) Tj ET
+BT /F1 12 Tf 10 412 Td ( *    const int max_size 	-  The max size be located in the input string) Tj ET
+BT /F1 12 Tf 10 400 Td ( *) Tj ET
+BT /F1 12 Tf 10 388 Td ( * The function return:) Tj ET
+BT /F1 12 Tf 10 376 Td ( *     The function return 1 - if success 0 - failed get input ) Tj ET
+BT /F1 12 Tf 10 364 Td ( *) Tj ET
+BT /F1 12 Tf 10 352 Td ( * function performs the following steps:) Tj ET
+BT /F1 12 Tf 10 340 Td ( *     Geting input from user and put it to pointer. ) Tj ET
+BT /F1 12 Tf 10 328 Td ( */) Tj ET
+0 316 m 612 316 l S
+endstream
+endobj
+
+5 0 obj
+1970
+endobj
+
+3 0 obj
+<<
+/Dest [2 0 R /Fit null null null]
+/Title (Document)
+/Parent 6 0 R
+>>
+endobj
+
+6 0 obj
+<<
+/Last 3 0 R
+/Type /Outlines
+/Count 1
+/First 3 0 R
+>>
+endobj
+
+7 0 obj
+<<
+/Type /Catalog
+/Outlines 6 0 R
+/Pages 8 0 R
+/PageMode /UseOutlines
+>>
+endobj
+
+8 0 obj
+<<
+/Kids [1 0 R]
+/Type /Pages
+/Count 1
+>>
+endobj
+
+9 0 obj
+<<
+/Type /Font
+/Encoding /WinAnsiEncoding
+/Subtype /Type1
+/BaseFont /Helvetica
+/Name /F1
+>>
+endobj
+
+1 0 obj
+<<
+/Kids [2 0 R]
+/Type /Pages
+/Count 1
+/MediaBox [0 0 612 792]
+/Parent 8 0 R
+>>
+endobj
+
+2 0 obj
+<<
+/Contents [4 0 R]
+/Type /Page
+/Resources <<
+/Font <<
+/F1 9 0 R
+>>
+/ProcSet [/PDF /Text]
+>>
+/Parent 1 0 R
+>>
+endobj
+
+10 0 obj
+<<
+/Type /Info
+/Producer (PDF::Create version 1.06)
+/Author (Andrey Shamis & Ilia Gaisinsky)
+/Title (example.c)
+>>
+endobj
+
+xref
+0 11
+0000000000 65535 f 
+0000002468 00000 n 
+0000002564 00000 n 
+0000002053 00000 n 
+0000000009 00000 n 
+0000002032 00000 n 
+0000002141 00000 n 
+0000002213 00000 n 
+0000002302 00000 n 
+0000002360 00000 n 
+0000002691 00000 n 
+trailer
+<<
+/Size 11
+/Root 7 0 R
+/Info 10 0 R
+>>
+startxref
+2823
+%%EOF
