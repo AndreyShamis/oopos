@@ -1,9 +1,9 @@
 #include "BFSiterator.h"
 
-BFSiterator::BFSiterator(void)
+BFSiterator::BFSiterator()
 {
 }
 
-BFSiterator::~BFSiterator(void)
+BFSiterator::~BFSiterator()
 {
 }
