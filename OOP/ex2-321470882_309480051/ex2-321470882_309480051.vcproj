@@ -171,7 +171,23 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\BFSiterator.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\DFSiterator.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\GraphIterator.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Grpah.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Iterator.cpp"
 				>
 			</File>
 			<File
@@ -185,11 +201,27 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\BFSiterator.h"
+				>
+			</File>
+			<File
+				RelativePath=".\DFSiterator.h"
+				>
+			</File>
+			<File
+				RelativePath=".\GraphIterator.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Grpah.h"
 				>
 			</File>
 			<File
 				RelativePath=".\HadassahGraph.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Iterator.h"
 				>
 			</File>
 			<File
