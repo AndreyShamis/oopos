@@ -8,12 +8,14 @@
 
 #include <iostream>
 
+#include "Graph.h"
+
 using namespace std;
 //=============================================================================
 //	Main function
 int main()
 {
-
+	Graph you;
 	cout << "Was up UFO\n";
 
 	return(0);
