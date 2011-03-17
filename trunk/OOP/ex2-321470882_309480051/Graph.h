@@ -1,11 +1,11 @@
 #pragma once
 #include "hadassahgraph.h"
 
-class Grpah : public HadassahGraph
+template  <class T>
+class Graph: public HadassahGraph<T>
 {
 public:
-	Grpah();
-	~Grpah();
+	Graph();
 	/* Adds a vertex to the graph *
 	 * Returns unique vertex id   */
 	int addVertex(const T data);
