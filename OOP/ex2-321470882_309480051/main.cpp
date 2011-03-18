@@ -15,7 +15,8 @@ using namespace std;
 //	Main function
 int main()
 {
-	Graph you;
+	typedef Graph <float> BFSgraph;
+
 	cout << "Was up UFO\n";
 
 	return(0);
