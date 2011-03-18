@@ -5,6 +5,7 @@ class BFSiterator :
 	public GraphIterator
 {
 public:
-	BFSiterator(void);
-	~BFSiterator(void);
+	BFSiterator();
+	~BFSiterator();
+
 };
