@@ -2,7 +2,8 @@
 template  <class T>
 Graph<T>::Graph()
 {
-	;
+	_max_size_can_be	= MAX_DEFAULT_SIZE_CAN_BE;
+	_counter			=	0;
 }
 
 
@@ -11,6 +12,8 @@ Graph<T>::Graph()
 template  <class T>
 int Graph<T>::addVertex(const T data)
 {
+	//_id_of_node.push_back(<BFS_node>data);
+	_counter++;
 	return(1);
 }
 
