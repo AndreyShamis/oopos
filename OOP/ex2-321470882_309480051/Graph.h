@@ -1,5 +1,11 @@
 #pragma once
+#include <vector>
+#include "macros.h"
 #include "hadassahgraph.h"
+using namespace std;
+
+
+#define MAX_DEFAULT_SIZE_CAN_BE 9999999999;
 
 template  <class T>
 class Graph: public HadassahGraph<T>
@@ -53,4 +59,13 @@ public:
 	/* Deataches a vertex from its neighbours    *
 	*  Returns false if vertex does not exists.  */
 	bool detachVertex(int vertexId); 
+
+private:
+
+	vector <T *> _id_of_node;
+
+	unsigned int _max_size_can_be;
+
+	unsigned int _counter;
+	//vector<int> _ol;
 };
