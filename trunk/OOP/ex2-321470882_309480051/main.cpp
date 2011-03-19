@@ -7,9 +7,9 @@
 //
 
 #include <iostream>
-
-#include "Graph.h"
 #include "macros.h"
+#include "HadassahGraph.h"
+#include "Graph.h"
 
 using namespace std;
 
@@ -18,12 +18,18 @@ using namespace std;
 //	Main function
 int main()
 {
-	typedef Graph<struct BFS_node> BFSgraph();
-	//Graph< BFS_node> BFSgraph;
-	BFS_node kodkod;
-	kodkod._value = 0.01;
+	//typedef Graph<struct BFS_node> BFSgraph();
+	Graph<int> BFSgraph;
+	Graph<float> BFSgraph2;
+	
+	//BFS_node kodkod;
+	//kodkod._value = 0.01;
 
-	BFSgraph.addVertex(kodkod);
+	int data = 10;
+	float we = 0.1f;
+	//BFSgraph.addVertex(data);
+	BFSgraph.addVertex(data);
+	BFSgraph2.addVertex(we);
 	cout << "Was up UFO\n";
 	
 	return(0);
