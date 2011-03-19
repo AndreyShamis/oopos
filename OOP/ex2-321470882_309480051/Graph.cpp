@@ -12,7 +12,7 @@ Graph<T>::Graph()
 template  <class T>
 int Graph<T>::addVertex(const T data)
 {
-	//_id_of_node.push_back(<BFS_node>data);
+	_id_of_node.push_back(data);
 	_counter++;
 	return(1);
 }

@@ -13,17 +13,17 @@
 
 using namespace std;
 
-template  <class T>
+
 //=============================================================================
 //	Main function
 int main()
 {
-	//typedef Graph<struct BFS_node>;
-	Graph<struct BFS_node> BFSgraph;
+	typedef Graph<struct BFS_node> BFSgraph();
+	//Graph< BFS_node> BFSgraph;
 	BFS_node kodkod;
 	kodkod._value = 0.01;
 
-	BFSgraph.addVertex();
+	BFSgraph.addVertex(kodkod);
 	cout << "Was up UFO\n";
 	
 	return(0);
