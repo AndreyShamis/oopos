@@ -9,8 +9,8 @@
 #pragma once
 #include "macros.h"
 
-template <class T>
 //Hadassah EX2 Graph interface
+template <class T>
 class HadassahGraph{
 
 public:
