@@ -348,9 +348,9 @@ void Graph<T>::printDFS(int sourceId) const
 
 	memset(_colors,0,NodesSize);					//	Set colors for edges
 	
-	cout << "Lookingf for " << Uniq_Pos << "Vertex\n";
+	cout << "Lookingf for " << Uniq_Pos << "Vertex\n";	//	NAHUY STERET
 
-	buffer.push_back(Uniq_Pos);
+	buffer.push_back(sourceId);							
 	_colors[Uniq_Pos] = 1;
 	
 	while(buffer.size())
@@ -359,6 +359,7 @@ void Graph<T>::printDFS(int sourceId) const
 		cout << "Vertex:" << vertex << ": ";
 		for(int i = 1; i<NodesSize+1;i++)
 		{
+			//	I tut ne pomnyu
 			if(matrix[vertex][i] && _colors[i-1] <2)
 			{
 				//	Cheto ya nepomnyu chto kuda i kak
@@ -375,12 +376,13 @@ void Graph<T>::printDFS(int sourceId) const
 		buffer.erase(buffer.begin());
 	}
 
+	//	Clean Used memory in matrix
 	for(int i =0;i<NodesSize+1;i++)
 		delete [] matrix[i];
 
+	//	clear color memery used
 	delete _colors;
-	//_colors[]
-	;
+
 }
 
 //=============================================================================
