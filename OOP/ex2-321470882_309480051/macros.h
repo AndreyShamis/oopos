@@ -14,8 +14,3 @@
 #include <iostream>
 #include <fstream>
 #include <math.h>
-
-struct BFS_node
-{
-	double _value;
-};
