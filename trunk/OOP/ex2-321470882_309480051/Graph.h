@@ -77,6 +77,9 @@ private:
 	int getVectorPos(const int Uniq_ID) const;
 	void DeleteAll_Neighbors(const int VertexAxactPosition);
 	void DeleteNeighborByID(const int SelfID,const int NeighborID);
+
+	bool HaveEdge(const int SelfID,const int NeighborID)const;
+
 };
 
 //=============================================================================
@@ -123,6 +126,19 @@ int Graph<T>::getVectorPos(const int Uniq_ID) const
 	return(0);
 }
 
+//=============================================================================
+template <class T> 
+bool Graph<T>::HaveEdge(const int SelfID,const int NeighborID)const
+{
+		
+	const int Neighbors_Size = _ids[SelfID]._neighbors.size();
+
+	for(int i=0;i<Neighbors_Size;i++)
+		if(_ids[SelfID]._neighbors[i] == NeighborID)
+			return(true);
+
+	return(false);
+}
 
 //=============================================================================
 template <class T> 
@@ -144,19 +160,14 @@ void Graph<T>::DeleteNeighborByID(const int SelfID,const int NeighborID)
 	const int Neighbor = getVectorPos(NeighborID);
 
 	if(Neighbor)
-	{
-		//cout << "Check neighbor N:"<<Neighbor-1 << "\n";
-		//cout << "Which have " << (int)_ids[Neighbor-1]._neighbors.size() << " neighbors\n";
 		for(int j=0;j < (int)_ids[Neighbor-1]._neighbors.size();j++)
-		{
 			if(_ids[Neighbor-1]._neighbors[j] == _ids[SelfID]._Node_id)
 			{
 				_ids[Neighbor-1]._neighbors.erase(_ids[Neighbor-1]._neighbors.begin()+j);
 				j--;
 				break;
 			}
-		}
-	}
+
 
 }
 //=============================================================================
@@ -174,8 +185,6 @@ bool Graph<T>::removeVertex(int vertexId)
 		_ids.erase(_ids.begin()+Uniq_Pos-1);
 		return(true);
 	}
-		
-
 
 	return(false);
 }
@@ -234,7 +243,21 @@ bool Graph<T>::removeEdge(int vertexId1, int vertexId2)
 template  <class T>
 bool Graph<T>::edgeExists(int vertexId1, int vertexId2) const
 {
-	return(1);
+	const int First_Pos		=	getVectorPos(vertexId1);
+	const int Second_Pos	=	getVectorPos(vertexId2);
+
+	if(First_Pos && Second_Pos && First_Pos != Second_Pos)
+	{
+		if(HaveEdge(First_Pos-1,vertexId2) &&	HaveEdge(Second_Pos-1,vertexId1))
+			return(true);
+	}
+	else if(First_Pos && Second_Pos && First_Pos == Second_Pos)
+	{
+		if(HaveEdge(First_Pos-1,vertexId1))
+			return(true);
+	}
+
+	return(false);
 }
 
 //=============================================================================
@@ -243,7 +266,12 @@ bool Graph<T>::edgeExists(int vertexId1, int vertexId2) const
 template  <class T>
 const T* const Graph<T>::getData(int vertexId)
 {
-	T *s=NULL;
+	const int Ver_Pos		=	getVectorPos(vertexId);
+	T			*s			=	NULL;
+
+	if(Ver_Pos)
+		s = &_id_of_node[Ver_Pos-1];
+
 	return(s);
 }
 
@@ -273,9 +301,37 @@ template  <class T>
 int** Graph<T>::getMatrixRepresentation() const
 {
 
-	int **la=NULL;
+	const int Row_Size = 1+_id_of_node.size();
+	int **cols=NULL;
 
-	return(la);
+	cols = new(std::nothrow) int*[Row_Size];
+	if(cols != NULL)
+		for(int i=0;i<Row_Size;i++)
+			cols[i] = new (std::nothrow) int[Row_Size];
+	else
+	{
+		cerr << "Can`t allocate memory\n";
+		exit(EXIT_FAILURE);
+	}
+
+
+	cols[0][0] = Row_Size -1;
+	for(int i =1;i<Row_Size;i++)
+	{
+		cols[0][i] = _ids[i-1]._Node_id;
+		cols[i][0] = _ids[i-1]._Node_id;
+
+	}
+	for(int i =1;i<Row_Size;i++)
+	{
+		for(int j=1;j<Row_Size;j++)
+		{
+			cols[i][j] = edgeExists(cols[0][i],cols[j][0]);
+		}
+
+	}	
+
+	return(cols);
 }
 
 //=============================================================================
