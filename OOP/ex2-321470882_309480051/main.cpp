@@ -11,6 +11,7 @@
 #include "HadassahGraph.h"
 #include "Graph.h"
 
+#include <iomanip>
 using namespace std;
 
 
@@ -18,73 +19,83 @@ using namespace std;
 //	Main function
 int main()
 {
-	//typedef Graph<struct BFS_node> BFSgraph();
-	Graph<int> BFSgraph;
-	Graph<float> BFSgraph2;
+	//typedef Graph<struct BFS_node> someGraph();
+	Graph<int> someGraph;
+
 	
 	//BFS_node kodkod;
 	//kodkod._value = 0.01;
 
 	int data = 10;
-	float we = 0.1f;
-	//BFSgraph.addVertex(data);
-	int f = BFSgraph.addVertex(data);
-	int s = BFSgraph.addVertex(data+2);
-	int s1 = BFSgraph.addVertex(data+3);
-	int s2 = BFSgraph.addVertex(data+5);
-	BFSgraph.addVertex(data+6);
-	BFSgraph.addVertex(data+1);
+	int ver_size = 40;
+	for(int i = 0;i<ver_size;i++)
+	{
+		someGraph.addVertex(data*i+1);
+	}
+	for(int i = 0;i<ver_size;i+=2)
+	{
+
+		someGraph.addEdge(i,ver_size-i*ver_size%6);
+		someGraph.addEdge(i+(((ver_size-3)*(ver_size-1)*i)%ver_size),i*i%11);
+		someGraph.addEdge((i-(i*3)%(ver_size-1))%ver_size,i*i%7);
+	}
+	//someGraph.addVertex(data);
+	int f = someGraph.addVertex(data);
+	int s = someGraph.addVertex(data+2);
+	int s1 = someGraph.addVertex(data+3);
+	int s2 = someGraph.addVertex(data+5);
+	someGraph.addVertex(data+6);
+	someGraph.addVertex(data+1);
 	
-	if(BFSgraph.addEdge(f,s))
-		cout << "Added\n";
-	else
+	cout << "Edges size " << someGraph.countEdges() << ".\n";
+	if(!someGraph.addEdge(f,s))
 		cout << "Not Added\n";
 
-	if(BFSgraph.addEdge(s1,s1))
-		cout << "Added\n";
-	else
+	if(!someGraph.addEdge(s1,s1))
 		cout << "Not Added\n";
 
 	
-
-	BFSgraph.printBFS(data);
+	cout << "Edges size " << someGraph.countEdges() << ".\n";
+	someGraph.printBFS(data);
 	
-	if(BFSgraph.removeVertex(s))
-		cout << "Deleted\n";
-	else
+	if(!someGraph.removeVertex(s))
 		cout << "Not Deleted\n";
 
-	BFSgraph.printBFS(data);
+	someGraph.printBFS(data);
 
 
 
-	int s3 = BFSgraph.addVertex(data+5);
-	if(BFSgraph.addEdge(f,s3))
-		cout << "Added\n";
-	else
+	int s3 = someGraph.addVertex(data+5);
+	cout << "Edges size " << someGraph.countEdges() << ".\n";
+
+	if(!someGraph.addEdge(f,s3))
 		cout << "Not Added\n";
-	int s6 = BFSgraph.addVertex(data+125);
-	BFSgraph.addEdge(s6,s6);
-	BFSgraph.printBFS(data);
 
-	int **matr = BFSgraph.getMatrixRepresentation();
-	for(int i=0;i<BFSgraph.countNodes()+1;i++)
+	cout << "Edges size " << someGraph.countEdges() << ".\n";
+	int s6 = someGraph.addVertex(data+125);
+	someGraph.addEdge(s6,s6);
+	someGraph.printBFS(data);
+
+	int **matr = someGraph.getMatrixRepresentation();
+
+	for(int i=0;i<someGraph.countNodes()+1;i++)
 	{
-		for(int j=0;j<BFSgraph.countNodes()+1;j++)
+		for(int j=0;j<someGraph.countNodes()+1;j++)
 		{
-			cout << matr[i][j] << " | ";
+			const char ch = matr[i][j]+'\0';
+			cout  << setw(2) << matr[i][j] ;
 		}
 		cout << "\n";
 
 	}
-
-	if(BFSgraph.removeEdge(f,s3))
+	cout << "Edges size " << someGraph.countEdges() << ".\n";
+	if(someGraph.removeEdge(f,s3))
 		cout << "Added\n";
 	else
 		cout << "Not Added\n";
-	BFSgraph.removeEdge(s6,s6);
+	someGraph.removeEdge(s6,s6);
 
-	BFSgraph.printBFS(data);
+	someGraph.printBFS(data);
 
 
 	
