@@ -336,8 +336,50 @@ void Graph<T>::printBFS(int sourceId) const
 template  <class T>
 void Graph<T>::printDFS(int sourceId) const
 {
-	//int **matrix = getMatrixRepresentation();
-	//const int Uniq_Pos = getVectorPos(vertexId);
+	//	Toli BFS
+	//	Toli DFS
+	//	...zabil
+	int					*_colors ;					//	Data Base of colors
+	const int NodesSize = countNodes();				//	Number of Vertex
+	_colors				= new int[NodesSize];		//	Create colors
+	vector<int>			buffer;						//	FIFO
+	int **matrix		= getMatrixRepresentation();//	DataBase of edges
+	const int Uniq_Pos	= getVectorPos(sourceId);	//	Source Vertex place
+
+	memset(_colors,0,NodesSize);					//	Set colors for edges
+	
+	cout << "Lookingf for " << Uniq_Pos << "Vertex\n";
+
+	buffer.push_back(Uniq_Pos);
+	_colors[Uniq_Pos] = 1;
+	
+	while(buffer.size())
+	{
+		int vertex = buffer[0];
+		cout << "Vertex:" << vertex << ": ";
+		for(int i = 1; i<NodesSize+1;i++)
+		{
+			if(matrix[vertex][i] && _colors[i-1] <2)
+			{
+				//	Cheto ya nepomnyu chto kuda i kak
+				if(_colors[i-1]==1)
+					buffer.push_back(i-1);
+
+				_colors[i-1] = 1;
+				
+				cout << _id_of_node[vertex] << ":[" << i << "]" << _id_of_node[i-1] << " ";
+			}
+		}
+		cout << "\n";
+		_colors[vertex] = 2;
+		buffer.erase(buffer.begin());
+	}
+
+	for(int i =0;i<NodesSize+1;i++)
+		delete [] matrix[i];
+
+	delete _colors;
+	//_colors[]
 	;
 }
 

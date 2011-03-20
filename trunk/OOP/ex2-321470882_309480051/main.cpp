@@ -27,18 +27,34 @@ int main()
 	//kodkod._value = 0.01;
 
 	int data = 10;
-	int ver_size = 40;
+	int ver_size = 10;
 	for(int i = 0;i<ver_size;i++)
 	{
-		someGraph.addVertex(data*i+1);
+		int id = someGraph.addVertex(data*i+1);
+		cout << "NUMBER:\t" << id << "\t \t VALUE:\t" << data*i+1 << "\n";
 	}
-	for(int i = 0;i<ver_size;i+=2)
+	int x = 15;
+	for(int i = 0;i<ver_size;i+=1)
 	{
-
+		x*=7;
 		someGraph.addEdge(i,ver_size-i*ver_size%6);
-		someGraph.addEdge(i+(((ver_size-3)*(ver_size-1)*i)%ver_size),i*i%11);
+		someGraph.addEdge(i+(((ver_size-3)*(ver_size-1)*i)%ver_size),(i*i)%11);
 		someGraph.addEdge((i-(i*3)%(ver_size-1))%ver_size,i*i%7);
+		someGraph.addEdge(i+(((ver_size-6)*(ver_size-1)*i)%ver_size),(i*x)%11);
+		someGraph.addEdge((x-(x*3)%(ver_size-1))%ver_size,i*i%7);
 	}
+	someGraph.printDFS(1);
+	int **matr = someGraph.getMatrixRepresentation();
+
+	for(int i=0;i<someGraph.countNodes()+1;i++)
+	{
+		for(int j=0;j<someGraph.countNodes()+1;j++)
+			cout  << setw(2) << matr[i][j];
+
+		cout << "\n";
+
+	}
+	cout << "Edges size " << someGraph.countEdges() << ".\n";
 	//someGraph.addVertex(data);
 	int f = someGraph.addVertex(data);
 	int s = someGraph.addVertex(data+2);
@@ -76,26 +92,16 @@ int main()
 	someGraph.addEdge(s6,s6);
 	someGraph.printBFS(data);
 
-	int **matr = someGraph.getMatrixRepresentation();
 
-	for(int i=0;i<someGraph.countNodes()+1;i++)
-	{
-		for(int j=0;j<someGraph.countNodes()+1;j++)
-		{
-			const char ch = matr[i][j]+'\0';
-			cout  << setw(2) << matr[i][j] ;
-		}
-		cout << "\n";
+	
 
-	}
-	cout << "Edges size " << someGraph.countEdges() << ".\n";
 	if(someGraph.removeEdge(f,s3))
 		cout << "Added\n";
 	else
 		cout << "Not Added\n";
 	someGraph.removeEdge(s6,s6);
 
-	someGraph.printBFS(data);
+	
 
 
 	
