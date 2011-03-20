@@ -63,17 +63,32 @@ int main()
 		cout << "Added\n";
 	else
 		cout << "Not Added\n";
-
+	int s6 = BFSgraph.addVertex(data+125);
+	BFSgraph.addEdge(s6,s6);
 	BFSgraph.printBFS(data);
+
+	int **matr = BFSgraph.getMatrixRepresentation();
+	for(int i=0;i<BFSgraph.countNodes()+1;i++)
+	{
+		for(int j=0;j<BFSgraph.countNodes()+1;j++)
+		{
+			cout << matr[i][j] << " | ";
+		}
+		cout << "\n";
+
+	}
 
 	if(BFSgraph.removeEdge(f,s3))
 		cout << "Added\n";
 	else
 		cout << "Not Added\n";
+	BFSgraph.removeEdge(s6,s6);
 
 	BFSgraph.printBFS(data);
-	BFSgraph2.addVertex(we);
-	cout << "Was up UFO\n";
+
+
 	
+
+
 	return(0);
 }
