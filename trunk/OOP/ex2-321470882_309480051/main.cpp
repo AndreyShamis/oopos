@@ -27,7 +27,7 @@ int main()
 	//kodkod._value = 0.01;
 
 	int data = 10;
-	int ver_size = 10;
+	int ver_size = 40;
 	for(int i = 0;i<ver_size;i++)
 	{
 		int id = someGraph.addVertex(data*i+1);
@@ -55,8 +55,9 @@ int main()
 
 	}
 	cout << "Edges size " << someGraph.countEdges() << ".\n";
+	cout << "Nodes count " << someGraph.countNodes() << "\n";
 	//someGraph.addVertex(data);
-	int f = someGraph.addVertex(data);
+	/*int f = someGraph.addVertex(data);
 	int s = someGraph.addVertex(data+2);
 	int s1 = someGraph.addVertex(data+3);
 	int s2 = someGraph.addVertex(data+5);
@@ -104,7 +105,7 @@ int main()
 	
 
 
-	
+	*/
 
 
 	return(0);
