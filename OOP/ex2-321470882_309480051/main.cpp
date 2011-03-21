@@ -26,13 +26,15 @@ int main()
 	//BFS_node kodkod;
 	//kodkod._value = 0.01;
 
+	//someGraph.setUniq_values(true);
 	int data = 10;
 	int ver_size = 6;
 	for(int i = 0;i<ver_size;i++)
 	{
 		int id = someGraph.addVertex(data*i+1);
-		cout << "NUMBER:\t" << id << "\t \t VALUE:\t" << data*i+1 << "\n";
+		//cout << "NUMBER:\t" << id << "\t \t VALUE:\t" << data*i+1 << "\n";
 	}
+	cout << "Builded\n";
 	/*int x = 15;
 	for(int i = 0;i<ver_size;i+=1)
 	{
@@ -47,15 +49,28 @@ int main()
 	{
 		for(int j = 1;j<ver_size+1;j++)
 		{
-			someGraph.addEdge(i,j);
+			someGraph.addEdge(i,i+i);
 		}
 	}
 
 	someGraph.addVertex(78);
+	someGraph.addVertex(78);
+	someGraph.addVertex(78);
+	someGraph.addVertex(78);
+	someGraph.addVertex(78);
+	someGraph.addVertex(78);
+	someGraph.addVertex(78);
+
 
 	someGraph.addEdge(7,3);
 
-	someGraph.detachVertex(4); 
+	//someGraph.detachVertex(4); 
+
+	//someGraph.removeEdge(1,1);
+
+	//someGraph.removeVertex(2);
+
+	
 
 	//someGraph.printDFS(1);
 	int **matr = someGraph.getMatrixRepresentation();
@@ -70,6 +85,50 @@ int main()
 	}
 	cout << "Edges size " << someGraph.countEdges() << ".\n";
 	cout << "Nodes count " << someGraph.countNodes() << "\n";
+
+//_________________________________________________________________
+
+
+
+	//someGraph.removeVertex(2);
+
+
+	matr = someGraph.getMatrixRepresentation();
+	for(int i=0;i<someGraph.countNodes()+1;i++)
+	{
+		for(int j=0;j<someGraph.countNodes()+1;j++)
+			cout  << setw(2) << matr[i][j];
+
+		cout << "\n";
+
+	}
+	//cout << "Edges size " << someGraph.countEdges() << ".\n";
+	//cout << "Nodes count " << someGraph.countNodes() << "\n";
+
+	for(int i = 0;i<200000;i++)
+	{
+		if(someGraph.getIDbyValue(i))
+			cout << "NUMBER:\t" << i << "\t" << someGraph.getIDbyValue(i) << "\n";
+	}
+////_________________________________________________________________
+//	someGraph.removeVertex(1);
+//
+//
+//	matr = someGraph.getMatrixRepresentation();
+//	for(int i=0;i<someGraph.countNodes()+1;i++)
+//	{
+//		for(int j=0;j<someGraph.countNodes()+1;j++)
+//			cout  << setw(2) << matr[i][j];
+//
+//		cout << "\n";
+//
+//	}
+//	cout << "Edges size " << someGraph.countEdges() << ".\n";
+//	cout << "Nodes count " << someGraph.countNodes() << "\n";
+
+
+
+
 	//someGraph.addVertex(data);
 	/*int f = someGraph.addVertex(data);
 	int s = someGraph.addVertex(data+2);
