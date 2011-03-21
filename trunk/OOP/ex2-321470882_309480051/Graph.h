@@ -79,8 +79,10 @@ int Graph<T>::getVectorPos(const int Uniq_ID) const
 	const int Vertex_Size = _ids.size();
 
 	for(int i=0;i<Vertex_Size;i++)
+	{
 		if(_ids[i]._Node_id == Uniq_ID)
 			return(i+1);
+	}
 
 	return(0);
 }
@@ -93,8 +95,10 @@ bool Graph<T>::HaveEdge(const int SelfID,const int NeighborID)const
 	const int Neighbors_Size = _ids[SelfID]._neighbors.size();
 
 	for(int i=0;i<Neighbors_Size;i++)
+	{
 		if(_ids[SelfID]._neighbors[i] == NeighborID)
 			return(true);
+	}
 
 	return(false);
 }
@@ -117,13 +121,17 @@ void Graph<T>::DeleteNeighborByID(const int SelfID,const int NeighborID)
 	const int Neighbor = getVectorPos(NeighborID);
 
 	if(Neighbor)
+	{
 		for(int j=0;j < (int)_ids[Neighbor-1]._neighbors.size();j++)
+		{
 			if(_ids[Neighbor-1]._neighbors[j] == _ids[SelfID]._Node_id)
 			{
 				_ids[Neighbor-1]._neighbors.erase(_ids[Neighbor-1]._neighbors.begin()+j);
 				j--;
 				break;
 			}
+		}
+	}
 
 
 }
@@ -150,7 +158,7 @@ bool Graph<T>::removeVertex(int vertexId)
 /* Adds an edge between vertexId1 and vertexId2          *
 *  Returns false if one of the vertices does not exists  */
 // TODO check if have edge need to do
-template  <class T>
+template <class T>
 bool Graph<T>::addEdge(int vertexId1, int vertexId2)
 {
 	const int First_Pos		=	getVectorPos(vertexId1);
@@ -162,7 +170,7 @@ bool Graph<T>::addEdge(int vertexId1, int vertexId2)
 		_ids[Second_Pos-1]._neighbors.push_back(vertexId1);
 		return(true);
 	}
-	else if(First_Pos && Second_Pos && First_Pos == Second_Pos && !HaveEdge(First_Pos-1,vertexId1))
+	else if(First_Pos && First_Pos == Second_Pos && !HaveEdge(First_Pos-1,vertexId1))
 	{
 		_ids[First_Pos-1]._neighbors.push_back(vertexId1);
 		return(true);
@@ -174,7 +182,7 @@ bool Graph<T>::addEdge(int vertexId1, int vertexId2)
 //=============================================================================
 /* Removes an edge between vertexId1 and vertexId2       *
 *  Returns false if one of the vertices does not exists  */
-template  <class T>
+template <class T>
 bool Graph<T>::removeEdge(int vertexId1, int vertexId2)
 {
 	const int First_Pos		=	getVectorPos(vertexId1);
@@ -198,19 +206,22 @@ bool Graph<T>::removeEdge(int vertexId1, int vertexId2)
 //=============================================================================
 /* Check if an edge exists in the graph                                      *
 *  Returns false if one of the vertices does not exists or there is no edge  */
-template  <class T>
+template <class T>
 bool Graph<T>::edgeExists(int vertexId1, int vertexId2) const
 {
 	const int First_Pos		=	getVectorPos(vertexId1);
 	const int Second_Pos	=	getVectorPos(vertexId2);
 
 	if(First_Pos && Second_Pos && First_Pos != Second_Pos)
+	{
 		if(HaveEdge(First_Pos-1,vertexId2) &&	HaveEdge(Second_Pos-1,vertexId1))
 			return(true);
-	else if(First_Pos && Second_Pos && First_Pos == Second_Pos)
+	}
+	else if(First_Pos && First_Pos == Second_Pos)
+	{
 		if(HaveEdge(First_Pos-1,vertexId1))
 			return(true);
-
+	}
 
 	return(false);
 }
@@ -218,7 +229,7 @@ bool Graph<T>::edgeExists(int vertexId1, int vertexId2) const
 //=============================================================================
 /* Get the data of a vertex in the graph                        *
 *  Returns the data of type T, NULL if vertex does not exists.  */
-template  <class T>
+template <class T>
 const T* const Graph<T>::getData(int vertexId)
 {
 	const int Ver_Pos		=	getVectorPos(vertexId);
@@ -233,7 +244,7 @@ const T* const Graph<T>::getData(int vertexId)
 //=============================================================================
 /* Count graph edges                         *
 *  Returns the number of edges in the graph  */
-template  <class T>
+template <class T>
 int Graph<T>::countEdges() const
 {
 	const int Vertex_Size = _ids.size();
@@ -242,8 +253,10 @@ int Graph<T>::countEdges() const
 	//	Farej rulez 
 	for(int i =0;i<Vertex_Size;i++)
 		for(int j=i;j<Vertex_Size;j++)
+		{
 			if(edgeExists(_ids[i]._Node_id,_ids[j]._Node_id))
 				return_value++;
+		}
 
 	return(return_value);
 }
@@ -251,7 +264,7 @@ int Graph<T>::countEdges() const
 //=============================================================================
 /* Count graph vertices                         *
 *  Returns the number of vertices in the graph  */
-template  <class T>
+template <class T>
 int Graph<T>::countNodes() const
 {
 	const int count = (int)_id_of_node.size();
@@ -261,7 +274,7 @@ int Graph<T>::countNodes() const
 //=============================================================================
 /* Get the matrix representation of the graph   *
 *  Returns an int matrix .                      */
-template  <class T>
+template <class T>
 int** Graph<T>::getMatrixRepresentation() const
 {
 
@@ -288,6 +301,7 @@ int** Graph<T>::getMatrixRepresentation() const
 
 
 	cols[0][0] = Row_Size -1;
+
 	for(int i =1;i<Row_Size;i++)
 	{
 		cols[0][i] = _ids[i-1]._Node_id;
@@ -297,7 +311,9 @@ int** Graph<T>::getMatrixRepresentation() const
 
 	for(int i =1;i<Row_Size;i++)
 		for(int j=1;j<Row_Size;j++)
+		{
 			cols[i][j] = edgeExists(cols[0][i],cols[j][0]);	
+		}
 
 	return(cols);
 }

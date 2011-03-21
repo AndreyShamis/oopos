@@ -27,13 +27,13 @@ int main()
 	//kodkod._value = 0.01;
 
 	int data = 10;
-	int ver_size = 40;
+	int ver_size = 6;
 	for(int i = 0;i<ver_size;i++)
 	{
 		int id = someGraph.addVertex(data*i+1);
 		cout << "NUMBER:\t" << id << "\t \t VALUE:\t" << data*i+1 << "\n";
 	}
-	int x = 15;
+	/*int x = 15;
 	for(int i = 0;i<ver_size;i+=1)
 	{
 		x*=7;
@@ -42,8 +42,20 @@ int main()
 		someGraph.addEdge((i-(i*3)%(ver_size-1))%ver_size,i*i%7);
 		someGraph.addEdge(i+(((ver_size-6)*(ver_size-1)*i)%ver_size),(i*x)%11);
 		someGraph.addEdge((x-(x*3)%(ver_size-1))%ver_size,i*i%7);
+	}*/
+	for(int i = 1;i<ver_size+1;i++)
+	{
+		for(int j = 1;j<ver_size+1;j++)
+		{
+			someGraph.addEdge(i,j);
+		}
 	}
-	someGraph.printDFS(1);
+
+	someGraph.addVertex(78);
+
+	someGraph.addEdge(7,3);
+
+	//someGraph.printDFS(1);
 	int **matr = someGraph.getMatrixRepresentation();
 
 	for(int i=0;i<someGraph.countNodes()+1;i++)
