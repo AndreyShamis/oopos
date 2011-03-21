@@ -108,9 +108,14 @@ template <class T>
 void Graph<T>::DeleteAll_Neighbors(const int VertexAxactPosition)
 {
 	const int Neighbors_Size = _ids[VertexAxactPosition]._neighbors.size();
-
+	
 	for(int i = 0; i<Neighbors_Size;i++)
-		DeleteNeighborByID(VertexAxactPosition,_ids[VertexAxactPosition]._neighbors[i]);
+	{
+		if(_ids[VertexAxactPosition]._neighbors[i] != _ids[VertexAxactPosition]._Node_id)
+			DeleteNeighborByID(VertexAxactPosition,_ids[VertexAxactPosition]._neighbors[i]);
+	}
+
+	_ids[VertexAxactPosition]._neighbors.clear();
 
 }
 //=============================================================================

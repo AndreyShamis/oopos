@@ -55,6 +55,8 @@ int main()
 
 	someGraph.addEdge(7,3);
 
+	someGraph.detachVertex(4); 
+
 	//someGraph.printDFS(1);
 	int **matr = someGraph.getMatrixRepresentation();
 
