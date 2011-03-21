@@ -1,5 +1,5 @@
 //
-//  @ Project : Grapph
+//  @ Project : Graph
 //  @ File Name : HadassahGraph.h
 //  @ Date : 13/3/2011
 //  @ Authors : Ilia Gaysinski and Andrey Shamis

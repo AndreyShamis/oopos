@@ -13,7 +13,7 @@ class Graph : public HadassahGraph<T>
 	struct SomeNode
 	{
 		int				_Node_id;
-		vector <int>	_neighbors;
+		vector <int>	_neighbors;	//	vecto which conation id`s of neighbors
 	};
 public:
 	Graph();
@@ -63,6 +63,7 @@ int Graph<T>::addVertex(const T data)
 {
 	_counter++;
 	_id_of_node.push_back(data);
+
 	SomeNode newNode;
 	newNode._Node_id = _counter;
 	_ids.push_back(newNode);
@@ -148,19 +149,20 @@ bool Graph<T>::removeVertex(int vertexId)
 //=============================================================================
 /* Adds an edge between vertexId1 and vertexId2          *
 *  Returns false if one of the vertices does not exists  */
+// TODO check if have edge need to do
 template  <class T>
 bool Graph<T>::addEdge(int vertexId1, int vertexId2)
 {
 	const int First_Pos		=	getVectorPos(vertexId1);
 	const int Second_Pos	=	getVectorPos(vertexId2);
 	
-	if(First_Pos && Second_Pos && First_Pos != Second_Pos)
+	if(First_Pos && Second_Pos && First_Pos != Second_Pos && !HaveEdge(First_Pos-1,vertexId2))
 	{
 		_ids[First_Pos-1]._neighbors.push_back(vertexId2);
 		_ids[Second_Pos-1]._neighbors.push_back(vertexId1);
 		return(true);
 	}
-	else if(First_Pos && Second_Pos && First_Pos == Second_Pos)
+	else if(First_Pos && Second_Pos && First_Pos == Second_Pos && !HaveEdge(First_Pos-1,vertexId1))
 	{
 		_ids[First_Pos-1]._neighbors.push_back(vertexId1);
 		return(true);
