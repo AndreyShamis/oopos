@@ -5,7 +5,7 @@
 using namespace std;
 
 
-#define MAX_DEFAULT_SIZE_CAN_BE 999999
+#define MAX_DEFAULT_SIZE_CAN_BE 99999999
 
 template <class T> 
 class Graph : public HadassahGraph<T>
@@ -17,30 +17,34 @@ class Graph : public HadassahGraph<T>
 	};
 public:
 	Graph();
-	int addVertex(const T data);
-	bool removeVertex(int vertexId);
-	bool addEdge(int vertexId1, int vertexId2);
-	bool removeEdge(int vertexId1, int vertexId2);
-	bool edgeExists(int vertexId1, int vertexId2) const;
+	int		addVertex(const T data);
+	bool	removeVertex(int vertexId);
+	bool	addEdge(int vertexId1, int vertexId2);
+	bool	removeEdge(int vertexId1, int vertexId2);
+	bool	edgeExists(int vertexId1, int vertexId2) const;
 	const T* const getData(int vertexId);
-	int countEdges() const;
-	int countNodes() const;
-	int** getMatrixRepresentation() const;
-	void printBFS(int sourceId) const;
-	void printDFS(int sourceId) const;
-	bool detachVertex(int vertexId); 
+	int		countEdges() const;
+	int		countNodes() const;
+	int		**getMatrixRepresentation() const;
+	void	printBFS(int sourceId) const;
+	void	printDFS(int sourceId) const;
+	bool	detachVertex(int vertexId); 
 
+	//	Futures function 
+	void	setUniq_values(const bool newValue);
+	int		getIDbyValue(const T data)const;
 private:
 
-	vector <T>			_id_of_node;
+	vector <T>			_db;
 	vector <SomeNode>	_ids;
 	unsigned int		_max_size_can_be;
 	unsigned int		_counter;
+	bool				_Graph_ValuesUniqe;
 	
-	int getVectorPos(const int Uniq_ID) const;
-	void DeleteAll_Neighbors(const int VertexAxactPosition);
-	void DeleteNeighborByID(const int SelfID,const int NeighborID);
-	bool HaveEdge(const int SelfID,const int NeighborID)const;
+	int		getVectorPos(const int Uniq_ID) const;
+	void	DeleteAll_Neighbors(const int VertexAxactPosition);
+	void	DeleteNeighborByID(const int SelfID,const int NeighborID);
+	bool	HaveEdge(const int SelfID,const int NeighborID)const;
 
 };
 
@@ -53,7 +57,34 @@ Graph<T>::Graph()
 {
 	_max_size_can_be	= MAX_DEFAULT_SIZE_CAN_BE;
 	_counter			=	0;
+	_Graph_ValuesUniqe	=	false;
 }  
+
+//=============================================================================
+template <class T> 
+int	Graph<T>::getIDbyValue(const T data)const
+{
+	const int VertexCount = countNodes();
+
+	for(int i=0;i<VertexCount;i++)
+	{
+		if(_db[i] == data)
+		{
+			return(_ids[i]._Node_id);
+		}
+	}
+	return(0);
+}
+
+//=============================================================================
+template <class T> 
+void Graph<T>::setUniq_values(const bool newValue)
+{
+	if(countNodes() == 0)
+		_Graph_ValuesUniqe = newValue;
+	else if(countNodes() != 0 && _Graph_ValuesUniqe && !newValue)
+		_Graph_ValuesUniqe = newValue;
+}
 //=============================================================================
 
 /* Adds a vertex to the graph *
@@ -61,8 +92,12 @@ Graph<T>::Graph()
 template <class T> 
 int Graph<T>::addVertex(const T data)
 {
+	if(_Graph_ValuesUniqe && getIDbyValue(data))
+	{
+		return(0);
+	}
 	_counter++;
-	_id_of_node.push_back(data);
+	_db.push_back(data);
 
 	SomeNode newNode;
 	newNode._Node_id = _counter;
@@ -151,7 +186,7 @@ bool Graph<T>::removeVertex(int vertexId)
 	if(Uniq_Pos)
 	{
 		DeleteAll_Neighbors(Uniq_Pos-1);
-		_id_of_node.erase(_id_of_node.begin()+Uniq_Pos-1);
+		_db.erase(_db.begin()+Uniq_Pos-1);
 		_ids.erase(_ids.begin()+Uniq_Pos-1);
 		return(true);
 	}
@@ -241,7 +276,7 @@ const T* const Graph<T>::getData(int vertexId)
 	T			*s			=	NULL;
 
 	if(Ver_Pos)
-		s = &_id_of_node[Ver_Pos-1];
+		s = &_db[Ver_Pos-1];
 
 	return(s);
 }
@@ -272,7 +307,7 @@ int Graph<T>::countEdges() const
 template <class T>
 int Graph<T>::countNodes() const
 {
-	const int count = (int)_id_of_node.size();
+	const int count = (int)_db.size();
 	return(count);
 }
 
@@ -283,7 +318,7 @@ template <class T>
 int** Graph<T>::getMatrixRepresentation() const
 {
 
-	const int Row_Size = 1+_id_of_node.size();
+	const int Row_Size = 1+_db.size();
 	int **cols=NULL;
 
 	cols = new(std::nothrow) int*[Row_Size];
@@ -315,9 +350,10 @@ int** Graph<T>::getMatrixRepresentation() const
 	}
 
 	for(int i =1;i<Row_Size;i++)
-		for(int j=1;j<Row_Size;j++)
+		for(int j=i;j<Row_Size;j++)
 		{
 			cols[i][j] = edgeExists(cols[0][i],cols[j][0]);	
+			cols[j][i] = cols[i][j];	
 		}
 
 	return(cols);
@@ -340,7 +376,7 @@ void Graph<T>::printBFS(int sourceId) const
 		cout << "[" << _ids[i]._Node_id << "]";
 
 		if(Vertex_Size_Bo)
-			cout << " - " << _id_of_node[i] << " \t-\tHave :\n\t";
+			cout << " - " << _db[i] << " \t-\tHave :\n\t";
 		else
 			cout << "\t\t*******************************************************\n";
 
@@ -391,7 +427,7 @@ void Graph<T>::printDFS(int sourceId) const
 
 				_colors[i-1] = 1;
 				
-				cout << _id_of_node[vertex] << ":[" << i << "]" << _id_of_node[i-1] << " ";
+				cout << _db[vertex] << ":[" << i << "]" << _db[i-1] << " ";
 			}
 		}
 		cout << "\n";
