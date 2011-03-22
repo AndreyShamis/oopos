@@ -31,7 +31,7 @@ int main()
 	int ver_size = 6;
 	for(int i = 0;i<ver_size;i++)
 	{
-		int id = someGraph.addVertex(data*i+1);
+		int id = someGraph.addVertex(data+i);
 		//cout << "NUMBER:\t" << id << "\t \t VALUE:\t" << data*i+1 << "\n";
 	}
 	cout << "Builded\n";
@@ -45,24 +45,28 @@ int main()
 		someGraph.addEdge(i+(((ver_size-6)*(ver_size-1)*i)%ver_size),(i*x)%11);
 		someGraph.addEdge((x-(x*3)%(ver_size-1))%ver_size,i*i%7);
 	}*/
-	for(int i = 1;i<ver_size+1;i++)
-	{
-		for(int j = 1;j<ver_size+1;j++)
-		{
-			someGraph.addEdge(i,i+i);
-		}
-	}
+	//for(int i = 1;i<ver_size+1;i++)
+	//{
+	//	for(int j = 1;j<ver_size+1;j++)
+	//	{
+	//		someGraph.addEdge(i,i+i);
+	//	}
+	//}
+	someGraph.addEdge(2,1);
+	someGraph.addEdge(2,4);
+	someGraph.addEdge(2,5);
+	someGraph.addEdge(5,3);
+	someGraph.printBFS(2);
+	//someGraph.addVertex(78);
+	//someGraph.addVertex(78);
+	//someGraph.addVertex(78);
+	//someGraph.addVertex(78);
+	//someGraph.addVertex(78);
+	//someGraph.addVertex(78);
+	//someGraph.addVertex(78);
 
-	someGraph.addVertex(78);
-	someGraph.addVertex(78);
-	someGraph.addVertex(78);
-	someGraph.addVertex(78);
-	someGraph.addVertex(78);
-	someGraph.addVertex(78);
-	someGraph.addVertex(78);
 
-
-	someGraph.addEdge(7,3);
+	//someGraph.addEdge(7,3);
 
 	//someGraph.detachVertex(4); 
 
@@ -93,7 +97,7 @@ int main()
 	//someGraph.removeVertex(2);
 
 
-	matr = someGraph.getMatrixRepresentation();
+	/*matr = someGraph.getMatrixRepresentation();
 	for(int i=0;i<someGraph.countNodes()+1;i++)
 	{
 		for(int j=0;j<someGraph.countNodes()+1;j++)
@@ -101,7 +105,7 @@ int main()
 
 		cout << "\n";
 
-	}
+	}*/
 	//cout << "Edges size " << someGraph.countEdges() << ".\n";
 	//cout << "Nodes count " << someGraph.countNodes() << "\n";
 

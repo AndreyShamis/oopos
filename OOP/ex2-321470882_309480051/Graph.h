@@ -10,6 +10,9 @@ using namespace std;
 template <class T> 
 class Graph : public HadassahGraph<T>
 {
+	enum VertexState { White, Gray, Black };
+
+
 	struct SomeNode
 	{
 		int				_Node_id;
@@ -365,6 +368,125 @@ int** Graph<T>::getMatrixRepresentation() const
 template  <class T>
 void Graph<T>::printBFS(int sourceId) const
 {
+	int					*_colors ;					//	Data Base of colors
+	const int NodesSize = countNodes();				//	Number of Vertex
+	_colors				= new int[NodesSize];		//	Create colors
+	vector<int>			buffer;						//	FIFO
+	int **matrix		= getMatrixRepresentation();//	DataBase of edges
+	const int Uniq_Pos	= getVectorPos(sourceId);	//	Source Vertex place
+
+	memset(_colors,0,NodesSize*sizeof(int));					//	Set colors for edges
+	
+	cout << "Looking for ID: " << sourceId << " Vertex\n";	//	NAHUY STERET
+
+	buffer.push_back(Uniq_Pos-1);							
+	_colors[Uniq_Pos-1] = 1;
+	const T* data = NULL;
+
+	while(buffer.size())
+	{
+		int vertex = buffer[0];
+		//cout << "Vetex neighbors size: " << _ids[vertex]._neighbors.size() << " of vertex num:Pos: " << vertex << "\n";
+
+
+		cout << "|(" << _ids[vertex]._Node_id << "): " << _db[vertex]  << " |";
+		for(int i = 1; i<NodesSize+1;i++)
+		{
+		//	//	I tut ne pomnyu
+			//cout << i << " " << vertex << "\t";
+			//cout << "Color: " << _colors[i-1] << "\t";
+			//cout << "Matrix value : " << matrix[vertex][i] << "\n";
+			if(matrix[vertex+1][i] && _colors[i-1]==0)
+			{
+		//		//	Cheto ya nepomnyu chto kuda i kak
+				//if(_colors[i-1]==1)
+				//cout << "Vertex:" << vertex+1 << ":" << i << " and pos " << i-2 <<  "\n";
+				buffer.push_back(i);
+				_colors[i-1] = 1;
+				cout << ",(" << matrix[0][i] << "): " << _db[i]  << " |";
+				//cout << _db[vertex] << ":[" << i-1 << "]" << _db[i-1] << " ";
+			}
+		}
+		cout << "\n";
+		_colors[vertex] = 2;
+		buffer.erase(buffer.begin()+0);
+	}
+
+	//	Clean Used memory in matrix
+	for(int i =0;i<NodesSize+1;i++)
+		delete [] matrix[i];
+
+	//	clear color memery used
+	delete _colors;
+}
+
+
+////=============================================================================
+///* Prints a DFS traversal of the graph  *
+//*  Returns nothing .                    */
+//template  <class T>
+//void Graph<T>::printDFS(int sourceId) const
+//{
+//	
+//
+//
+//}
+//	
+// 
+//
+// 
+//void Graph::DFS() {
+//      VertexState *state = new VertexState[vertexCount];
+//      for (int i = 0; i < vertexCount; i++)
+//            state[i] = White;
+//      runDFS(0, state);
+//      delete [] state;
+//}
+// 
+//void Graph::runDFS(int u, VertexState state[]) {
+//      state[u] = Gray;
+//      for (int v = 0; v < vertexCount; v++)
+//            if (isEdge(u, v) && state[v] == White)
+//                  runDFS(v, state);
+//      state[u] = Black;
+//}
+//
+
+
+
+
+	//const int Vertex_Size = _ids.size();
+
+	//for(int i=0;i<Vertex_Size;i++)
+	//{
+		
+
+		//const int Vertex_Size_Bo = _ids[i]._neighbors.size(); ;
+
+		//cout << "[" << _ids[i]._Node_id << "]";
+
+		//if(Vertex_Size_Bo)
+		//	cout << " - " << _db[i] << " \t-\tHave :\n\t";
+		//else
+		//	cout << "\t\t*******************************************************\n";
+
+		//for(int j=0;j<Vertex_Size_Bo;j++)
+		//{
+		//	cout << " ;ID:"<<_ids[i]._neighbors[j];
+		//}
+
+		//cout << "\n";
+	//}
+//}
+
+
+//=============================================================================
+/* Prints a DFS traversal of the graph  *
+*  Returns nothing .                    */
+template  <class T>
+void Graph<T>::printDFS(int sourceId) const
+{
+
 	const int Vertex_Size = _ids.size();
 
 	for(int i=0;i<Vertex_Size;i++)
@@ -387,61 +509,6 @@ void Graph<T>::printBFS(int sourceId) const
 
 		cout << "\n";
 	}
-}
-
-//=============================================================================
-/* Prints a DFS traversal of the graph  *
-*  Returns nothing .                    */
-template  <class T>
-void Graph<T>::printDFS(int sourceId) const
-{
-	//	Toli BFS
-	//	Toli DFS
-	//	...zabil
-	int					*_colors ;					//	Data Base of colors
-	const int NodesSize = countNodes();				//	Number of Vertex
-	_colors				= new int[NodesSize];		//	Create colors
-	vector<int>			buffer;						//	FIFO
-	int **matrix		= getMatrixRepresentation();//	DataBase of edges
-	const int Uniq_Pos	= getVectorPos(sourceId);	//	Source Vertex place
-
-	memset(_colors,0,NodesSize);					//	Set colors for edges
-	
-	cout << "Lookingf for " << Uniq_Pos << "Vertex\n";	//	NAHUY STERET
-
-	buffer.push_back(sourceId);							
-	_colors[Uniq_Pos] = 1;
-	
-	while(buffer.size())
-	{
-		int vertex = buffer[0];
-		cout << "Vertex:" << vertex << ": ";
-		for(int i = 1; i<NodesSize+1;i++)
-		{
-			//	I tut ne pomnyu
-			if(matrix[vertex][i] && _colors[i-1] <2)
-			{
-				//	Cheto ya nepomnyu chto kuda i kak
-				if(_colors[i-1]==1)
-					buffer.push_back(i-1);
-
-				_colors[i-1] = 1;
-				
-				cout << _db[vertex] << ":[" << i << "]" << _db[i-1] << " ";
-			}
-		}
-		cout << "\n";
-		_colors[vertex] = 2;
-		buffer.erase(buffer.begin());
-	}
-
-	//	Clean Used memory in matrix
-	for(int i =0;i<NodesSize+1;i++)
-		delete [] matrix[i];
-
-	//	clear color memery used
-	delete _colors;
-
 }
 
 //=============================================================================
