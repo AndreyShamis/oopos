@@ -52,11 +52,36 @@ int main()
 	//		someGraph.addEdge(i,i+i);
 	//	}
 	//}
-	someGraph.addEdge(2,1);
+	someGraph.addEdge(1,2);
+	someGraph.addEdge(1,6);
 	someGraph.addEdge(2,4);
-	someGraph.addEdge(2,5);
+	someGraph.addEdge(4,6);
 	someGraph.addEdge(5,3);
+
+//####################################################################
+//## OBA ALGORITMA RABOTAUT _ ZASHEBIS!!!!!!!!!!!!!! -- NO PROVER!!!##
+//##================================================================##
+//####################################################################
+
+
+	//+++++++++++++++++++++++++++DFS TEST+++++++++++++++++++++++++++++++++++//
+
+	cout << "Print: DFS\n";			
+	someGraph.printDFS(2);
+
+
+	//+++++++++++++++++++++++++++BFS TEST+++++++++++++++++++++++++++++++++++//
+
+	cout << "Print: BFS\n";
 	someGraph.printBFS(2);
+
+
+
+
+
+
+
+
 	//someGraph.addVertex(78);
 	//someGraph.addVertex(78);
 	//someGraph.addVertex(78);
