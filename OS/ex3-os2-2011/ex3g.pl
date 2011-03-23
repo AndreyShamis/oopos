@@ -32,15 +32,16 @@ if ($fh->open("DAS2-fs1-2003-1.swf.gz", "r"))
 			$HoH{$jobNumber}{'Runtime'} 	= $runtime;
 		}
 
-		if($counter > 90)
+		if($counter > 20)
 		{
 			last;
 		}
 	}
 	$fh->close;
 }
-sort(%HoH);
-while(($key)=each(%HoH)) {
+
+
+foreach $key (sort keys %HoH) {
     
     print "$key";
 }
