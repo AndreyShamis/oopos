@@ -44,6 +44,25 @@ Function wich provide function use the graph only with unique values.
 	2)	Second case work only if the graph actualy is unique and 
 have only unique value and you want to transform the graph to not 
 unique value vertex.
+
+	*** BFS (breadth-first search) 
+the algorithem was build at the classic way (include all 3 colors of vertexes)
+which leave the option for extantion of the algorithem to his real goal (like
+builde breadth-first search Tree, calculation of shorter distanases from the 
+sourse vertex to the leafs). practecly, there is no need of the black color in 
+the algorithem (we do not need line 483 at file Graph:"state[vertex] = Black;")
+because unfortunately the asaitmen did not tell to do full functioning Breadth-
+First Search algorithem.
+
+	*** DFS (Depth-first search)
+the algorithem was build at the special recursiv way. there is main DFS 
+function that initiat the algorithem (paint vertex to wight, translate the
+real id of the sourse verte in thr vector of id's, and call the DFS main 
+"angen" recursiv function - as aresult we do not need another data structur
+like "queue" or "stak" that usualy used at DFS algorithem.practecly, there 
+is no need of the black color in the algorithem we chenge the use of black 
+color to gray color an as a result we use 2 colors, still we use 3 colores 
+because of the same reasonse as discrib above at "BFS" chapter.
 -------------------------------------------------------------------------------
 
 	*** Select vertex by DATA value(getIDbyValue())
