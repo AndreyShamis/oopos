@@ -1,10 +1,4 @@
-//
-//  @ Project : Graph
-//  @ File Name : main.cpp
-//  @ Date : 13/3/2011
-//  @ Authors : Ilia Gaysinski and Andrey Shamis
-//	@ Description : 
-//
+
 
 #include <iostream>
 #include "macros.h"
