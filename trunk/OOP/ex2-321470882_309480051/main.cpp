@@ -28,7 +28,7 @@ int main()
 
 	//someGraph.setUniq_values(true);
 	int data = 10;
-	int ver_size = 6;
+	int ver_size = 12;
 	for(int i = 0;i<ver_size;i++)
 	{
 		int id = someGraph.addVertex(data+i);
@@ -57,7 +57,10 @@ int main()
 	someGraph.addEdge(2,4);
 	someGraph.addEdge(4,6);
 	someGraph.addEdge(5,3);
-
+someGraph.addEdge(12,11);
+someGraph.addEdge(4,8);
+someGraph.addEdge(4,10);
+someGraph.addEdge(8,12);
 //####################################################################
 //## OBA ALGORITMA RABOTAUT _ ZASHEBIS!!!!!!!!!!!!!! -- NO PROVER!!!##
 //##================================================================##
