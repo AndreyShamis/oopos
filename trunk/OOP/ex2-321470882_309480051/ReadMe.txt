@@ -36,9 +36,18 @@ Main data structures and their functionality:
 Notable algorithms:												
 //=============================================================================
 
+	*** Set unique values Graph
+Function wich provide function use the graph only with unique values.
+	1)	First case work only if no found any vertex in graph
+	2)	Second case work only if the graph actualy is unique and have only 
+unique value and you want to transform the graph to not unique value vertex
 
-
-
+	*** Select vertex by ID(getIDbyValue())
+Function wich can find some vertex by him value.
+It is advisable to use this feature only if the graph is set to unique values. 
+Anyway the decision to use this feature being touted developer.
+Function returns a value PIM for vertex in the first it finds that 
+contains the specified value.
 
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Interesting points:															
