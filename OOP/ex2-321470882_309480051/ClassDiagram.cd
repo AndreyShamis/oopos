@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Graph&lt;T&gt;">
+    <Position X="0.75" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="Graph&lt;T&gt;::VertexState" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Graph.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Struct Name="Graph&lt;T&gt;::SomeNode" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Graph.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAQgDAQAAAMAAKJECAEAIAAYCAAAAgAIEAAgAADAAA=</HashCode>
+      <FileName>Graph.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HadassahGraph&lt;T&gt;">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAMAAIAECAEAAAAYAAAAAAAAEAAAAABAAA=</HashCode>
+      <FileName>HadassahGraph.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI Semibold" Size="8.25" />
+</ClassDiagram>
