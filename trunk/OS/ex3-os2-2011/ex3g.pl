@@ -2,6 +2,9 @@
 
 use LWP::Simple;
 use IO::Zlib;
+
+use Data::Dump qw(dump);
+
 $fh = new IO::Zlib;
 
 #$url = get 'http://www.cs.huji.ac.il/labs/parallel/workload/l_das2/DAS2-fs1-2003-1.swf.gz';
@@ -9,6 +12,7 @@ $fh = new IO::Zlib;
 
 my $counter = 0;
 my %HoH = () ;
+
 if ($fh->open("DAS2-fs1-2003-1.swf.gz", "r")) 
 {
 	@data = <$fh>;
@@ -22,14 +26,53 @@ if ($fh->open("DAS2-fs1-2003-1.swf.gz", "r"))
 
 		if($counter>0)
 		{
-			#print $line;
-			my ($jobNumber, $Submit, $wait, $runtime, $proc_alloc, $cpu_used, $mem_used
-			,$proc_req,$user_est,$mem_req,$status,$uid,$gid,$exe_num,$q_num,$partition,$prev_job,$think_time)=split(/\t/,$line);
+			$string =  $line;
+			$string =~ s/^\s+//; 
+			
+			my (
+					$jobNumber, 
+					$Submit, 
+					$wait,
+					$runtime, 
+					$procalloc, 
+					$cpuused, 
+					$memused,
+					$procreq,
+					$userest,
+					$memreq,
+					$status,
+					$uid,
+					$gid,
+					$exenum,
+					$qnum,
+					$partition,
+					$prevjob,
+					$thinktime
+				)
+				=	split(/\s+/,$string);
 			$counter++;
-			$HoH{$jobNumber}{'jobNumber'} 	= $jobNumber;
-			$HoH{$jobNumber}{'Submit'} 		= $Submit;
-			$HoH{$jobNumber}{'Wait'} 		= $wait;
-			$HoH{$jobNumber}{'Runtime'} 	= $runtime;
+			$HoH{$jobNumber} = 
+			{
+				'jobNumber' 	=> $jobNumber,
+				'submit' 		=> $Submit,
+				'wait' 			=> $wait,
+				'runtime' 		=> $runtime,
+				'procalloc' 	=> $procalloc,
+				'cpuused' 		=> $cpuused,
+				'memused' 		=> $memused,
+				'procreq' 		=> $procreq,
+				'userest' 		=> $userest,
+				'memreq' 		=> $memreq,
+				'status' 		=> $status,
+				'uid' 			=> $uid,
+				'gid' 			=> $gid,
+				'exenum' 		=> $exenum,
+				'qnum' 			=> $qnum,
+				'partition' 	=> $partition,
+				'prevjob' 		=> $prevjob,
+				'thinktime' 	=> $thinktime,
+			};
+			
 		}
 
 		if($counter > 20)
@@ -39,11 +82,8 @@ if ($fh->open("DAS2-fs1-2003-1.swf.gz", "r"))
 	}
 	$fh->close;
 }
-
-
-foreach $key (sort keys %HoH) {
-    
-    print "$key";
-}
 	
-#print $url;
+	
+	
+	print dump(%HoH);
+
