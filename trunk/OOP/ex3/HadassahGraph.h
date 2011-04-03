@@ -59,7 +59,7 @@ public:
 	*  Returns nothing .                    */
 	//virtual void printDFS(int sourceId) const=0;
 
-	virtual const vector <int> getVectorOfIdsBFS(int sourceId) const=0;
+	//virtual const vector <int> getVectorOfIdsBFS(int sourceId) const=0;
 	//virtual const vector <int> getVectorOfIdsDFS(int sourceId) const=0;
 
 	/* Deataches a vertex from its neighbours    *
