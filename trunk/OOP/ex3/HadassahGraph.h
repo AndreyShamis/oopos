@@ -57,7 +57,10 @@ public:
 
 	/* Prints a DFS traversal of the graph  *
 	*  Returns nothing .                    */
-	virtual void printDFS(int sourceId) const=0;
+	//virtual void printDFS(int sourceId) const=0;
+
+	virtual vector <int> getVectorOfIdsBFS(int sourceId) const=0;
+	virtual vector <int> getVectorOfIdsDFS(int sourceId) const=0;
 
 	/* Deataches a vertex from its neighbours    *
 	*  Returns false if vertex does not exists.  */
