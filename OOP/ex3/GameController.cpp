@@ -2,10 +2,14 @@
 
 GameController::GameController()
 {
+	glMatrixMode(GL_PROJECTION);		//	Glut
+    glLoadIdentity();					//	Glut
+    gluOrtho2D(0, 500, 0, 500);			//	Glut
 }
 
 GameController::~GameController()
 {
+
 }
 
 void GameController::LoadGame()
