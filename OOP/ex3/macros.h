@@ -15,3 +15,4 @@
 #include <math.h>
 //#include <GL/glut.h>
 #include <glut.h>				//	USED IN OUR VERSION OF GLUT
+#include "Vertex.h"

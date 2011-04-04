@@ -37,7 +37,7 @@ public:
 
 	/* Get the data of a vertex in the graph                        *
 	*  Returns the data of type T, NULL if vertex does not exists.  */
-	virtual const T* const getData(int vertexId)=0;
+	virtual T* const getData(int vertexId)=0;
 
 	/* Count graph edges                         *
 	*  Returns the number of edges in the graph  */
