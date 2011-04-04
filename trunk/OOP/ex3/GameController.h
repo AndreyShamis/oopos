@@ -1,10 +1,13 @@
 #pragma once
 #include "Graph.h"
 #include "Vertex.h"
+#include "GraphIterator.h"
 
 class GameController
 {
 public:
+	static GameController *getInst();
+
 	void LoadGame();
 	void idle()
 	{
@@ -14,6 +17,7 @@ public:
 	{
 		;
 	}
-	GameController(void);
-	~GameController(void);
+private:
+	static GameController *_instance;
+	GameController();
 };

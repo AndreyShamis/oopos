@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="ex3"
 	ProjectGUID="{2CF7A4D5-14ED-4EAA-84EB-D2D284D57953}"
 	RootNamespace="ex3"
@@ -179,10 +179,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Iterator.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Lights.cpp"
 				>
 			</File>
@@ -213,11 +209,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GraphIterator.h"
+				>
+			</File>
+			<File
 				RelativePath=".\HadassahGraph.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Iterator.h"
+				RelativePath=".\Iterators.h"
+				>
+			</File>
+			<File
+				RelativePath=".\IterBFS.h"
+				>
+			</File>
+			<File
+				RelativePath=".\IterDFS.h"
 				>
 			</File>
 			<File

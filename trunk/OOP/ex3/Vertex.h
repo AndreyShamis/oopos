@@ -9,7 +9,7 @@ public:
 	{
 		if(_id == other._id)
 			return(true);
-
+ 
 		return(false);
 
 	}
@@ -24,6 +24,11 @@ public:
 	void Draw()
 	{
 		;
+	}
+
+	int GetID()const
+	{
+		return(_id);
 	}
 private:
 	float _x;

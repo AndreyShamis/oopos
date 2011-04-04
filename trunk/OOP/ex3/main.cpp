@@ -1,5 +1,6 @@
 #include "macros.h"
 
+#include "GameController.h"
 //Paint paint;
 // Window size in pixels
 int WindowHeight;
@@ -80,6 +81,9 @@ void LoadCallBacksForGlut()
 //=============================================================================
 // main function
 int main(int argc, char** argv){
+
+
+	GameController::getInst()->LoadGame();
 	glutInit(&argc, argv);
 	glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB);
 	glutInitWindowSize (500,500); 
