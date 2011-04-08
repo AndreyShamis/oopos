@@ -1,10 +1,9 @@
 #pragma once
 
-#include "macros.h"
-template <class T> 
-class Iterators
-{
+template <class T> class Iterator{
 public:
 
+
+protected:
 
 };

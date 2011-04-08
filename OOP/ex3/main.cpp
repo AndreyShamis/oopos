@@ -1,44 +1,7 @@
+
 #include "macros.h"
-
 #include "GameController.h"
-//Paint paint;
-// Window size in pixels
-//int WindowHeight;
-//int WindowWidth;
 
-////=============================================================================
-////
-//void display() {
-//	//Paint::getInst()->display();
-//}
-////=============================================================================
-//// the function which called to idel
-//void idle(){
-//	//Paint::getInst()->idle();
-//}
-
-////=============================================================================
-//// the function which provide  select from menu
-//void selectFromMenu(int commandId){
-//	//Paint::getInst()->selectFromMenu(commandId);
-//}
-
-//=============================================================================
-// the function which provide menu set shape color
-void mnuSetShapeColor(int colorid){
-	//Paint::getInst()->mnuSetColor(colorid);
-}
-//=============================================================================
-// the function which provide menu clear
-void mnuClear(int colorid){
-	//Paint::getInst()->clearFromMenu(colorid);
-}
-
-//=============================================================================
-// the function which provide  menu resize
-void mnuResize(int commandID){
-	//Paint::getInst()->mnuResize(commandID);
-}
 ////=============================================================================
 //// the function which provide mouse button
 //void mouseButton(int button, int state, int x, int y){
@@ -86,11 +49,11 @@ int main(int argc, char** argv){
 	
 	glutInit(&argc, argv);
 	glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB);
-	glutInitWindowSize (500,500); 
+	glutInitWindowSize (600,600); 
 	glutInitWindowPosition (100,100);
-	glPointSize(10);
+	//glPointSize(15);
 	glutCreateWindow ("Lights - Andrey Shamis AND Ilia Gaysinsky");
-	glClearColor(1.0, 1.0, 1.0,0.0);
+	glClearColor(0.0, 0.0, 0.0,0.0);
 
 	GameController::getInst()->LoadGame();
 	glutMainLoop();
