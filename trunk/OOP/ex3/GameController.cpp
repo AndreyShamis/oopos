@@ -10,6 +10,7 @@ int			GameController::_grSize = 9;
 
 int	GameController::_WindowHeight;
 int	GameController::_WindowWidth;
+int	GameController::_ID_OF_CENTER_VERTEX = 0;
 Graph<Vertex>  GameController::_someGraph;
 Graph<Vertex>  GameController::_FullGraph;
 //=============================================================================
@@ -29,6 +30,7 @@ GameController::GameController()
 	glMatrixMode(GL_PROJECTION);		//	Glut
     glLoadIdentity();					//	Glut
     gluOrtho2D(0, 600, 0, 600);			//	Glut 
+	
 
 	_GameMod = _MENU;
 }
@@ -39,26 +41,13 @@ void GameController::LoadGame()
 	LoadCallBacksForGlut();
 	createGameGraph();
 
-	Graph<Vertex>::GraphIterator<Vertex> it(_someGraph);
-	//GraphIterator<Vertex> it(&someGraph);
-	//GraphIterator<Vertex> it(&someGraph);
-
-	for(;it != it.end() ;it++)
-	{
-		cout << "Ya ";// <<;
-		cout << (*it)->GetID() << "\n";
-
-	}
 }
 
 //=============================================================================
 //
 void GameController::createGameGraph()
 {
-	//Vertex tmp(0.1,0.1,1,1);
 
-	//int id = _someGraph.addVertex(tmp);
-	//_someGraph.removeVertex(id);
 
 	createFullGraph(); 
 	_FullGraph = _someGraph;
@@ -116,12 +105,16 @@ void GameController::createFullGraph()
 						cout << "0";
 					cout << "\n";
 					
-					int sosedi = (int)_someGraph.NeighborsCount(DFS[j]);
+					//_someGraph.detachVertex(DFS[i]);
+					//_someGraph.addEdge(DFS[i],DFS[j]);
+
+					int sosedi = (int)_someGraph.NeighborsCount(DFS[i]);
 					for(int la =0;la<sosedi;la++)
 					{
-						_someGraph.getData(DFS[j])->ChangeEdge(la);
+						_someGraph.getData(DFS[i])->ChangeEdge(la);
 					}
 					
+
 					break;
 				}
 			}
@@ -141,10 +134,7 @@ void GameController::creatQuadGraph(const int rowSize)
     int col_size = rowSize;
 
     Vertex newVertex(x,y,4,(1-0.2)/rowSize);
-   // int isd =_someGraph.addVertex(newVertex);
-	//_someGraph.removeVertex(isd);
 
-	cout << "Start\n";
     for(int i= 0; i< rowSize;i++)
     {
         prev_id=0;
@@ -164,20 +154,14 @@ void GameController::creatQuadGraph(const int rowSize)
 				_someGraph.addEdge(id-rowSize,id);
 
             prev_id=id;
-                
+               
+			if((rowSize+1)/2 == i && (col_size+1)/2 == j)
+				_ID_OF_CENTER_VERTEX = id;
         }
 
     }   
-	//int **matr = _someGraph.getMatrixRepresentation();
 
-	//for(int i=0;i<_someGraph.countNodes()+1;i++)
-	//{
-	//	for(int j=0;j<_someGraph.countNodes()+1;j++)
-	//		cout  << setw(2) << matr[i][j];
-
-	//	cout << "\n";
-
-	//}
+	//cout << _someGraph.countEdges() << "---------\n";
 }
 
 //=============================================================================
@@ -186,56 +170,30 @@ void GameController::mouseButton(int button, int state, int x, int y)
 {
 	if(button == 0 && state == 1)
 	{
-	float xPos = ((float)x)/((float)(_WindowWidth-1));
-	float yPos = ((float)y)/((float)(_WindowHeight-1));
-	yPos = 1.0f-yPos;
+		float xPos = ((float)x)/((float)(_WindowWidth-1));
+		float yPos = ((float)y)/((float)(_WindowHeight-1));
+		yPos = 1.0f-yPos;
 
-	cout << "X: " << xPos << "\t Y: " << yPos << "\n";
+	//cout << "X: " << xPos << "\t Y: " << yPos << "\n";
 
-	Graph<Vertex>::GraphIterator<Vertex> it(_someGraph);
-float resx = 10;
-float resy = 10;
-int id = 0;
-	for(;it != it.end() ;it++)
-	{
-		float vertX = (*it)->getX();
-		float vertY = (*it)->getY();
+		Graph<Vertex>::GraphIterator<Vertex> it(_someGraph);
+		float resx = 10;
+		float resy = 10;
+		int id = 0;
+		for(;it != it.end() ;it++)
+		{
+			float vertX = (*it)->getX();
+			float vertY = (*it)->getY();
 
-		 if(abs(vertX-xPos) <=  resx && abs(vertY-yPos) <= resy)
-		 {
-			 resx = abs(vertX-xPos) ;
-			 resy = abs(vertY-yPos);
-			id = (*it)->GetID();
-		//	 cout << "-ID: " << (*it)->GetID() << "::" << vertX << " " << vertY << " " << abs(vertX-xPos) << " " <<  abs(vertY-yPos) << "\n";
-
-		 }
-		// else
-		// {
-		//	 cout << "ID: " << (*it)->GetID() << "::" << vertX << " " << vertY << " " << abs(vertX-xPos) << " " <<  abs(vertY-yPos) << "\n";
-		// }
-		 
-		//if( resx < 1/5 && resy < 1/5)
-		//{
-		//	cout << "Found:" << (*it)->GetID() << "\n"; 
-		//}
-		//cout << resx << "   " << resy << "\n";
-		//Graph<Vertex>::NeighborIterator<Vertex> nei(_someGraph,(*it)->GetID());
-		//for(;nei != nei.end() ;it++)
-		//{
-		//	cout << " - " << (*nei)->GetID();
-		//}
-		//cout << "\n";
+			 if(abs(vertX-xPos) <=  resx && abs(vertY-yPos) <= resy)
+			 {
+				 resx = abs(vertX-xPos) ;
+				 resy = abs(vertY-yPos);
+				id = (*it)->GetID();
+			}
+		}
+		_someGraph.getData(id)->Shift();
 	}
-	cout << "Found:" << id << "\n"; 
-	//Paint::getInst()->mouseButton(button,state,xPos,yPos);
-	}
-}
-
-//=============================================================================
-// the function which provide  select from menu
-void GameController::selectFromMenu(int commandId)
-{
-	//Paint::getInst()->selectFromMenu(commandId);
 }
 
 //=============================================================================
@@ -259,10 +217,6 @@ void GameController::LoadCallBacksForGlut()
 	glutIdleFunc(idle);
 	glutDisplayFunc(display);  
 	glutMouseFunc (mouseButton);
-	//glutKeyboardFunc(KeyPress);
-
-	//	Sound Play
-	//sndPlaySound(L"SOUND/BackGround_Sound.wav", SND_LOOP | SND_ASYNC );
 }
 
 //=============================================================================
@@ -276,12 +230,7 @@ void GameController::display()
 	for(;it != it.end() ;it++)
 	{
 		(*it)->Draw();
-		//Graph<Vertex>::NeighborIterator<Vertex> nei(_someGraph,(*it)->GetID());
-		//for(;nei != nei.end() ;it++)
-		//{
-		//	cout << " - " << (*nei)->GetID();
-		//}
-		//cout << "\n";
+		
 	}
 
 	glFlush() ;									//	Glut

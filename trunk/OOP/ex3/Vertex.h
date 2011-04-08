@@ -43,6 +43,14 @@ public:
 		_future_edge[place] = true;
 	}
 
+	void LightOFF()
+	{
+		_lighted = false;
+	}
+	void LightON()
+	{
+		_lighted = true;
+	}
 private:
 	float _x;
 	float _y;
