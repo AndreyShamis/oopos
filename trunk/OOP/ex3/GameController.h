@@ -1,7 +1,14 @@
 #pragma once
-#include "Graph.h"
+#include "macros.h"
 #include "Vertex.h"
+#include "Graph.h"
+#include <time.h>
+#include <iomanip>
 //#include "GraphIterator.h"
+
+using namespace std;
+
+enum graphKind {Quad, Hexagonal};
 
 enum GAME_MODE
 {
@@ -21,10 +28,18 @@ public:
 	static void LoadGame();
 	static void idle();
 	static void display();
+	static void createGameGraph();
+	static void createFullGraph();
+	static void creatQuadGraph(const int rowSize);
+	static void creatHexagonalGraph();
 
 private:
 
+	int _level;
+	static graphKind	_grKind;
+	static int			_grSize;
 	static Graph<Vertex>  _someGraph;
+	static Graph<Vertex>  _FullGraph;
 	// Window size in pixels
 	static int _WindowHeight;
 	static int _WindowWidth;

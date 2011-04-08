@@ -15,43 +15,40 @@ public:
 		return(false);
 
 	}
-
-	Vertex(const float X, const float Y);
-	~Vertex(void);
-	void SetID(const int val)
-	{
-		_id = val;
-	}
-
-	void Draw()
-	{
-
-
-		//	Load geen
-
-		// Start drawing a dot 
-		glEnable(GL_POINT_SMOOTH);
-		glPointSize(20.0);
-
-		glBegin(GL_POINTS);
-		//std::cout << "Draw\t";
-		//std::cout << "X: " << _x << "\t:: Y: " << _y << "\n";
-									// set point size
-		glColor3f(0.0, 1.0, 0.0);	// Set color of shape
-		glVertex2f (_x, _y);						// set point of shape		
-		glEnd();									// End of drawing a vertical
-	}
-
+	Vertex(const float X, const float Y,const int EdgesSize);
+	void SetID(const int val);
+	void Draw();
 	int GetID()const
 	{
 		return(_id);
 	}
+	float getX()const
+	{
+		return(_x);
+	}
+	float getY()const
+	{
+		return(_y);
+	}
+
+	void Shift()
+	{
+		bool first = _future_edge[0];
+		_future_edge.erase(_future_edge.begin());
+		_future_edge.push_back(first);
+	}
+
+	void ChangeEdge(const int place)
+	{
+		_future_edge[place] = true;
+	}
+
 private:
 	float _x;
 	float _y;
 	bool  _lighted;
-	unsigned int _id;
+	int _id;
 
-	std::vector<int> _future_edge;
+	std::vector<bool> _future_edge;
 
 };
