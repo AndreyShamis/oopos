@@ -1,11 +1,12 @@
 #include "Vertex.h"
 
-Vertex::Vertex(const float X, const float Y,const int EdgesSize)
+Vertex::Vertex(const float X, const float Y,const int EdgesSize,const float dist)
 {
 	_x = X;
 	_y = Y;
-
-	for(int i =0;i<EdgesSize;i++)
+	_dist = dist;
+	 MAX_VEC_SIZE = EdgesSize;
+	for(int i =0;i<MAX_VEC_SIZE;i++)
 	{
 		_future_edge.push_back(false);
 	}
@@ -18,7 +19,7 @@ void Vertex::Draw()
 {
 	// Start drawing a dot 
 	glEnable(GL_POINT_SMOOTH);
-	glPointSize(500);
+	glPointSize(20);
 
 	glBegin(GL_POINTS);
 	//std::cout << "Draw\t";
@@ -26,5 +27,22 @@ void Vertex::Draw()
 								// set point size
 	glColor3f(1.0, 1.0, 0.0);	// Set color of shape
 	glVertex2f (_x, _y);						// set point of shape		
+
 	glEnd();									// End of drawing a vertical
+
+	for(int i=0;i<(int)_future_edge.size();i++)
+	{
+		if(_future_edge[i])
+		{
+			glBegin(GL_LINES);							// Start drawing a vertical
+			glColor3f(0.4, 0.8, 0.0);  	// Set color of shape
+
+			// set points of shape
+
+			glVertex2f (_x, _y);								
+			glVertex2f (_x -(_dist/2)*cos(float(i*360/MAX_VEC_SIZE)), _y - (_dist/2)*sin(float(i*360/MAX_VEC_SIZE)));	
+
+			glEnd();									// End of drawing a vertical
+		}
+	}
 }

@@ -15,7 +15,7 @@ public:
 		return(false);
 
 	}
-	Vertex(const float X, const float Y,const int EdgesSize);
+	Vertex(const float X, const float Y,const int EdgesSize,const float dist);
 	void SetID(const int val);
 	void Draw();
 	int GetID()const
@@ -48,7 +48,9 @@ private:
 	float _y;
 	bool  _lighted;
 	int _id;
-
+	float _dist;
+	
+	int MAX_VEC_SIZE;
 	std::vector<bool> _future_edge;
 
 };
