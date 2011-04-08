@@ -55,6 +55,11 @@ void GameController::LoadGame()
 //
 void GameController::createGameGraph()
 {
+	//Vertex tmp(0.1,0.1,1,1);
+
+	//int id = _someGraph.addVertex(tmp);
+	//_someGraph.removeVertex(id);
+
 	createFullGraph(); 
 	_FullGraph = _someGraph;
 
@@ -79,6 +84,7 @@ void GameController::createFullGraph()
 		if(StartVertex == i)
 		{
 			StartVertex = (*it)->GetID();
+			break;
 		}
 		i++;
 	}
@@ -100,7 +106,7 @@ void GameController::createFullGraph()
 
 	vector<int> DFS = _someGraph.getVectorOfIdsDFS(StartVertex);
 
-	for(int i =1;i<(int)DFS.size();i++)
+	for(int i=0;i<(int)DFS.size();i++)
 	{
 		Graph<Vertex>::NeighborIterator<Vertex> nei(_someGraph,DFS[i]);
 		for(;nei != nei.end() ;nei++)
@@ -109,8 +115,25 @@ void GameController::createFullGraph()
 			{
 				if(DFS[j] == (*nei)->GetID())
 				{
-					cout << tan(3.14*(_someGraph.getData(DFS[i])->getY()-_someGraph.getData(DFS[j])->getY())/(_someGraph.getData(DFS[i])->getX()-_someGraph.getData(DFS[j])->getX()));
+					
+					float distY=_someGraph.getData(DFS[i])->getY()-_someGraph.getData(DFS[j])->getY();
+					float distX =_someGraph.getData(DFS[i])->getX()-_someGraph.getData(DFS[j])->getX();
+					float dist = sqrt(distX*distX + distY*distY);
+					//cout << "Distan:" << dist << "\n";
+
+					cout  << "Sin:"<< sin((distX)/dist) << "\tCos:" << cos(distY/dist) <<  "\n";
+					if(distX)
+						cout << tan(distY*3.14/distX)/180;
+					else
+						cout << "0";
 					cout << "\n";
+					
+					int sosedi = (int)_someGraph.NeighborsCount(DFS[j]);
+					for(int la =0;la<sosedi;la++)
+					{
+						_someGraph.getData(DFS[j])->ChangeEdge(la);
+					}
+					
 					break;
 				}
 			}
@@ -129,6 +152,10 @@ void GameController::creatQuadGraph(const int rowSize)
 	int prev_id		= 0;
     int col_size = rowSize;
 
+    Vertex newVertex(x,y,4,(1-0.2)/rowSize);
+   // int isd =_someGraph.addVertex(newVertex);
+	//_someGraph.removeVertex(isd);
+
 	cout << "Start\n";
     for(int i= 0; i< rowSize;i++)
     {
@@ -137,10 +164,11 @@ void GameController::creatQuadGraph(const int rowSize)
         {
             float x = (float)(i+1)*(1-0.2)/rowSize;
             float y = (float)(j+1)*(1-0.2)/col_size;
-            Vertex newVertex(x,y,4);
+            Vertex newVertex(x,y,4,(1-0.2)/rowSize);
             int id =_someGraph.addVertex(newVertex);
-
-            newVertex.SetID(id);
+			
+			_someGraph.getData(id)->SetID(id);
+            //newVertex.SetID(id);
             if(prev_id)
 				_someGraph.addEdge(prev_id,id);
 
