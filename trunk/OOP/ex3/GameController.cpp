@@ -74,8 +74,10 @@ void GameController::createFullGraph()
 	else
 		//creatHexagonalGraph();
 		;
-	Graph<Vertex>::GraphIterator<Vertex> it(_someGraph);
 
+
+	///	Looking for rundom DFS vertex
+	Graph<Vertex>::GraphIterator<Vertex> it(_someGraph);
 	int StartVertex =  rand()%_someGraph.countNodes();
 	int i=0;
 	for(;it != it.end() ;it++)
@@ -89,21 +91,7 @@ void GameController::createFullGraph()
 		i++;
 	}
 
-	
-	//Graph<Vertex>::DFSIterator<Vertex> nei(_someGraph,StartVertex);
-	//for(;nei != nei.end() ;nei++)
-	//{
-	//	Graph<Vertex>::NeighborIterator<Vertex> nei(_someGraph,(*it)->GetID());
-	//	for(;nei != nei.end() ;it++)
-	//	{
-	//		cout << " - " << (*nei)->GetID();
-	//	}
-
-	//	cout << " - " << (*nei)->GetID();
-
-	//}
-	//cout << "\n";
-
+	// Get vector of ids by DFS
 	vector<int> DFS = _someGraph.getVectorOfIdsDFS(StartVertex);
 
 	for(int i=0;i<(int)DFS.size();i++)
