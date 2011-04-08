@@ -126,7 +126,7 @@ void GameController::createFullGraph()
 
 	for(int i=0;i<(int)_back_adg.size();i++)
 	{
-		_someGraph.addEdge(_back_adg[i].vert1,_back_adg[i].vert2 );
+		//_someGraph.addEdge(_back_adg[i].vert1,_back_adg[i].vert2 );
 
 		int sosedi = (int)_someGraph.NeighborsCount(_back_adg[i].vert1);
 
@@ -187,7 +187,7 @@ void GameController::creatQuadGraph(const int rowSize)
 
             prev_id=id;
                
-			if((rowSize+1)/2 == i && (col_size+1)/2 == j)
+			if((rowSize-1)/2 == i && (col_size-1)/2 == j)
 				_ID_OF_CENTER_VERTEX = id;
         }
 
@@ -225,6 +225,16 @@ void GameController::mouseButton(int button, int state, int x, int y)
 			}
 		}
 		_someGraph.getData(id)->Shift();
+		Graph<Vertex>::GraphIterator<Vertex> it(_someGraph);
+
+		for(;it != it.end() ;it++)
+		{
+			(*it)->Draw();
+			(*it)->LightOFF();
+			
+		}
+
+
 	}
 }
 
@@ -262,6 +272,7 @@ void GameController::display()
 	for(;it != it.end() ;it++)
 	{
 		(*it)->Draw();
+		(*it)->LightOFF();
 		
 	}
 
@@ -274,6 +285,18 @@ void GameController::display()
 //	Idle function 
 void GameController::idle()
 {
+	//Graph<Vertex>::BFSIterator<Vertex> it(_someGraph,_ID_OF_CENTER_VERTEX);
+
+	vector<int> _BFS = _someGraph.getVectorOfIdsBFS(_ID_OF_CENTER_VERTEX);
+	for(int i=0;i<_BFS.size();i++)
+	{
+		_someGraph.getData(_BFS[i])->LightON();
+	}
+	//for(;it != it.end() ;it++)
+	//{
+	//	(*it)->LightON();
+	//	
+	//}
 
 	//if(_GameMod == _PLAY)
 		display();			//	call display function
