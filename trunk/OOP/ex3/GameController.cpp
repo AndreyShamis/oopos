@@ -71,7 +71,6 @@ void GameController::createFullGraph()
 	int i=0;
 	for(;it != it.end() ;it++)
 	{
-
 		if(StartVertex == i)
 		{
 			StartVertex = (*it)->GetID();
@@ -83,44 +82,77 @@ void GameController::createFullGraph()
 	// Get vector of ids by DFS
 	vector<int> DFS = _someGraph.getVectorOfIdsDFS(StartVertex);
 
+	vector<AddEdges> _back_adg;
 	for(int i=0;i<(int)DFS.size();i++)
 	{
 		Graph<Vertex>::NeighborIterator<Vertex> nei(_someGraph,DFS[i]);
 		for(;nei != nei.end() ;nei++)
 		{
+			bool found = false;
 			for(int j = i-1;j>=0;j--)
 			{
 				if(DFS[j] == (*nei)->GetID())
 				{
-					
-					float distY=_someGraph.getData(DFS[i])->getY()-_someGraph.getData(DFS[j])->getY();
-					float distX =_someGraph.getData(DFS[i])->getX()-_someGraph.getData(DFS[j])->getX();
-					float dist = sqrt(distX*distX + distY*distY);
-					//cout << "Distan:" << dist << "\n";
-
-					cout  << "Sin:"<< sin((distX)/dist) << "\tCos:" << cos(distY/dist) <<  "\n";
-					if(distX)
-						cout << tan(distY*3.14/distX)/180;
-					else
-						cout << "0";
-					cout << "\n";
-					
-					//_someGraph.detachVertex(DFS[i]);
-					//_someGraph.addEdge(DFS[i],DFS[j]);
-
-					int sosedi = (int)_someGraph.NeighborsCount(DFS[i]);
-					for(int la =0;la<sosedi;la++)
+					AddEdges tmp;
+					tmp.vert1 = DFS[i];
+					tmp.vert2 = DFS[j];
+					_back_adg.push_back(tmp);
+					if(_someGraph.NeighborsCount(DFS[i]) >1 )
 					{
-						_someGraph.getData(DFS[i])->ChangeEdge(la);
+						if(rand()%2 != 1)
+							found = true;
 					}
-					
+					else
+					{
+						found = true;
+					}
 
 					break;
 				}
+
 			}
-			//cout << " - " << (*nei)->GetID();
+
+			if(found)
+			{
+				break;
+			}
 		}		
 	}
+
+	for(int i=0;i<(int)DFS.size();i++)
+	{
+		_someGraph.detachVertex(DFS[i]);
+	}
+
+	for(int i=0;i<(int)_back_adg.size();i++)
+	{
+		_someGraph.addEdge(_back_adg[i].vert1,_back_adg[i].vert2 );
+
+		int sosedi = (int)_someGraph.NeighborsCount(_back_adg[i].vert1);
+
+		_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(sosedi);
+
+		sosedi = (int)_someGraph.NeighborsCount(_back_adg[i].vert2);
+		_someGraph.getData(_back_adg[i].vert2 )->ChangeEdge((sosedi+2)%4);
+
+
+
+	}
+
+
+	//				float distY=_someGraph.getData(DFS[i])->getY()-_someGraph.getData(DFS[j])->getY();
+	//				float distX =_someGraph.getData(DFS[i])->getX()-_someGraph.getData(DFS[j])->getX();
+	//				float dist = sqrt(distX*distX + distY*distY);
+	//				//cout << "Distan:" << dist << "\n";
+
+	//				cout  << "Sin:"<< sin((distX)/dist) << "\tCos:" << cos(distY/dist) <<  "\n";
+	//				if(distX)
+	//					cout << tan(distY*3.14/distX)/180;
+	//				else
+	//					cout << "0";
+	//				cout << "\n";
+
+
 }
 
 //=============================================================================
