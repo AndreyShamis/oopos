@@ -107,9 +107,9 @@ void GameController::createFullGraph()
 		{
 			for(int j = i-1;j>=0;j--)
 			{
-				if(DFS[j] == DFS[i])
+				if(DFS[j] == (*nei)->GetID())
 				{
-					cout << tan(_someGraph.getData(DFS[i])->getY()-_someGraph.getData(DFS[j])->getY()/(_someGraph.getData(DFS[i])->getX()-_someGraph.getData(DFS[j])->getX()));
+					cout << tan(3.14*(_someGraph.getData(DFS[i])->getY()-_someGraph.getData(DFS[j])->getY())/(_someGraph.getData(DFS[i])->getX()-_someGraph.getData(DFS[j])->getX()));
 					cout << "\n";
 					break;
 				}
