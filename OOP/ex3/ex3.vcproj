@@ -183,10 +183,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Lights.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\main.cpp"
 				>
 			</File>
@@ -222,18 +218,6 @@
 			</File>
 			<File
 				RelativePath=".\Iterators.h"
-				>
-			</File>
-			<File
-				RelativePath=".\IterBFS.h"
-				>
-			</File>
-			<File
-				RelativePath=".\IterDFS.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Lights.h"
 				>
 			</File>
 			<File

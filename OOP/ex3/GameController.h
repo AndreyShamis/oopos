@@ -46,4 +46,6 @@ private:
 	static GameController *_instance;
 	GameController();
 	GAME_MODE	_GameMod;
+
+	static int _ID_OF_CENTER_VERTEX;
 };
