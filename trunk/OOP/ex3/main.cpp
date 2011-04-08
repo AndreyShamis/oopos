@@ -49,7 +49,7 @@ int main(int argc, char** argv){
 	
 	glutInit(&argc, argv);
 	glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB);
-	glutInitWindowSize (600,600); 
+	glutInitWindowSize (500,500); 
 	glutInitWindowPosition (100,100);
 	//glPointSize(15);
 	glutCreateWindow ("Lights - Andrey Shamis AND Ilia Gaysinsky");

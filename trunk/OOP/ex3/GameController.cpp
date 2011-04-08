@@ -13,6 +13,9 @@ int	GameController::_WindowWidth;
 int	GameController::_ID_OF_CENTER_VERTEX = 0;
 Graph<Vertex>  GameController::_someGraph;
 Graph<Vertex>  GameController::_FullGraph;
+Graph<Vertex>  GameController::_Solution;
+
+
 //=============================================================================
 //	Return pointer to created? class-object
 GameController *GameController::getInst()
@@ -50,8 +53,10 @@ void GameController::createGameGraph()
 
 
 	createFullGraph(); 
-	_FullGraph = _someGraph;
+	
+	FindElectrecisty();
 
+	
 }
 
 //=============================================================================
@@ -64,6 +69,7 @@ void GameController::createFullGraph()
 		//creatHexagonalGraph();
 		;
 
+	_FullGraph = _someGraph;
 
 	///	Looking for rundom DFS vertex
 	Graph<Vertex>::GraphIterator<Vertex> it(_someGraph);
@@ -96,16 +102,20 @@ void GameController::createFullGraph()
 					AddEdges tmp;
 					tmp.vert1 = DFS[i];
 					tmp.vert2 = DFS[j];
+
+					_Solution.getData(DFS[i])->setFather(DFS[j]);
+					_Solution.addEdge(tmp.vert1,tmp.vert2);
+
 					_back_adg.push_back(tmp);
-					if(_someGraph.NeighborsCount(DFS[i]) >1 )
-					{
-						if(rand()%2 != 1)
-							found = true;
-					}
-					else
-					{
+	//				if(_someGraph.NeighborsCount(DFS[i]) >1 )
+	//				{
+	//					if(rand()%2 != 1)
+	//						found = true;
+	//				}
+	//				else
+	//				{
 						found = true;
-					}
+	//				}
 
 					break;
 				}
@@ -128,29 +138,39 @@ void GameController::createFullGraph()
 	{
 		//_someGraph.addEdge(_back_adg[i].vert1,_back_adg[i].vert2 );
 
+		if(_someGraph.getData(_back_adg[i].vert1)->getX() > _someGraph.getData(_back_adg[i].vert2)->getX())
+		{   
+			_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(0);
+			_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(2);
+		}
+		else if(_someGraph.getData(_back_adg[i].vert1)->getX() < _someGraph.getData(_back_adg[i].vert2)->getX())
+		{
+			_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(2);
+			_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(0);
+		}
+
+		else if(_someGraph.getData(_back_adg[i].vert1)->getY() > _someGraph.getData(_back_adg[i].vert2)->getY())
+		{   
+			_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(1);
+			_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(3);
+		}
+		else if(_someGraph.getData(_back_adg[i].vert1)->getY() < _someGraph.getData(_back_adg[i].vert2)->getY())
+		{
+			_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(3);
+			_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(1);
+		}
+		/*
+
 		int sosedi = (int)_someGraph.NeighborsCount(_back_adg[i].vert1);
 
 		_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(sosedi);
 
 		sosedi = (int)_someGraph.NeighborsCount(_back_adg[i].vert2);
-		_someGraph.getData(_back_adg[i].vert2 )->ChangeEdge((sosedi+2)%4);
+		_someGraph.getData(_back_adg[i].vert2)->ChangeEdge((sosedi+2)%3);
 
 
-
+		  */
 	}
-
-
-	//				float distY=_someGraph.getData(DFS[i])->getY()-_someGraph.getData(DFS[j])->getY();
-	//				float distX =_someGraph.getData(DFS[i])->getX()-_someGraph.getData(DFS[j])->getX();
-	//				float dist = sqrt(distX*distX + distY*distY);
-	//				//cout << "Distan:" << dist << "\n";
-
-	//				cout  << "Sin:"<< sin((distX)/dist) << "\tCos:" << cos(distY/dist) <<  "\n";
-	//				if(distX)
-	//					cout << tan(distY*3.14/distX)/180;
-	//				else
-	//					cout << "0";
-	//				cout << "\n";
 
 
 }
@@ -177,6 +197,8 @@ void GameController::creatQuadGraph(const int rowSize)
             Vertex newVertex(x,y,4,(1-0.2)/rowSize);
             int id =_someGraph.addVertex(newVertex);
 			
+			_Solution.addVertex(newVertex);			
+			//_Solution.getData(id)->SetID(id);
 			_someGraph.getData(id)->SetID(id);
             //newVertex.SetID(id);
             if(prev_id)
@@ -206,8 +228,14 @@ void GameController::mouseButton(int button, int state, int x, int y)
 		float yPos = ((float)y)/((float)(_WindowHeight-1));
 		yPos = 1.0f-yPos;
 
-	//cout << "X: " << xPos << "\t Y: " << yPos << "\n";
-
+		
+		Graph<Vertex>::GraphIterator<Vertex> detach(_someGraph);
+		for(;detach != detach.end() ;detach++)
+		{
+			_someGraph.detachVertex((*detach)->GetID());
+		}
+							
+		//	Looking For Pressed Vertex
 		Graph<Vertex>::GraphIterator<Vertex> it(_someGraph);
 		float resx = 10;
 		float resy = 10;
@@ -224,20 +252,42 @@ void GameController::mouseButton(int button, int state, int x, int y)
 				id = (*it)->GetID();
 			}
 		}
-		_someGraph.getData(id)->Shift();
-		Graph<Vertex>::GraphIterator<Vertex> it(_someGraph);
+		//	End pressed Vertex
+		_someGraph.getData(id)->Shift();	//	Shift the vertex
 
-		for(;it != it.end() ;it++)
-		{
-			(*it)->Draw();
-			(*it)->LightOFF();
-			
-		}
-
-
+		FindElectrecisty();
+		
 	}
 }
 
+
+void GameController::FindElectrecisty()
+{
+// Start put real edges
+	Graph<Vertex>::GraphIterator<Vertex> it1(_someGraph);
+	for(;it1 != it1.end() ;it1++)
+	{		
+		vector<bool> _futedges = (*it1)->getFutEdg();
+		for(int i=0;i<_futedges.size();i++)
+		{
+			if(_futedges[i])
+			{
+				Graph<Vertex>::NeighborIterator<Vertex> it2(_FullGraph,(*it1)->GetID());
+				for(;it2 != it2.end();it2++)
+				{
+					vector<bool> _futedgesS = _someGraph.getData((*it2)->GetID())->getFutEdg();
+					if(_futedgesS[(i+2)%3] && ((*it1)->getX() > (*it2)->getX() || (*it1)->getY() < (*it2)->getY()) )
+					{
+						_someGraph.addEdge((*it1)->GetID(),(*it2)->GetID());
+						break;
+					}
+				}
+			}
+		}	
+
+	}
+
+}
 //=============================================================================
 // the function which provide resize window
 void GameController::resizeWindow(int w, int h)
@@ -266,14 +316,12 @@ void GameController::LoadCallBacksForGlut()
 void GameController::display()
 {
 	glClear(GL_COLOR_BUFFER_BIT );				//	Glut
-
 	Graph<Vertex>::GraphIterator<Vertex> it(_someGraph);
 
 	for(;it != it.end() ;it++)
 	{
 		(*it)->Draw();
-		(*it)->LightOFF();
-		
+		(*it)->LightOFF();		
 	}
 
 	glFlush() ;									//	Glut
@@ -292,11 +340,6 @@ void GameController::idle()
 	{
 		_someGraph.getData(_BFS[i])->LightON();
 	}
-	//for(;it != it.end() ;it++)
-	//{
-	//	(*it)->LightON();
-	//	
-	//}
 
 	//if(_GameMod == _PLAY)
 		display();			//	call display function

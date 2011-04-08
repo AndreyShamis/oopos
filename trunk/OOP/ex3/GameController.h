@@ -40,11 +40,13 @@ public:
 
 private:
 
+	static void FindElectrecisty();
 	int _level;
 	static graphKind	_grKind;
 	static int			_grSize;
 	static Graph<Vertex>  _someGraph;
 	static Graph<Vertex>  _FullGraph;
+	static Graph<Vertex>  _Solution;
 	// Window size in pixels
 	static int _WindowHeight;
 	static int _WindowWidth;

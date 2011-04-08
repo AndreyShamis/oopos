@@ -28,7 +28,7 @@ void Vertex::Draw()
 			// set points of shape
 
 			glVertex2f (_x, _y);								
-			glVertex2f (_x +(_dist/2)*cos(float(i*360/MAX_VEC_SIZE)*(3.1415926535/180)), _y + (_dist/2)*sin(float(i*360/MAX_VEC_SIZE)*(3.1415926535/180)));	
+			glVertex2f (_x -(_dist/2)*cos(float(i*360/MAX_VEC_SIZE)*(3.1415926535/180)), _y - (_dist/2)*sin(float(i*360/MAX_VEC_SIZE)*(3.1415926535/180)));	
 
 			glEnd();									// End of drawing a vertical
 		}

@@ -51,6 +51,14 @@ public:
 	{
 		_lighted = true;
 	}
+	void setFather(const int value)
+	{
+		_father = value;
+	}
+	const std::vector<bool> getFutEdg()
+	{
+		return(_future_edge);
+	}
 private:
 	float _x;
 	float _y;
@@ -58,6 +66,7 @@ private:
 	int _id;
 	float _dist;
 	
+	int _father;
 	int MAX_VEC_SIZE;
 	std::vector<bool> _future_edge;
 
