@@ -17,6 +17,11 @@ enum GAME_MODE
 
 };
 
+struct AddEdges
+{
+	int vert1;
+	int vert2;
+};
 class GameController
 {
 public:
