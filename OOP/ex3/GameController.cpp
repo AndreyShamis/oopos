@@ -60,6 +60,7 @@ GameController::GameController()
     gluOrtho2D(0, 500, 0, 500);			//	Glut 
 	
 
+	_grKind = Hexagonal;
 	_GameMod = _MENU;
 }
 //=============================================================================
@@ -83,6 +84,103 @@ void GameController::createGameGraph()
 
 //=============================================================================
 //
+void GameController::creatQuadGraph(const int rowSize)
+{
+	
+	int id			= 0;
+	float x			= 0;
+	float y			= 0;
+	int prev_id		= 0;
+    int col_size = rowSize;
+
+    Vertex newVertex(x,y,4,(1-0.2)/rowSize);
+
+    for(int i= 0; i< rowSize;i++)
+    {
+        prev_id=0;
+        for(int j= 0; j< col_size;j++)
+        {
+            float x = (float)(i+1)*(1-0.2)/rowSize;
+            float y = (float)(j+1)*(1-0.2)/col_size;
+            Vertex newVertex(x,y,4,(1-0.2)/rowSize);
+            int id =_someGraph.addVertex(newVertex);
+			
+			_someGraph.getData(id)->SetID(id);
+            if(prev_id)
+				_someGraph.addEdge(prev_id,id);
+
+            if(i)
+				_someGraph.addEdge(id-rowSize,id);
+
+            prev_id=id;
+               
+			if((rowSize-1)/2 == i && (col_size-1)/2 == j)
+				_ID_OF_CENTER_VERTEX = id;
+        }
+
+    }   
+}
+//=============================================================================
+//
+void GameController::creatHexagonalGraph(const int size)
+{
+	vector<int> _layer;
+	vector<int> _layer_new;
+	int start = 2  ;
+	float dist	= (1-0.2)/(2*size);
+	for(int i =0;i<size;i++)
+	{
+		int id_prev = 0; 
+		for(int j=start;j<2*size-1-start;j+=2)
+		{
+			float x = 0.1 + (j+1)*dist;
+			float y = 2*((i+1))*dist;
+			Vertex newVertex(x,y,6,dist*2);
+			int id = _someGraph.addVertex(newVertex);
+			_someGraph.getData(id)->SetID(id);
+
+			_layer_new.push_back(id);
+
+			if(id_prev)
+				_someGraph.addEdge(id,id_prev);
+
+			id_prev = id;
+		}
+
+		if(i<size/2)
+		{
+			for(int is=0;is<_layer.size();is++)
+			{
+				_someGraph.addEdge(_layer[i],_layer_new[i]);
+				_someGraph.addEdge(_layer[i],_layer_new[i+1]);
+
+			}
+		
+		}
+		else if(i+1>size/2)
+		{
+			for(int is=0;is<_layer_new.size();is++)
+			{
+				//_someGraph.addEdge(_layer_new[i],_layer[i]);
+				//_someGraph.addEdge(_layer_new[i],_layer[i+1]);
+
+			}		
+		}
+
+		if(i<size/2){
+			start--;
+		}
+		else{
+			start++;	
+		}
+		_layer = _layer_new;
+		_layer_new.clear();
+
+	}
+
+}
+//=============================================================================
+//
 void GameController::createFullGraph()
 {
 	if(_grKind == Quad)
@@ -90,8 +188,8 @@ void GameController::createFullGraph()
 		creatQuadGraph(5+_level*2);
 	}
 	else
-		//creatHexagonalGraph();
-		;
+		creatHexagonalGraph(5+_level*2);
+		
 
 	_FullGraph = _someGraph;
 
@@ -146,29 +244,80 @@ void GameController::createFullGraph()
 		_someGraph.detachVertex(DFS[i]);
 	}
 
-	const int vecSize2 =(int)_back_adg.size(); 
-	for(int i=0;i<vecSize2;i++)
+	if(_grKind == Quad)
 	{
-		if(_someGraph.getData(_back_adg[i].vert1)->getX() > _someGraph.getData(_back_adg[i].vert2)->getX())
-		{   
-			_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(0);
-			_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(2);
-		}
-		else if(_someGraph.getData(_back_adg[i].vert1)->getX() < _someGraph.getData(_back_adg[i].vert2)->getX())
+		const int vecSize2 =(int)_back_adg.size(); 
+		for(int i=0;i<vecSize2;i++)
 		{
-			_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(2);
-			_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(0);
-		}
+			if(_someGraph.getData(_back_adg[i].vert1)->getX() > _someGraph.getData(_back_adg[i].vert2)->getX())
+			{   
+				_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(0);
+				_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(2);
+			}
+			else if(_someGraph.getData(_back_adg[i].vert1)->getX() < _someGraph.getData(_back_adg[i].vert2)->getX())
+			{
+				_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(2);
+				_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(0);
+			}
 
-		else if(_someGraph.getData(_back_adg[i].vert1)->getY() > _someGraph.getData(_back_adg[i].vert2)->getY())
-		{   
-			_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(1);
-			_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(3);
+			else if(_someGraph.getData(_back_adg[i].vert1)->getY() > _someGraph.getData(_back_adg[i].vert2)->getY())
+			{   
+				_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(1);
+				_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(3);
+			}
+			else if(_someGraph.getData(_back_adg[i].vert1)->getY() < _someGraph.getData(_back_adg[i].vert2)->getY())
+			{
+				_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(3);
+				_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(1);
+			}
 		}
-		else if(_someGraph.getData(_back_adg[i].vert1)->getY() < _someGraph.getData(_back_adg[i].vert2)->getY())
+	}
+	else if(_grKind == Hexagonal)
+	{
+const int vecSize2 =(int)_back_adg.size(); 
+		for(int i=0;i<vecSize2;i++)
 		{
-			_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(3);
-			_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(1);
+			if(_someGraph.getData(_back_adg[i].vert1)->getX() > _someGraph.getData(_back_adg[i].vert2)->getX() &&
+				(_someGraph.getData(_back_adg[i].vert1)->getY() > _someGraph.getData(_back_adg[i].vert2)->getY()))
+			{   
+				_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(0);
+				_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(3);
+			}
+			else if(_someGraph.getData(_back_adg[i].vert1)->getX() > _someGraph.getData(_back_adg[i].vert2)->getX() &&
+				(_someGraph.getData(_back_adg[i].vert1)->getY() < _someGraph.getData(_back_adg[i].vert2)->getY()))
+			{  
+				_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(0);
+				_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(5);
+			
+			}
+			else  if(_someGraph.getData(_back_adg[i].vert1)->getX() > _someGraph.getData(_back_adg[i].vert2)->getX() &&
+				(_someGraph.getData(_back_adg[i].vert1)->getY() == _someGraph.getData(_back_adg[i].vert2)->getY()))
+			{
+				_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(0);
+				_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(3);
+
+			}
+			else if(_someGraph.getData(_back_adg[i].vert1)->getX() < _someGraph.getData(_back_adg[i].vert2)->getX() &&
+				(_someGraph.getData(_back_adg[i].vert1)->getY() < _someGraph.getData(_back_adg[i].vert2)->getY()))
+			{   
+				_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(3);
+				_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(0);
+			}
+			else if(_someGraph.getData(_back_adg[i].vert1)->getX() < _someGraph.getData(_back_adg[i].vert2)->getX() &&
+				(_someGraph.getData(_back_adg[i].vert1)->getY() > _someGraph.getData(_back_adg[i].vert2)->getY()))
+			{  
+				_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(5);
+				_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(0);
+			
+			}
+			else  if(_someGraph.getData(_back_adg[i].vert1)->getX() < _someGraph.getData(_back_adg[i].vert2)->getX() &&
+				(_someGraph.getData(_back_adg[i].vert1)->getY() == _someGraph.getData(_back_adg[i].vert2)->getY()))
+			{
+				_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(3);
+				_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(0);
+
+			}
+			
 		}
 	}
 }
@@ -187,44 +336,7 @@ void GameController::ClearAll()
 
 }
 
-//=============================================================================
-//
-void GameController::creatQuadGraph(const int rowSize)
-{
-	
-	int id			= 0;
-	float x			= 0;
-	float y			= 0;
-	int prev_id		= 0;
-    int col_size = rowSize;
 
-    Vertex newVertex(x,y,4,(1-0.2)/rowSize);
-
-    for(int i= 0; i< rowSize;i++)
-    {
-        prev_id=0;
-        for(int j= 0; j< col_size;j++)
-        {
-            float x = (float)(i+1)*(1-0.2)/rowSize;
-            float y = (float)(j+1)*(1-0.2)/col_size;
-            Vertex newVertex(x,y,4,(1-0.2)/rowSize);
-            int id =_someGraph.addVertex(newVertex);
-			
-			_someGraph.getData(id)->SetID(id);
-            if(prev_id)
-				_someGraph.addEdge(prev_id,id);
-
-            if(i)
-				_someGraph.addEdge(id-rowSize,id);
-
-            prev_id=id;
-               
-			if((rowSize-1)/2 == i && (col_size-1)/2 == j)
-				_ID_OF_CENTER_VERTEX = id;
-        }
-
-    }   
-}
 
 //=============================================================================
 // the function which provide mouse button

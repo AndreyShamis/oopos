@@ -12,8 +12,8 @@ enum graphKind {Quad, Hexagonal};
 
 enum GAME_MODE
 {
-	_PLAY = 1,
-	_MENU = 2,
+	_PLAY ,
+	_MENU,
 
 };
 
@@ -36,7 +36,7 @@ public:
 	static void createGameGraph();
 	static void createFullGraph();
 	static void creatQuadGraph(const int rowSize);
-	static void creatHexagonalGraph();
+	static void creatHexagonalGraph(const int size);
 	static void KeyPress(unsigned char key, int x, int y);
 
 private:
