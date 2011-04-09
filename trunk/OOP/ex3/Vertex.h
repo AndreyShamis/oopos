@@ -66,6 +66,7 @@ private:
 	int _id;
 	float _dist;
 	
+	static  float rads ;
 	int _father;
 	int MAX_VEC_SIZE;
 	std::vector<bool> _future_edge;
