@@ -7,6 +7,7 @@ GameController *GameController::_instance = NULL;
 
 graphKind	GameController::_grKind = Quad;
 int			GameController::_grSize = 9;
+int			GameController::_level = 0;
 
 int	GameController::_WindowHeight;
 int	GameController::_WindowWidth;
@@ -15,6 +16,7 @@ Graph<Vertex>  GameController::_someGraph;
 Graph<Vertex>  GameController::_FullGraph;
 Graph<Vertex>  GameController::_Solution;
 
+bool GameController::_show_sol = false;
 
 //=============================================================================
 //	Return pointer to created? class-object
@@ -52,8 +54,9 @@ void GameController::createGameGraph()
 {
 
 
+	_show_sol = false;
 	createFullGraph(); 
-	
+	_Solution = _someGraph;
 	FindElectrecisty();
 
 	
@@ -64,7 +67,9 @@ void GameController::createGameGraph()
 void GameController::createFullGraph()
 {
 	if(_grKind == Quad)
-		creatQuadGraph(5);
+	{
+		creatQuadGraph(5+_level*2);
+	}
 	else
 		//creatHexagonalGraph();
 		;
@@ -73,7 +78,7 @@ void GameController::createFullGraph()
 
 	///	Looking for rundom DFS vertex
 	Graph<Vertex>::GraphIterator<Vertex> it(_someGraph);
-	int StartVertex =  rand()%_someGraph.countNodes();
+	int StartVertex =  rand()%(_someGraph.countNodes()-1);
 	int i=0;
 	for(;it != it.end() ;it++)
 	{
@@ -103,27 +108,13 @@ void GameController::createFullGraph()
 					tmp.vert1 = DFS[i];
 					tmp.vert2 = DFS[j];
 
-					_Solution.getData(DFS[i])->setFather(DFS[j]);
-					_Solution.addEdge(tmp.vert1,tmp.vert2);
-
 					_back_adg.push_back(tmp);
-	//				if(_someGraph.NeighborsCount(DFS[i]) >1 )
-	//				{
-	//					if(rand()%2 != 1)
-	//						found = true;
-	//				}
-	//				else
-	//				{
 						found = true;
-	//				}
-
 					break;
 				}
-
 			}
 
-			if(found)
-			{
+			if(found){
 				break;
 			}
 		}		
@@ -175,10 +166,25 @@ void GameController::createFullGraph()
 
 }
 
+void GameController::ClearAll()
+{
+	Graph<Vertex>::GraphIterator<Vertex> it(_someGraph);
+	cout << "Start delete...\n";
+	for(;it != it.end() ;it++)
+	{
+		_someGraph.removeVertex((*it)->GetID());
+	}
+	_FullGraph = _someGraph;
+	_Solution = _someGraph;
+	cout << "Finish delete!\n";
+
+}
+
 //=============================================================================
 //
 void GameController::creatQuadGraph(const int rowSize)
 {
+	
 	int id			= 0;
 	float x			= 0;
 	float y			= 0;
@@ -197,7 +203,7 @@ void GameController::creatQuadGraph(const int rowSize)
             Vertex newVertex(x,y,4,(1-0.2)/rowSize);
             int id =_someGraph.addVertex(newVertex);
 			
-			_Solution.addVertex(newVertex);			
+			//_Solution.addVertex(newVertex);			
 			//_Solution.getData(id)->SetID(id);
 			_someGraph.getData(id)->SetID(id);
             //newVertex.SetID(id);
@@ -222,12 +228,11 @@ void GameController::creatQuadGraph(const int rowSize)
 // the function which provide mouse button
 void GameController::mouseButton(int button, int state, int x, int y)
 {
-	if(button == 0 && state == 1)
+	if(button == 0 && state == 1 && !_show_sol)
 	{
 		float xPos = ((float)x)/((float)(_WindowWidth-1));
 		float yPos = ((float)y)/((float)(_WindowHeight-1));
 		yPos = 1.0f-yPos;
-
 		
 		Graph<Vertex>::GraphIterator<Vertex> detach(_someGraph);
 		for(;detach != detach.end() ;detach++)
@@ -276,7 +281,9 @@ void GameController::FindElectrecisty()
 				for(;it2 != it2.end();it2++)
 				{
 					vector<bool> _futedgesS = _someGraph.getData((*it2)->GetID())->getFutEdg();
-					if(_futedgesS[(i+2)%3] && ((*it1)->getX() > (*it2)->getX() || (*it1)->getY() < (*it2)->getY()) )
+					if(_futedgesS[(i+2)%4] 
+					&& ((*it1)->getX() >= (*it2)->getX() || (*it1)->getY() <= (*it2)->getY()) 
+					&&  !((*it1)->getX() >= (*it2)->getX() && (*it1)->getY() <= (*it2)->getY()) )
 					{
 						_someGraph.addEdge((*it1)->GetID(),(*it2)->GetID());
 						break;
@@ -309,6 +316,30 @@ void GameController::LoadCallBacksForGlut()
 	glutIdleFunc(idle);
 	glutDisplayFunc(display);  
 	glutMouseFunc (mouseButton);
+	glutKeyboardFunc(KeyPress);
+}
+//=============================================================================
+// the function which provide key press
+void GameController::KeyPress(unsigned char key, int x, int y)
+{
+	
+	if(key == 'x')
+		exit(EXIT_SUCCESS);
+	else if(key == 'n')
+	{
+		ClearAll();
+		createGameGraph();	
+	}
+	else if(key == 'l')
+	{
+		_level++;
+		ClearAll();
+		createGameGraph();	
+	}
+	else if(key == 's')
+	{
+		_show_sol = true;
+	}
 }
 
 //=============================================================================
@@ -316,14 +347,25 @@ void GameController::LoadCallBacksForGlut()
 void GameController::display()
 {
 	glClear(GL_COLOR_BUFFER_BIT );				//	Glut
-	Graph<Vertex>::GraphIterator<Vertex> it(_someGraph);
 
-	for(;it != it.end() ;it++)
+	if(!_show_sol)
 	{
-		(*it)->Draw();
-		(*it)->LightOFF();		
+		Graph<Vertex>::GraphIterator<Vertex> it(_someGraph);
+		for(;it != it.end() ;it++)
+		{
+			(*it)->Draw();
+			(*it)->LightOFF();		
+		}	
 	}
-
+	else
+	{
+		Graph<Vertex>::GraphIterator<Vertex> it(_Solution);
+		for(;it != it.end() ;it++)
+		{
+			(*it)->Draw();
+			//(*it)->LightOFF();		
+		}
+	}
 	glFlush() ;									//	Glut
 	glutSwapBuffers();							//	Glut
 
