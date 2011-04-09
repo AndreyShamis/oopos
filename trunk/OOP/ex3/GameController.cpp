@@ -29,12 +29,35 @@ GameController *GameController::getInst()
 
 }
 //=============================================================================
+// the function which provide key press
+void GameController::KeyPress(unsigned char key, int x, int y)
+{
+	
+	if(key == 'x')
+		exit(EXIT_SUCCESS);
+	else if(key == 'n')
+	{
+		ClearAll();
+		createGameGraph();	
+	}
+	else if(key == 'l')
+	{
+		_level++;
+		ClearAll();
+		createGameGraph();	
+	}
+	else if(key == 's')
+	{
+		_show_sol = true;
+	}
+}
+//=============================================================================
 GameController::GameController()
 {
 	srand ( time(NULL) );
 	glMatrixMode(GL_PROJECTION);		//	Glut
     glLoadIdentity();					//	Glut
-    gluOrtho2D(0, 600, 0, 600);			//	Glut 
+    gluOrtho2D(0, 500, 0, 500);			//	Glut 
 	
 
 	_GameMod = _MENU;
@@ -52,14 +75,10 @@ void GameController::LoadGame()
 //
 void GameController::createGameGraph()
 {
-
-
 	_show_sol = false;
 	createFullGraph(); 
 	_Solution = _someGraph;
-	FindElectrecisty();
-
-	
+	FindElectrecisty();	
 }
 
 //=============================================================================
@@ -94,7 +113,9 @@ void GameController::createFullGraph()
 	vector<int> DFS = _someGraph.getVectorOfIdsDFS(StartVertex);
 
 	vector<AddEdges> _back_adg;
-	for(int i=0;i<(int)DFS.size();i++)
+	const int vecSize0 =	  (int)DFS.size();
+
+	for(int i=0;i<vecSize0;i++)
 	{
 		Graph<Vertex>::NeighborIterator<Vertex> nei(_someGraph,DFS[i]);
 		for(;nei != nei.end() ;nei++)
@@ -119,16 +140,15 @@ void GameController::createFullGraph()
 			}
 		}		
 	}
-
-	for(int i=0;i<(int)DFS.size();i++)
+	const int vecSize = (int)DFS.size();
+	for(int i=0;i<vecSize;i++)
 	{
 		_someGraph.detachVertex(DFS[i]);
 	}
 
-	for(int i=0;i<(int)_back_adg.size();i++)
+	const int vecSize2 =(int)_back_adg.size(); 
+	for(int i=0;i<vecSize2;i++)
 	{
-		//_someGraph.addEdge(_back_adg[i].vert1,_back_adg[i].vert2 );
-
 		if(_someGraph.getData(_back_adg[i].vert1)->getX() > _someGraph.getData(_back_adg[i].vert2)->getX())
 		{   
 			_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(0);
@@ -150,20 +170,7 @@ void GameController::createFullGraph()
 			_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(3);
 			_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(1);
 		}
-		/*
-
-		int sosedi = (int)_someGraph.NeighborsCount(_back_adg[i].vert1);
-
-		_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(sosedi);
-
-		sosedi = (int)_someGraph.NeighborsCount(_back_adg[i].vert2);
-		_someGraph.getData(_back_adg[i].vert2)->ChangeEdge((sosedi+2)%3);
-
-
-		  */
 	}
-
-
 }
 
 void GameController::ClearAll()
@@ -203,10 +210,7 @@ void GameController::creatQuadGraph(const int rowSize)
             Vertex newVertex(x,y,4,(1-0.2)/rowSize);
             int id =_someGraph.addVertex(newVertex);
 			
-			//_Solution.addVertex(newVertex);			
-			//_Solution.getData(id)->SetID(id);
 			_someGraph.getData(id)->SetID(id);
-            //newVertex.SetID(id);
             if(prev_id)
 				_someGraph.addEdge(prev_id,id);
 
@@ -220,8 +224,6 @@ void GameController::creatQuadGraph(const int rowSize)
         }
 
     }   
-
-	//cout << _someGraph.countEdges() << "---------\n";
 }
 
 //=============================================================================
@@ -235,33 +237,34 @@ void GameController::mouseButton(int button, int state, int x, int y)
 		yPos = 1.0f-yPos;
 		
 		Graph<Vertex>::GraphIterator<Vertex> detach(_someGraph);
-		for(;detach != detach.end() ;detach++)
+		//	Detach all edges in graph
+		for(;detach != detach.end();detach++)
 		{
 			_someGraph.detachVertex((*detach)->GetID());
 		}
 							
 		//	Looking For Pressed Vertex
 		Graph<Vertex>::GraphIterator<Vertex> it(_someGraph);
-		float resx = 10;
-		float resy = 10;
-		int id = 0;
+		float resx = 1000;		//	Default value
+		float resy = 1000;		//	Default value
+		int id = 0;				//	vertex nea to klick place
 		for(;it != it.end() ;it++)
 		{
-			float vertX = (*it)->getX();
-			float vertY = (*it)->getY();
+			float vertX = (*it)->getX();	//	get coordinate
+			float vertY = (*it)->getY();	//	also
 
-			 if(abs(vertX-xPos) <=  resx && abs(vertY-yPos) <= resy)
-			 {
-				 resx = abs(vertX-xPos) ;
-				 resy = abs(vertY-yPos);
-				id = (*it)->GetID();
+			//	Try find minimap disrtance
+			if(abs(vertX-xPos) <=  resx && abs(vertY-yPos) <= resy)
+			{
+				//	If found minimal  update flags and counters values
+				resx = abs(vertX-xPos);
+				resy = abs(vertY-yPos);
+				id = (*it)->GetID();		//	set new id
 			}
 		}
 		//	End pressed Vertex
 		_someGraph.getData(id)->Shift();	//	Shift the vertex
-
-		FindElectrecisty();
-		
+		FindElectrecisty();		
 	}
 }
 
@@ -273,7 +276,8 @@ void GameController::FindElectrecisty()
 	for(;it1 != it1.end() ;it1++)
 	{		
 		vector<bool> _futedges = (*it1)->getFutEdg();
-		for(int i=0;i<_futedges.size();i++)
+		const int vec_Size = (int)_futedges.size();
+		for(int i=0;i<vec_Size;i++)
 		{
 			if(_futedges[i])
 			{
@@ -281,9 +285,18 @@ void GameController::FindElectrecisty()
 				for(;it2 != it2.end();it2++)
 				{
 					vector<bool> _futedgesS = _someGraph.getData((*it2)->GetID())->getFutEdg();
-					if(_futedgesS[(i+2)%4] 
-					&& ((*it1)->getX() >= (*it2)->getX() || (*it1)->getY() <= (*it2)->getY()) 
-					&&  !((*it1)->getX() >= (*it2)->getX() && (*it1)->getY() <= (*it2)->getY()) )
+					if(_futedgesS[(i+2)%4 ]
+					&& i <2
+					&& ((*it1)->getX() < (*it2)->getX() || (*it1)->getY() >= (*it2)->getY()) 
+					&&  !((*it1)->getX() < (*it2)->getX() && (*it1)->getY() >= (*it2)->getY()) )
+					{
+						_someGraph.addEdge((*it1)->GetID(),(*it2)->GetID());
+						break;
+					}
+					if(_futedgesS[(i+2)%4 ]
+					&& i >1
+					&& ((*it1)->getX() >=(*it2)->getX() || (*it1)->getY() < (*it2)->getY()) 
+					&&  !((*it1)->getX() >= (*it2)->getX() && (*it1)->getY() < (*it2)->getY()) )
 					{
 						_someGraph.addEdge((*it1)->GetID(),(*it2)->GetID());
 						break;
@@ -318,29 +331,7 @@ void GameController::LoadCallBacksForGlut()
 	glutMouseFunc (mouseButton);
 	glutKeyboardFunc(KeyPress);
 }
-//=============================================================================
-// the function which provide key press
-void GameController::KeyPress(unsigned char key, int x, int y)
-{
-	
-	if(key == 'x')
-		exit(EXIT_SUCCESS);
-	else if(key == 'n')
-	{
-		ClearAll();
-		createGameGraph();	
-	}
-	else if(key == 'l')
-	{
-		_level++;
-		ClearAll();
-		createGameGraph();	
-	}
-	else if(key == 's')
-	{
-		_show_sol = true;
-	}
-}
+
 
 //=============================================================================
 //	Dispaly function
@@ -357,7 +348,7 @@ void GameController::display()
 			(*it)->LightOFF();		
 		}	
 	}
-	else
+	else					
 	{
 		Graph<Vertex>::GraphIterator<Vertex> it(_Solution);
 		for(;it != it.end() ;it++)
@@ -378,7 +369,9 @@ void GameController::idle()
 	//Graph<Vertex>::BFSIterator<Vertex> it(_someGraph,_ID_OF_CENTER_VERTEX);
 
 	vector<int> _BFS = _someGraph.getVectorOfIdsBFS(_ID_OF_CENTER_VERTEX);
-	for(int i=0;i<_BFS.size();i++)
+	const int vecSize =	 (int)_BFS.size();
+	
+	for(int i=0;i<vecSize;i++)
 	{
 		_someGraph.getData(_BFS[i])->LightON();
 	}

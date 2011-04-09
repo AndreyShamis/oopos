@@ -18,6 +18,9 @@ void Vertex::SetID(const int val)
 void Vertex::Draw()
 {
 
+	const float hfSz =	 _dist/2;
+	const float rads = (3.1415926535/180);
+	const float proportion = 360/MAX_VEC_SIZE;
 	for(int i=0;i<(int)_future_edge.size();i++)
 	{
 		if(_future_edge[i])
@@ -28,7 +31,7 @@ void Vertex::Draw()
 			// set points of shape
 
 			glVertex2f (_x, _y);								
-			glVertex2f (_x -(_dist/2)*cos(float(i*360/MAX_VEC_SIZE)*(3.1415926535/180)), _y - (_dist/2)*sin(float(i*360/MAX_VEC_SIZE)*(3.1415926535/180)));	
+			glVertex2f (_x - hfSz*cos(float(i*proportion)*rads), _y - hfSz*sin(float(i*proportion)*rads));	
 
 			glEnd();									// End of drawing a vertical
 		}
