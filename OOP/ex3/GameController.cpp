@@ -138,6 +138,8 @@ void GameController::creatHexagonalGraph(const int size)
 			_someGraph.getData(id)->SetID(id);
 
 			_layer_new.push_back(id);
+			if((size-1)/2 == i && (size-1) == j )
+				_ID_OF_CENTER_VERTEX = id;
 
 			if(id_prev)
 				_someGraph.addEdge(id,id_prev);
