@@ -8,7 +8,7 @@ GameController *GameController::_instance = NULL;
 graphKind	GameController::_grKind = Quad;
 int			GameController::_grSize = 9;
 int			GameController::_level = 0;
-
+short int	GameController::_neighborSize = 0;
 int	GameController::_WindowHeight;
 int	GameController::_WindowWidth;
 int	GameController::_ID_OF_CENTER_VERTEX = 0;
@@ -49,6 +49,21 @@ void GameController::KeyPress(unsigned char key, int x, int y)
 	else if(key == 's')
 	{
 		_show_sol = true;
+	}
+	else if(key == 'q')
+	{
+		_grKind = Quad;
+		ClearAll();
+		createGameGraph();	
+
+	}
+	else if(key == 'h')
+	{
+		_grKind = Hexagonal;
+
+		ClearAll();
+		createGameGraph();	
+
 	}
 }
 //=============================================================================
@@ -185,12 +200,15 @@ void GameController::createFullGraph()
 {
 	if(_grKind == Quad)
 	{
+		_neighborSize = 4;
 		creatQuadGraph(5+_level*2);
 	}
 	else
+	{
+		_neighborSize = 6;
 		creatHexagonalGraph(5+_level*2);
 		
-
+	}
 	_FullGraph = _someGraph;
 
 	///	Looking for rundom DFS vertex
@@ -381,45 +399,135 @@ void GameController::mouseButton(int button, int state, int x, int y)
 }
 
 
+//	get source  vertex id   and place in maybe edge vertex
+void GameController::ElectricityQuadr(const int srcID,const int plc)
+{
+
+	const float srcX = _someGraph.getData(srcID)->getX();
+	const float srcY = _someGraph.getData(srcID)->getY();
+	
+	Graph<Vertex>::NeighborIterator<Vertex> it2(_FullGraph,srcID);
+	
+	for(;it2 != it2.end();it2++)
+	{
+		const int neiID =   (*it2)->GetID();
+		const vector<bool> _futedgesS = _someGraph.getData(neiID)->getFutEdg();
+
+		if(_futedgesS[(plc+(_neighborSize/2))%_neighborSize])
+		{
+			const float neX = _someGraph.getData(neiID)->getX();
+			const float neY = _someGraph.getData(neiID)->getY();
+		
+			const float sumX = neX - srcX;
+			const float sumY = neY - srcY;
+			if(plc%2 == 0 && sumX)
+			{	
+				if(sumX < 0 && (plc+_neighborSize/2) < _neighborSize  )
+				{
+					_someGraph.addEdge(srcID,neiID);					
+				}
+				else if(sumX > 0 && (plc+_neighborSize/2) >= _neighborSize )
+				{
+					_someGraph.addEdge(srcID,neiID);
+				}  
+			}
+			else if(plc%2)
+			{
+				if(sumY > 0 && (plc+_neighborSize/2) > _neighborSize)
+				{
+					_someGraph.addEdge(srcID,neiID);					
+				}
+				else if(sumY < 0 && (plc+_neighborSize/2) < _neighborSize)
+				{
+					_someGraph.addEdge(srcID,neiID);
+				}
+
+			}			
+		}
+	}
+
+}
+
+
+//	get source  vertex id   and place in maybe edge vertex
+void GameController::ElectricityHexdr(const int srcID,const int plc)
+{
+
+	const float srcX = _someGraph.getData(srcID)->getX();
+	const float srcY = _someGraph.getData(srcID)->getY();
+	
+	Graph<Vertex>::NeighborIterator<Vertex> it2(_FullGraph,srcID);
+	
+	for(;it2 != it2.end();it2++)
+	{
+		const int neiID =   (*it2)->GetID();
+		const vector<bool> _futedgesS = _someGraph.getData(neiID)->getFutEdg();
+
+		if(_futedgesS[(plc+(_neighborSize/2))%_neighborSize])
+		{
+			const float neX = _someGraph.getData(neiID)->getX();
+			const float neY = _someGraph.getData(neiID)->getY();
+		
+			const float sumX = neX - srcX;
+			const float sumY = neY - srcY;
+			if(plc%3 == 0 )
+			{	
+				if(sumX < 0 && (plc+_neighborSize/2) < _neighborSize  )
+				{
+					_someGraph.addEdge(srcID,neiID);					
+				}
+				else if(sumX > 0 && (plc+_neighborSize/2) >= _neighborSize )
+				{
+					_someGraph.addEdge(srcID,neiID);
+				}  
+			}
+			else if(plc%2 == 2)
+			{
+				if(sumY > 0 && (plc+_neighborSize/2) > _neighborSize)
+				{
+					_someGraph.addEdge(srcID,neiID);					
+				}
+				else if(sumY < 0 && (plc+_neighborSize/2) < _neighborSize)
+				{
+					_someGraph.addEdge(srcID,neiID);
+				}
+
+			}	
+			else if(plc%2 == 1)
+			{
+
+				cout <<"lol";
+			}
+		}
+	}
+
+}
+
 void GameController::FindElectrecisty()
 {
-// Start put real edges
+	// Start put real edges
 	Graph<Vertex>::GraphIterator<Vertex> it1(_someGraph);
 	for(;it1 != it1.end() ;it1++)
 	{		
-		vector<bool> _futedges = (*it1)->getFutEdg();
+		const vector<bool> _futedges = (*it1)->getFutEdg();
+
 		const int vec_Size = (int)_futedges.size();
+
 		for(int i=0;i<vec_Size;i++)
 		{
 			if(_futedges[i])
 			{
-				Graph<Vertex>::NeighborIterator<Vertex> it2(_FullGraph,(*it1)->GetID());
-				for(;it2 != it2.end();it2++)
-				{
-					vector<bool> _futedgesS = _someGraph.getData((*it2)->GetID())->getFutEdg();
-					if(_futedgesS[(i+2)%4 ]
-					&& i <2
-					&& ((*it1)->getX() < (*it2)->getX() || (*it1)->getY() >= (*it2)->getY()) 
-					&&  !((*it1)->getX() < (*it2)->getX() && (*it1)->getY() >= (*it2)->getY()) )
-					{
-						_someGraph.addEdge((*it1)->GetID(),(*it2)->GetID());
-						break;
-					}
-					if(_futedgesS[(i+2)%4 ]
-					&& i >1
-					&& ((*it1)->getX() >=(*it2)->getX() || (*it1)->getY() < (*it2)->getY()) 
-					&&  !((*it1)->getX() >= (*it2)->getX() && (*it1)->getY() < (*it2)->getY()) )
-					{
-						_someGraph.addEdge((*it1)->GetID(),(*it2)->GetID());
-						break;
-					}
-				}
+				if(_grKind == Quad)
+					ElectricityQuadr((*it1)->GetID(),i);
+				else if(_grKind == Hexagonal)
+					ElectricityHexdr((*it1)->GetID(),i);
+				  
 			}
 		}	
-
 	}
 
 }
+
 //=============================================================================
 // the function which provide resize window
 void GameController::resizeWindow(int w, int h)

@@ -54,8 +54,11 @@ private:
 	static int _WindowHeight;
 	static int _WindowWidth;
 	static GameController *_instance;
+
+	static short int _neighborSize;
 	GameController();
 	GAME_MODE	_GameMod;
-
+	static void ElectricityQuadr(const int srcID,const int plc);
+	static void ElectricityHexdr(const int srcID,const int plc);
 	static int _ID_OF_CENTER_VERTEX;
 };

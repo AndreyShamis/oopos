@@ -21,6 +21,7 @@ void Vertex::Draw()
 {
 	const float hfSz =	 _dist/2; 
 	const float proportion = 360/MAX_VEC_SIZE;
+	std::cout << "ID:" << _id << " " <<(int)_future_edge.size() << "-s;\t";
 	for(int i=0;i<(int)_future_edge.size();i++)
 	{
 		if(_future_edge[i])
