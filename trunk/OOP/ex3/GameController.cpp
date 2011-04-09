@@ -93,8 +93,6 @@ void GameController::creatQuadGraph(const int rowSize)
 	int prev_id		= 0;
     int col_size = rowSize;
 
-    Vertex newVertex(x,y,4,(1-0.2)/rowSize);
-
     for(int i= 0; i< rowSize;i++)
     {
         prev_id=0;
