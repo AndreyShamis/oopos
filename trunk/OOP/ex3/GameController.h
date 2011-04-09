@@ -37,11 +37,14 @@ public:
 	static void createFullGraph();
 	static void creatQuadGraph(const int rowSize);
 	static void creatHexagonalGraph();
+	static void KeyPress(unsigned char key, int x, int y);
 
 private:
 
+	static void ClearAll();
 	static void FindElectrecisty();
-	int _level;
+	static int _level;
+	static bool _show_sol;
 	static graphKind	_grKind;
 	static int			_grSize;
 	static Graph<Vertex>  _someGraph;
