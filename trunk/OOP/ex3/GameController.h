@@ -54,7 +54,8 @@ private:
 	static int _WindowHeight;
 	static int _WindowWidth;
 	static GameController *_instance;
-
+	static void GraphGrinder();
+	static time_t time_game;
 	static short int _neighborSize;
 	GameController();
 	GAME_MODE	_GameMod;

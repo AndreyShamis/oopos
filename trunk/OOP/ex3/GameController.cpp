@@ -8,6 +8,7 @@ GameController *GameController::_instance = NULL;
 graphKind	GameController::_grKind = Quad;
 int			GameController::_grSize = 9;
 int			GameController::_level = 0;
+time_t GameController::time_game = 0;
 short int	GameController::_neighborSize = 0;
 int	GameController::_WindowHeight;
 int	GameController::_WindowWidth;
@@ -91,12 +92,39 @@ void GameController::LoadGame()
 //
 void GameController::createGameGraph()
 {
+
+  time_t seconds;
+
+  seconds = time (NULL);
+
+  if(time_game)
+  {
+		printf ("Game second", (seconds-time_game));
+  }
+	  time_game = seconds   ;
 	_show_sol = false;
 	createFullGraph(); 
 	_Solution = _someGraph;
+	GraphGrinder();
 	FindElectrecisty();	
 }
 
+void GameController::GraphGrinder()
+{
+	Graph<Vertex>::GraphIterator<Vertex> it(_someGraph);
+	//int StartVertex =  rand()%(_someGraph.countNodes()-1);
+	//int i=0;
+	for(;it != it.end() ;it++)
+	{
+		const int rnd = rand()%4;
+
+		for(int i=0;i<rnd;i++)
+		{
+			(*it)->Shift();
+		}
+			
+	}
+}
 //=============================================================================
 //
 void GameController::creatQuadGraph(const int rowSize)
@@ -146,38 +174,40 @@ void GameController::creatHexagonalGraph(const int size)
 		int id_prev = 0; 
 		for(int j=start;j<2*size-1-start;j+=2)
 		{
-			float x = 0.1 + (j+1)*dist;
-			float y = 2*((i+1))*dist;
+			float x = 0.1 + float(j+1)*dist;
+			float y = 2*((i+1-(float)(i*0.05)))*dist;
 			Vertex newVertex(x,y,6,dist*2);
 			int id = _someGraph.addVertex(newVertex);
 			_someGraph.getData(id)->SetID(id);
 
 			_layer_new.push_back(id);
 			if((size-1)/2 == i && (size-1) == j )
+			{
 				_ID_OF_CENTER_VERTEX = id;
-
+			}
 			if(id_prev)
+			{
 				_someGraph.addEdge(id,id_prev);
-
+			}
 			id_prev = id;
 		}
 
-		if(i<size/2)
+		if(i<(size+1)/2)
 		{
 			for(int is=0;is<_layer.size();is++)
 			{
-				_someGraph.addEdge(_layer[i],_layer_new[i]);
-				_someGraph.addEdge(_layer[i],_layer_new[i+1]);
+				_someGraph.addEdge(_layer[is],_layer_new[is]);
+				_someGraph.addEdge(_layer[is],_layer_new[is+1]);
 
 			}
 		
 		}
-		else if(i+1>size/2)
+		else
 		{
 			for(int is=0;is<_layer_new.size();is++)
 			{
-				//_someGraph.addEdge(_layer_new[i],_layer[i]);
-				//_someGraph.addEdge(_layer_new[i],_layer[i+1]);
+				_someGraph.addEdge(_layer_new[is],_layer[is]);
+				_someGraph.addEdge(_layer_new[is],_layer[is+1]);
 
 			}		
 		}
@@ -262,80 +292,74 @@ void GameController::createFullGraph()
 		_someGraph.detachVertex(DFS[i]);
 	}
 
-	if(_grKind == Quad)
+
+	const int vecSize2 =(int)_back_adg.size(); 
+	for(int i=0;i<vecSize2;i++)
 	{
-		const int vecSize2 =(int)_back_adg.size(); 
-		for(int i=0;i<vecSize2;i++)
+
+		const float vert1X	= _someGraph.getData(_back_adg[i].vert1)->getX() ;
+		const float vert1Y  = _someGraph.getData(_back_adg[i].vert1)->getY();
+		const float vert2X  = _someGraph.getData(_back_adg[i].vert2)->getX();
+		const float vert2Y	 =_someGraph.getData(_back_adg[i].vert2)->getY();
+		
+		if(_grKind == Quad)
 		{
-			if(_someGraph.getData(_back_adg[i].vert1)->getX() > _someGraph.getData(_back_adg[i].vert2)->getX())
+			if(vert1X>vert2X)
 			{   
 				_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(0);
 				_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(2);
 			}
-			else if(_someGraph.getData(_back_adg[i].vert1)->getX() < _someGraph.getData(_back_adg[i].vert2)->getX())
+			else if(vert1X<vert2X)
 			{
 				_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(2);
 				_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(0);
 			}
 
-			else if(_someGraph.getData(_back_adg[i].vert1)->getY() > _someGraph.getData(_back_adg[i].vert2)->getY())
+			else if(vert1Y>vert2Y)
 			{   
 				_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(1);
 				_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(3);
 			}
-			else if(_someGraph.getData(_back_adg[i].vert1)->getY() < _someGraph.getData(_back_adg[i].vert2)->getY())
+			else if(vert1Y<vert2Y)
 			{
 				_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(3);
 				_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(1);
 			}
 		}
-	}
-	else if(_grKind == Hexagonal)
-	{
-const int vecSize2 =(int)_back_adg.size(); 
-		for(int i=0;i<vecSize2;i++)
+		else if(_grKind == Hexagonal)
 		{
-			if(_someGraph.getData(_back_adg[i].vert1)->getX() > _someGraph.getData(_back_adg[i].vert2)->getX() &&
-				(_someGraph.getData(_back_adg[i].vert1)->getY() > _someGraph.getData(_back_adg[i].vert2)->getY()))
+			if(vert1X > vert2X && vert1Y > vert2Y)
 			{   
-				_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(0);
-				_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(3);
+				_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(1);
+				_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(4);
 			}
-			else if(_someGraph.getData(_back_adg[i].vert1)->getX() > _someGraph.getData(_back_adg[i].vert2)->getX() &&
-				(_someGraph.getData(_back_adg[i].vert1)->getY() < _someGraph.getData(_back_adg[i].vert2)->getY()))
+			else if(vert1X < vert2X && vert1Y < vert2Y)
 			{  
-				_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(0);
-				_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(5);
-			
+				_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(4);
+				_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(1);
 			}
-			else  if(_someGraph.getData(_back_adg[i].vert1)->getX() > _someGraph.getData(_back_adg[i].vert2)->getX() &&
-				(_someGraph.getData(_back_adg[i].vert1)->getY() == _someGraph.getData(_back_adg[i].vert2)->getY()))
+			else  if(vert1X > vert2X && vert1Y == vert2Y)
 			{
 				_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(0);
 				_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(3);
 
 			}
-			else if(_someGraph.getData(_back_adg[i].vert1)->getX() < _someGraph.getData(_back_adg[i].vert2)->getX() &&
-				(_someGraph.getData(_back_adg[i].vert1)->getY() < _someGraph.getData(_back_adg[i].vert2)->getY()))
-			{   
+			else  if(vert1X < vert2X && vert1Y == vert2Y)
+			{
 				_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(3);
 				_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(0);
+
 			}
-			else if(_someGraph.getData(_back_adg[i].vert1)->getX() < _someGraph.getData(_back_adg[i].vert2)->getX() &&
-				(_someGraph.getData(_back_adg[i].vert1)->getY() > _someGraph.getData(_back_adg[i].vert2)->getY()))
-			{  
+			else if(vert1X > vert2X && vert1Y < vert2Y)
+			{   
 				_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(5);
-				_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(0);
-			
+				_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(2);
 			}
-			else  if(_someGraph.getData(_back_adg[i].vert1)->getX() < _someGraph.getData(_back_adg[i].vert2)->getX() &&
-				(_someGraph.getData(_back_adg[i].vert1)->getY() == _someGraph.getData(_back_adg[i].vert2)->getY()))
-			{
-				_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(3);
-				_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(0);
-
-			}
-			
+			else if(vert1X < vert2X && vert1Y > vert2Y)
+			{  
+				_someGraph.getData(_back_adg[i].vert1)->ChangeEdge(2);
+				_someGraph.getData(_back_adg[i].vert2)->ChangeEdge(5);
+			}			
 		}
 	}
 }
@@ -470,33 +494,36 @@ void GameController::ElectricityHexdr(const int srcID,const int plc)
 		
 			const float sumX = neX - srcX;
 			const float sumY = neY - srcY;
-			if(plc%3 == 0 )
+			if(plc%3 == 0)
 			{	
-				if(sumX < 0 && (plc+_neighborSize/2) < _neighborSize  )
+				if(sumX < 0 && sumY==0 && (plc+_neighborSize/2) < _neighborSize  )
 				{
 					_someGraph.addEdge(srcID,neiID);					
 				}
-				else if(sumX > 0 && (plc+_neighborSize/2) >= _neighborSize )
-				{
-					_someGraph.addEdge(srcID,neiID);
-				}  
+				//else if(sumX < 0 &&sumY==0  && (plc+_neighborSize/2) >= _neighborSize )
+				//{
+				//	;//_someGraph.addEdge(srcID,neiID);
+				//}  
 			}
-			else if(plc%2 == 2)
+			else if(plc%3 == 2)
 			{
-				if(sumY > 0 && (plc+_neighborSize/2) > _neighborSize)
+				if(sumY > 0 && sumX < 0 && (plc+_neighborSize/2) > _neighborSize)
 				{
 					_someGraph.addEdge(srcID,neiID);					
 				}
-				else if(sumY < 0 && (plc+_neighborSize/2) < _neighborSize)
-				{
-					_someGraph.addEdge(srcID,neiID);
-				}
+				//else if(sumY < 0 && (plc+_neighborSize/2) < _neighborSize)
+				//{
+				//	;//_someGraph.addEdge(srcID,neiID);
+				//}
 
 			}	
-			else if(plc%2 == 1)
+			else if(plc%3 == 1)
 			{
 
-				cout <<"lol";
+				if(sumY > 0 && sumX > 0 && (plc+_neighborSize/2) > _neighborSize)
+				{
+					_someGraph.addEdge(srcID,neiID);					
+				}
 			}
 		}
 	}
