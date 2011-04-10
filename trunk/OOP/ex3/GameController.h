@@ -62,4 +62,5 @@ private:
 	static void ElectricityQuadr(const int srcID,const int plc);
 	static void ElectricityHexdr(const int srcID,const int plc);
 	static int _ID_OF_CENTER_VERTEX;
+	static int _pointSize;
 };

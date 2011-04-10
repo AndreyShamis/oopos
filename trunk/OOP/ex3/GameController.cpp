@@ -8,6 +8,7 @@ GameController *GameController::_instance = NULL;
 graphKind	GameController::_grKind = Quad;
 int			GameController::_grSize = 9;
 int			GameController::_level = 0;
+int			GameController::_pointSize = 20;
 time_t GameController::time_game = 0;
 short int	GameController::_neighborSize = 0;
 int	GameController::_WindowHeight;
@@ -136,6 +137,8 @@ void GameController::creatQuadGraph(const int rowSize)
 	int prev_id		= 0;
     int col_size = rowSize;
 
+	_pointSize = 20 - _level*2;
+
     for(int i= 0; i< rowSize;i++)
     {
         prev_id=0;
@@ -165,33 +168,43 @@ void GameController::creatQuadGraph(const int rowSize)
 //
 void GameController::creatHexagonalGraph(const int size)
 {
+	_ID_OF_CENTER_VERTEX = 0;
+	cout << size << "    ----SIZE\n";
 	vector<int> _layer;
 	vector<int> _layer_new;
 	int start = 2  ;
 	float dist	= (1-0.23)/(2*size);
+	int counter = 0;
+
+	for(int i= size/2 +1; i < size; i++) 
+		_ID_OF_CENTER_VERTEX += i;
+
+	_ID_OF_CENTER_VERTEX += (size/2 +1);
+
+	_pointSize = 20 - _level*2;						
+
 	for(int i =0;i<size;i++)
 	{
-		int id_prev = 0; 
-		for(int j=start;j<2*size-1-start;j+=2)
+		int id_prev = 0;  
+		for(int j=start;j<2*size-((_level)*2)-start;j+=2)
 		{
 			float x = (float)(_level+1)*dist + float(j+1)*dist;
 			float y = (float)(_level+1)*dist+ 1.8*((i+1-(float)(i*0.05)))*dist;
 			Vertex newVertex(x,y,6,dist*2);
 			int id = _someGraph.addVertex(newVertex);
 			_someGraph.getData(id)->SetID(id);
-
 			_layer_new.push_back(id);
-			if((size-1)/2 == i && (size-1) == j )
-			{
+
+			counter++;
+			if(_ID_OF_CENTER_VERTEX == counter)
 				_ID_OF_CENTER_VERTEX = id;
-			}
+
 			if(id_prev)
 			{
 				_someGraph.addEdge(id,id_prev);
 			}
 			id_prev = id;
 		}
-
 		if(i<(size+1)/2)
 		{
 			for(int is=0;is<_layer.size();is++)
@@ -200,7 +213,6 @@ void GameController::creatHexagonalGraph(const int size)
 				_someGraph.addEdge(_layer[is],_layer_new[is+1]);
 
 			}
-		
 		}
 		else
 		{
@@ -212,7 +224,7 @@ void GameController::creatHexagonalGraph(const int size)
 			}		
 		}
 
-		if(i<(size-1)/2){
+		if(i<(size)/2){
 			start--;
 		}
 		else{
@@ -220,9 +232,7 @@ void GameController::creatHexagonalGraph(const int size)
 		}
 		_layer = _layer_new;
 		_layer_new.clear();
-
 	}
-
 }
 //=============================================================================
 //
@@ -384,6 +394,17 @@ void GameController::ClearAll()
 // the function which provide mouse button
 void GameController::mouseButton(int button, int state, int x, int y)
 {
+
+	const vector<int> _vec =  _someGraph.getVectorOfIdsBFS(_ID_OF_CENTER_VERTEX);
+	if(_vec.size() == _someGraph.countNodes())
+	{
+
+		_level++;
+		ClearAll();
+		createGameGraph();
+
+	}
+
 	if(button == 0 && state == 1 && !_show_sol)
 	{
 		
@@ -424,15 +445,7 @@ void GameController::mouseButton(int button, int state, int x, int y)
 		FindElectrecisty();		
 	}
 
-	const vector<int> _vec =  _someGraph.getVectorOfIdsBFS(_ID_OF_CENTER_VERTEX);
-	if(_vec.size() == _someGraph.countNodes())
-	{
 
-		_level++;
-		ClearAll();
-		createGameGraph();
-
-	}
 }
 
 
@@ -598,6 +611,7 @@ void GameController::LoadCallBacksForGlut()
 void GameController::display()
 {
 	glClear(GL_COLOR_BUFFER_BIT );				//	Glut
+	glPointSize(_pointSize);
 
 	if(!_show_sol)
 	{
@@ -642,3 +656,73 @@ void GameController::idle()
 	//if(_GameMod == _MANU)
 	//	;
 }
+
+
+
+
+
+//////////////////////////////////BACK UP///////////////////////////////////////
+
+////=============================================================================
+////
+//void GameController::creatHexagonalGraph(const int size)
+//{
+//	vector<int> _layer;
+//	vector<int> _layer_new;
+//	int start = 2  ;
+//	float dist	= (1-0.23)/(2*size);
+//	for(int i =0;i<size;i++)
+//	{
+//		int id_prev = 0; 
+//		for(int j=start;j<2*size-1-start;j+=2)
+//		{
+//			float x = (float)(_level+1)*dist + float(j+1)*dist;
+//			float y = (float)(_level+1)*dist+ 1.8*((i+1-(float)(i*0.05)))*dist;
+//			Vertex newVertex(x,y,6,dist*2);
+//			int id = _someGraph.addVertex(newVertex);
+//			_someGraph.getData(id)->SetID(id);
+//
+//			_layer_new.push_back(id);
+//			if((size-1)/2 == i && (size-1) == j )
+//			{
+//				_ID_OF_CENTER_VERTEX = id;
+//			}
+//			if(id_prev)
+//			{
+//				_someGraph.addEdge(id,id_prev);
+//			}
+//			id_prev = id;
+//		}
+//
+//		if(i<(size+1)/2)
+//		{
+//			for(int is=0;is<_layer.size();is++)
+//			{
+//				_someGraph.addEdge(_layer[is],_layer_new[is]);
+//				_someGraph.addEdge(_layer[is],_layer_new[is+1]);
+//
+//			}
+//		
+//		}
+//		else
+//		{
+//			for(int is=0;is<_layer_new.size();is++)
+//			{
+//				_someGraph.addEdge(_layer_new[is],_layer[is]);
+//				_someGraph.addEdge(_layer_new[is],_layer[is+1]);
+//
+//			}		
+//		}
+//
+//		if(i<(size-1)/2){
+//			start--;
+//		}
+//		else{
+//			start++;	
+//		}
+//		_layer = _layer_new;
+//		_layer_new.clear();
+//
+//	}
+//
+//}
