@@ -168,14 +168,14 @@ void GameController::creatHexagonalGraph(const int size)
 	vector<int> _layer;
 	vector<int> _layer_new;
 	int start = 2  ;
-	float dist	= (1-0.2)/(2*size);
+	float dist	= (1-0.23)/(2*size);
 	for(int i =0;i<size;i++)
 	{
 		int id_prev = 0; 
 		for(int j=start;j<2*size-1-start;j+=2)
 		{
-			float x = 0.1 + float(j+1)*dist;
-			float y = 2*((i+1-(float)(i*0.05)))*dist;
+			float x = (float)(_level+1)*dist + float(j+1)*dist;
+			float y = (float)(_level+1)*dist+ 1.8*((i+1-(float)(i*0.05)))*dist;
 			Vertex newVertex(x,y,6,dist*2);
 			int id = _someGraph.addVertex(newVertex);
 			_someGraph.getData(id)->SetID(id);
@@ -212,7 +212,7 @@ void GameController::creatHexagonalGraph(const int size)
 			}		
 		}
 
-		if(i<size/2){
+		if(i<(size-1)/2){
 			start--;
 		}
 		else{
@@ -386,16 +386,18 @@ void GameController::mouseButton(int button, int state, int x, int y)
 {
 	if(button == 0 && state == 1 && !_show_sol)
 	{
+		
+
 		float xPos = ((float)x)/((float)(_WindowWidth-1));
 		float yPos = ((float)y)/((float)(_WindowHeight-1));
 		yPos = 1.0f-yPos;
 		
-		Graph<Vertex>::GraphIterator<Vertex> detach(_someGraph);
+//		Graph<Vertex>::GraphIterator<Vertex> detach(_someGraph);
 		//	Detach all edges in graph
-		for(;detach != detach.end();detach++)
-		{
-			_someGraph.detachVertex((*detach)->GetID());
-		}
+//		for(;detach != detach.end();detach++)
+//		{
+//			_someGraph.detachVertex((*detach)->GetID());
+//		}
 							
 		//	Looking For Pressed Vertex
 		Graph<Vertex>::GraphIterator<Vertex> it(_someGraph);
@@ -417,8 +419,19 @@ void GameController::mouseButton(int button, int state, int x, int y)
 			}
 		}
 		//	End pressed Vertex
+		_someGraph.detachVertex(id);
 		_someGraph.getData(id)->Shift();	//	Shift the vertex
 		FindElectrecisty();		
+	}
+
+	const vector<int> _vec =  _someGraph.getVectorOfIdsBFS(_ID_OF_CENTER_VERTEX);
+	if(_vec.size() == _someGraph.countNodes())
+	{
+
+		_level++;
+		ClearAll();
+		createGameGraph();
+
 	}
 }
 
