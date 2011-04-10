@@ -38,7 +38,7 @@ void Vertex::Draw()
 
 	// Start drawing a dot 
 	glEnable(GL_POINT_SMOOTH);
-	glPointSize(20);
+	//glPointSize(20);
 
 	glBegin(GL_POINTS);
 	//std::cout << "Draw\t";
