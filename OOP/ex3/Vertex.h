@@ -1,12 +1,12 @@
 #pragma once
 #include "macros.h"
 #include <vector>
-#include "drawable.h"
-
-class Vertex :public Drawable
+//#include <openglut.h>
+class Vertex 
 {
 
 public:
+	Vertex();
 	bool operator==(const Vertex &other) const
 	{
 		if(_id == other._id)

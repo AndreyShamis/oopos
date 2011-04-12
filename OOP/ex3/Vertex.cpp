@@ -2,6 +2,11 @@
 
 float Vertex::rads = (3.1415926535/180);
 
+Vertex::Vertex()
+{
+	_x = 0;
+	_y = 0;
+}
 Vertex::Vertex(const float X, const float Y,const int EdgesSize,const float dist)
 {
 	_x = X;

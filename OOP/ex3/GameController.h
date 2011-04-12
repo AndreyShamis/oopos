@@ -1,30 +1,33 @@
 #pragma once
 #include "macros.h"
-#include "Vertex.h"
-#include "Graph.h"
 #include <time.h>
 #include <iomanip>
-//#include "GraphIterator.h"
 
+
+#define TIMER_SIZE 10
 using namespace std;
+//============================ Enum section ===================================
+enum graphKind {Quad, Hexagonal}; // define graph type
 
-enum graphKind {Quad, Hexagonal};
-
-enum GAME_MODE
+enum GAME_MODE						// define game mods
 {
 	_PLAY ,
 	_MENU,
 
 };
 
+//============================ Structur section ===============================
 struct AddEdges
 {
 	int vert1;
 	int vert2;
 };
+
+
 class GameController
 {
 public:
+	static void glutPrint(float x, float y, char* text, float r, float g, float b, float a);
 	static GameController *getInst();
 	static void mouseButton(int button, int state, int x, int y);
 	static void selectFromMenu(int commandId);
@@ -63,4 +66,5 @@ private:
 	static void ElectricityHexdr(const int srcID,const int plc);
 	static int _ID_OF_CENTER_VERTEX;
 	static int _pointSize;
+	static char timer[TIMER_SIZE];
 };

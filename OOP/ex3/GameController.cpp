@@ -3,6 +3,7 @@
 GameController *GameController::_instance = NULL;
 
 //=============================================================================
+// initiat static virb
 
 
 graphKind	GameController::_grKind = Quad;
@@ -17,6 +18,7 @@ int	GameController::_ID_OF_CENTER_VERTEX = 0;
 Graph<Vertex>  GameController::_someGraph;
 Graph<Vertex>  GameController::_FullGraph;
 Graph<Vertex>  GameController::_Solution;
+char		GameController::timer[TIMER_SIZE];
 
 bool GameController::_show_sol = false;
 
@@ -32,39 +34,41 @@ GameController *GameController::getInst()
 }
 //=============================================================================
 // the function which provide key press
+// get 
+// resive nothing
 void GameController::KeyPress(unsigned char key, int x, int y)
 {
 	
 	if(key == 'x')
-		exit(EXIT_SUCCESS);
+		exit(EXIT_SUCCESS);		// exit game
 	else if(key == 'n')
 	{
 		ClearAll();
-		createGameGraph();	
+		createGameGraph();		// create game graph
 	}
 	else if(key == 'l')
 	{
-		_level++;
+		_level++;				// go to the next level and creat the new graph
 		ClearAll();
 		createGameGraph();	
 	}
 	else if(key == 's')
 	{
-		_show_sol = true;
+		_show_sol = true;		// show solution
 	}
 	else if(key == 'q')
 	{
-		_grKind = Quad;
+		_grKind = Quad;			// swich to quad graph game type and				
 		ClearAll();
-		createGameGraph();	
+		createGameGraph();		// creat the new graph
 
 	}
 	else if(key == 'h')
 	{
-		_grKind = Hexagonal;
+		_grKind = Hexagonal;	// swich to Hexagonal graph game type and
 
 		ClearAll();
-		createGameGraph();	
+		createGameGraph();		// creat the new graph
 
 	}
 }
@@ -83,26 +87,19 @@ GameController::GameController()
 //=============================================================================
 void GameController::LoadGame()
 {
-	glutReshapeFunc(resizeWindow);
-	LoadCallBacksForGlut();
-	createGameGraph();
+	glutReshapeFunc(resizeWindow);	
+	LoadCallBacksForGlut();			// load call back for graph
+	createGameGraph();				// create game graph
 
 }
 
 //=============================================================================
-//
+// function create graph of the game
 void GameController::createGameGraph()
 {
+	// timer counter unit of the game 
 
-  time_t seconds;
 
-  seconds = time (NULL);
-
-  if(time_game)
-  {
-		printf ("Game second", (seconds-time_game));
-  }
-	  time_game = seconds   ;
 	_show_sol = false;
 	createFullGraph(); 
 	_Solution = _someGraph;
@@ -110,134 +107,163 @@ void GameController::createGameGraph()
 	FindElectrecisty();	
 }
 
+// Here is the function 
+void GameController::glutPrint(float x, float y, char* text, float r, float g, float b, float a) 
+{ 
+	if(!text || !strlen(text))return;
+	bool blending = false; 
+	if(glIsEnabled(GL_BLEND)) blending = true; 
+	glEnable(GL_BLEND); 
+	glColor4f(r,g,b,a); 
+	glRasterPos2f(x,y); 
+	while (*text) { 
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *text); 
+		text++; 
+	} 
+	if(!blending) glDisable(GL_BLEND); 
+} 
+
+
 void GameController::GraphGrinder()
 {
 	Graph<Vertex>::GraphIterator<Vertex> it(_someGraph);
-	//int StartVertex =  rand()%(_someGraph.countNodes()-1);
-	//int i=0;
 	for(;it != it.end() ;it++)
 	{
 		const int rnd = rand()%4;
-
-		for(int i=0;i<rnd;i++)
-		{
+		for(int i=0;i<rnd;i++){
 			(*it)->Shift();
-		}
-			
+		}	
 	}
+
 }
+
 //=============================================================================
-//
+// function creat fuul quad graph (K_rowSize.rowSize)
+// get row size, recive nothing
 void GameController::creatQuadGraph(const int rowSize)
 {
 	
-	int id			= 0;
-	float x			= 0;
-	float y			= 0;
-	int prev_id		= 0;
-    int col_size = rowSize;
+	int id			= 0;		// id of veryex
+	float x			= 0;		// coordinats of 
+	float y			= 0;		// vertex
+	int prev_id		= 0;		// id of privius vertex
+    int col_size = rowSize;		// graph dimention
 
-	_pointSize = 20 - _level*2;
+	_pointSize = 20 - _level*2;	// point size propoution
 
-    for(int i= 0; i< rowSize;i++)
+    for(int i= 0; i < rowSize;i++)		// loop x coordinate of vetexes
     {
-        prev_id=0;
-        for(int j= 0; j< col_size;j++)
+        prev_id=0;						// reset previus id of vertex
+        for(int j= 0; j< col_size;j++)	// loop y coordinate of vetexes
         {
-            float x = (float)(i+1)*(1-0.2)/rowSize;
-            float y = (float)(j+1)*(1-0.2)/col_size;
+            x = (float)(i+1)*(1-0.2)/rowSize;		// set x coordinate of vert
+            y = (float)(j+1)*(1-0.2)/col_size;		// set y coordinate of vert
             Vertex newVertex(x,y,4,(1-0.2)/rowSize);
-            int id =_someGraph.addVertex(newVertex);
+            id =_someGraph.addVertex(newVertex);	// add vertex to graph
 			
-			_someGraph.getData(id)->SetID(id);
+			_someGraph.getData(id)->SetID(id); // set id of vertex
             if(prev_id)
 				_someGraph.addEdge(prev_id,id);
 
+			// part of building full graph (add the right edges)
             if(i)
 				_someGraph.addEdge(id-rowSize,id);
 
             prev_id=id;
-               
-			if((rowSize-1)/2 == i && (col_size-1)/2 == j)
+            
+			// set the centeral vertex id
+			if((rowSize-1)/2 == i && (col_size-1)/2 == j) 
 				_ID_OF_CENTER_VERTEX = id;
         }
 
     }   
 }
 //=============================================================================
-//
+// function creat fuul quad graph (K_size.size)
+// get side size, recive nothing
 void GameController::creatHexagonalGraph(const int size)
 {
-	_ID_OF_CENTER_VERTEX = 0;
-	cout << size << "    ----SIZE\n";
-	vector<int> _layer;
-	vector<int> _layer_new;
-	int start = 2  ;
-	float dist	= (1-0.23)/(2*size);
-	int counter = 0;
+	_ID_OF_CENTER_VERTEX = 0;			// reset id of centerul vertex
+	vector<int> _layer;					// vector of curent layer of vertexes
+	vector<int> _layer_new;				// vector of new layer of vertexes
+	int start = 2  ;					// define start point to loop
+	float dist	= (1-0.23)/(2*size);	// define distance between vertexes
+	int counter = 0;			// counter for definition of centeral vertex id
 
+	// culculation of definig of centeral vertex
 	for(int i= size/2 +1; i < size; i++) 
 		_ID_OF_CENTER_VERTEX += i;
-
 	_ID_OF_CENTER_VERTEX += (size/2 +1);
 
-	_pointSize = 20 - _level*2;						
+	_pointSize = 20 - _level*2;	// point size propoution					
 
-	for(int i =0;i<size;i++)
+	for(int i =0;i<size;i++)	// loop x coordinate of vetexes
 	{
-		int id_prev = 0;  
+		int id_prev = 0;		// reset previus id of vertex
+		// loop y coordinate of vetexes
 		for(int j=start;j<2*size-((_level)*2)-start;j+=2)
 		{
-			float x = (float)(_level+1)*dist + float(j+1)*dist;
+			// set x and y coordinate of vert
+			float x = (float)(_level+1)*dist + float(j+1)*dist;	
 			float y = (float)(_level+1)*dist+ 1.8*((i+1-(float)(i*0.05)))*dist;
-			Vertex newVertex(x,y,6,dist*2);
-			int id = _someGraph.addVertex(newVertex);
-			_someGraph.getData(id)->SetID(id);
-			_layer_new.push_back(id);
 
+			Vertex newVertex(x,y,6,dist*2);				// create vertex
+			int id = _someGraph.addVertex(newVertex);	// add vertex to graph
+			_someGraph.getData(id)->SetID(id);			// set id of vertex
+
+			// set curent layer of vertexes (for building full graph)
+			_layer_new.push_back(id);					
+
+			// set the centeral vertex id
 			counter++;
 			if(_ID_OF_CENTER_VERTEX == counter)
 				_ID_OF_CENTER_VERTEX = id;
 
+			// part of building full graph (add the right edges)
 			if(id_prev)
 			{
 				_someGraph.addEdge(id,id_prev);
 			}
 			id_prev = id;
 		}
-		if(i<(size+1)/2)
+		// navigate graph building direction ( choose edges to builde ) 
+		
+		if(i<(size+1)/2)			
 		{
-			for(int is=0;is<_layer.size();is++)
+			const int vec_size  = _layer.size();
+			for(int is=0;is<vec_size;is++)
 			{
 				_someGraph.addEdge(_layer[is],_layer_new[is]);
 				_someGraph.addEdge(_layer[is],_layer_new[is+1]);
-
 			}
 		}
 		else
 		{
-			for(int is=0;is<_layer_new.size();is++)
+			const int vec_size  = _layer_new.size();
+			for(int is=0;is<vec_size;is++)
 			{
 				_someGraph.addEdge(_layer_new[is],_layer[is]);
 				_someGraph.addEdge(_layer_new[is],_layer[is+1]);
-
 			}		
 		}
-
+		// navigate graph building direction
 		if(i<(size)/2){
 			start--;
 		}
 		else{
 			start++;	
 		}
+		// switch lyers
 		_layer = _layer_new;
 		_layer_new.clear();
 	}
 }
 //=============================================================================
-//
+// function that
 void GameController::createFullGraph()
 {
+	time_game = time(NULL);	
+	// define neihbors size
 	if(_grKind == Quad)
 	{
 		_neighborSize = 4;
@@ -247,9 +273,8 @@ void GameController::createFullGraph()
 	{
 		_neighborSize = 6;
 		creatHexagonalGraph(5+_level*2);
-		
 	}
-	_FullGraph = _someGraph;
+	_FullGraph = _someGraph;	// copy full graph
 
 	///	Looking for rundom DFS vertex
 	Graph<Vertex>::GraphIterator<Vertex> it(_someGraph);
@@ -284,9 +309,8 @@ void GameController::createFullGraph()
 					AddEdges tmp;
 					tmp.vert1 = DFS[i];
 					tmp.vert2 = DFS[j];
-
 					_back_adg.push_back(tmp);
-						found = true;
+					found = true;
 					break;
 				}
 			}
@@ -296,13 +320,15 @@ void GameController::createFullGraph()
 			}
 		}		
 	}
+
+
 	const int vecSize = (int)DFS.size();
 	for(int i=0;i<vecSize;i++)
 	{
 		_someGraph.detachVertex(DFS[i]);
 	}
 
-
+	
 	const int vecSize2 =(int)_back_adg.size(); 
 	for(int i=0;i<vecSize2;i++)
 	{
@@ -373,18 +399,18 @@ void GameController::createFullGraph()
 		}
 	}
 }
-
+//=============================================================================
+// function that clear all data at the graph
 void GameController::ClearAll()
 {
+	// use of graph iterator clearing all vertexes
 	Graph<Vertex>::GraphIterator<Vertex> it(_someGraph);
-	cout << "Start delete...\n";
 	for(;it != it.end() ;it++)
 	{
 		_someGraph.removeVertex((*it)->GetID());
 	}
-	_FullGraph = _someGraph;
-	_Solution = _someGraph;
-	cout << "Finish delete!\n";
+	_FullGraph = _someGraph;		// reset full graph 
+	_Solution = _someGraph;			// reset solution graph 
 
 }
 
@@ -394,21 +420,19 @@ void GameController::ClearAll()
 // the function which provide mouse button
 void GameController::mouseButton(int button, int state, int x, int y)
 {
-
+	// create BFS vector of graph through sorce vertex as senteral vertex
 	const vector<int> _vec =  _someGraph.getVectorOfIdsBFS(_ID_OF_CENTER_VERTEX);
+
+	// chek if the game is solved (all light is lights) - go to the next level
 	if(_vec.size() == _someGraph.countNodes())
 	{
-
 		_level++;
 		ClearAll();
 		createGameGraph();
-
 	}
-
+	// roll the potetial edges
 	if(button == 0 && state == 1 && !_show_sol)
 	{
-		
-
 		float xPos = ((float)x)/((float)(_WindowWidth-1));
 		float yPos = ((float)y)/((float)(_WindowHeight-1));
 		yPos = 1.0f-yPos;
@@ -448,11 +472,11 @@ void GameController::mouseButton(int button, int state, int x, int y)
 
 }
 
-
-//	get source  vertex id   and place in maybe edge vertex
+//=============================================================================
+// get source  vertex id   and place in maybe edge vertex
+// get source vertex id and potential vertex derection position
 void GameController::ElectricityQuadr(const int srcID,const int plc)
 {
-
 	const float srcX = _someGraph.getData(srcID)->getX();
 	const float srcY = _someGraph.getData(srcID)->getY();
 	
@@ -526,10 +550,6 @@ void GameController::ElectricityHexdr(const int srcID,const int plc)
 				{
 					_someGraph.addEdge(srcID,neiID);					
 				}
-				//else if(sumX < 0 &&sumY==0  && (plc+_neighborSize/2) >= _neighborSize )
-				//{
-				//	;//_someGraph.addEdge(srcID,neiID);
-				//}  
 			}
 			else if(plc%3 == 2)
 			{
@@ -537,11 +557,6 @@ void GameController::ElectricityHexdr(const int srcID,const int plc)
 				{
 					_someGraph.addEdge(srcID,neiID);					
 				}
-				//else if(sumY < 0 && (plc+_neighborSize/2) < _neighborSize)
-				//{
-				//	;//_someGraph.addEdge(srcID,neiID);
-				//}
-
 			}	
 			else if(plc%3 == 1)
 			{
@@ -603,6 +618,7 @@ void GameController::LoadCallBacksForGlut()
 	glutDisplayFunc(display);  
 	glutMouseFunc (mouseButton);
 	glutKeyboardFunc(KeyPress);
+
 }
 
 
@@ -612,6 +628,7 @@ void GameController::display()
 {
 	glClear(GL_COLOR_BUFFER_BIT );				//	Glut
 	glPointSize(_pointSize);
+	glutPrint(0.1f, 0.9f, timer, 0.0f, 1.0f, 0.0f, 0.5f);
 
 	if(!_show_sol)
 	{
@@ -624,13 +641,18 @@ void GameController::display()
 	}
 	else					
 	{
+		//	Show solution graph for player if hi dont want play this level
 		Graph<Vertex>::GraphIterator<Vertex> it(_Solution);
 		for(;it != it.end() ;it++)
 		{
-			(*it)->Draw();
-			//(*it)->LightOFF();		
+			(*it)->Draw();		
 		}
 	}
+								
+	time_t seconds = time(NULL);						
+	sprintf_s(timer,"%d",seconds-time_game);
+	//itoa(seconds-time_game,timer,10);
+
 	glFlush() ;									//	Glut
 	glutSwapBuffers();							//	Glut
 
@@ -656,73 +678,3 @@ void GameController::idle()
 	//if(_GameMod == _MANU)
 	//	;
 }
-
-
-
-
-
-//////////////////////////////////BACK UP///////////////////////////////////////
-
-////=============================================================================
-////
-//void GameController::creatHexagonalGraph(const int size)
-//{
-//	vector<int> _layer;
-//	vector<int> _layer_new;
-//	int start = 2  ;
-//	float dist	= (1-0.23)/(2*size);
-//	for(int i =0;i<size;i++)
-//	{
-//		int id_prev = 0; 
-//		for(int j=start;j<2*size-1-start;j+=2)
-//		{
-//			float x = (float)(_level+1)*dist + float(j+1)*dist;
-//			float y = (float)(_level+1)*dist+ 1.8*((i+1-(float)(i*0.05)))*dist;
-//			Vertex newVertex(x,y,6,dist*2);
-//			int id = _someGraph.addVertex(newVertex);
-//			_someGraph.getData(id)->SetID(id);
-//
-//			_layer_new.push_back(id);
-//			if((size-1)/2 == i && (size-1) == j )
-//			{
-//				_ID_OF_CENTER_VERTEX = id;
-//			}
-//			if(id_prev)
-//			{
-//				_someGraph.addEdge(id,id_prev);
-//			}
-//			id_prev = id;
-//		}
-//
-//		if(i<(size+1)/2)
-//		{
-//			for(int is=0;is<_layer.size();is++)
-//			{
-//				_someGraph.addEdge(_layer[is],_layer_new[is]);
-//				_someGraph.addEdge(_layer[is],_layer_new[is+1]);
-//
-//			}
-//		
-//		}
-//		else
-//		{
-//			for(int is=0;is<_layer_new.size();is++)
-//			{
-//				_someGraph.addEdge(_layer_new[is],_layer[is]);
-//				_someGraph.addEdge(_layer_new[is],_layer[is+1]);
-//
-//			}		
-//		}
-//
-//		if(i<(size-1)/2){
-//			start--;
-//		}
-//		else{
-//			start++;	
-//		}
-//		_layer = _layer_new;
-//		_layer_new.clear();
-//
-//	}
-//
-//}
