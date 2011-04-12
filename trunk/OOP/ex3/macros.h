@@ -16,3 +16,5 @@
 //#include <GL/glut.h>
 #include <glut.h>				//	USED IN OUR VERSION OF GLUT
 #include "Vertex.h"
+#include "Graph.h"
+#include <stdio.h>
