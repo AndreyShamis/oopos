@@ -1,74 +1,51 @@
+/*
+
+//  @ Project : Lights = EX3
+//  @ File Name : Vertex.cpp
+//  @ Authors : Ilia Gaysinski and Andrey Shamis
+//	@ Description :		Class of Vertex
+
+	This class provide vertex used in graph store for game lights.
+	For more information see functions desctiptions
+
+	Have only one constructor wich get cordinates x and y
+	size of potential vector of neighbors and minimal distance between
+	two neighbors.
+
+
+*/
 #pragma once
 #include "macros.h"
 #include <vector>
-//#include <openglut.h>
+
+//=============================================================================
 class Vertex 
 {
-
 public:
-	Vertex();
-	bool operator==(const Vertex &other) const
-	{
-		if(_id == other._id)
-			return(true);
- 
-		return(false);
+	bool operator==(const Vertex &other) const;
+	Vertex(const float X, const float Y,
+		const int EdgesSize,const float dist);
+	void	SetID(const int val);
+	void	Draw();
+	int		GetID()const;
+	float	getX()const;
+	float	getY()const;
+	void	Shift();
+	void	ChangeEdge(const int place);
+	void	LightOFF();
+	void	LightON();
+	void	setFather(const int value);
+	const	std::vector<bool> getFutEdg()const;
 
-	}
-	Vertex(const float X, const float Y,const int EdgesSize,const float dist);
-	void SetID(const int val);
-	void Draw();
-	int GetID()const
-	{
-		return(_id);
-	}
-	float getX()const
-	{
-		return(_x);
-	}
-	float getY()const
-	{
-		return(_y);
-	}
-
-	void Shift()
-	{
-		bool first = _future_edge[0];
-		_future_edge.erase(_future_edge.begin());
-		_future_edge.push_back(first);
-	}
-
-	void ChangeEdge(const int place)
-	{
-		_future_edge[place] = true;
-	}
-
-	void LightOFF()
-	{
-		_lighted = false;
-	}
-	void LightON()
-	{
-		_lighted = true;
-	}
-	void setFather(const int value)
-	{
-		_father = value;
-	}
-	const std::vector<bool> getFutEdg()
-	{
-		return(_future_edge);
-	}
 private:
-	float _x;
-	float _y;
-	bool  _lighted;
-	int _id;
-	float _dist;
-	
-	static  float rads ;
-	int _father;
-	int MAX_VEC_SIZE;
+	float			_x;
+	float			_y;
+	bool			_lighted;
+	int				_id;
+	float			_dist;
+	static  float	rads;
+	int				_father;
+	int				MAX_VEC_SIZE;
 	std::vector<bool> _future_edge;
 
 };
