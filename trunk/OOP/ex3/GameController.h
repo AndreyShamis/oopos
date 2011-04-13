@@ -80,8 +80,8 @@ private:
 	GAME_MODE	_GameMod;
 	static void ElectricityQuadr(const int srcID,const int plc);
 	static void ElectricityHexdr(const int srcID,const int plc);
-	static int _ID_OF_CENTER_VERTEX;
+	static int _ID_OF_CENTER_VERTEX;		// id of centeral vertex of the graph
 	static int _pointSize;
-	static char timer[TIMER_SIZE];
-	static bool _update_timer;
+	static char timer[TIMER_SIZE];			// timer string for print to screen
+	static bool _update_timer;				// stop\start timer
 };
