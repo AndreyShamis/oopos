@@ -23,13 +23,8 @@ using namespace std;
 
 //============================ Enum section ===================================
 enum graphKind {Quad, Hexagonal}; // define graph type
-
-enum GAME_MODE						// define game mods
-{
-	_PLAY ,
-	_MENU,
-
-};
+// define game mods
+enum GAME_MODE{_PLAY,_MENU};
 
 //============================ Structur section ===============================
 struct AddEdges
@@ -77,7 +72,7 @@ private:
 	static time_t seconds;
 	static short int _neighborSize;
 	GameController();
-	GAME_MODE	_GameMod;
+	static GAME_MODE	_GameMod;
 	static void ElectricityQuadr(const int srcID,const int plc);
 	static void ElectricityHexdr(const int srcID,const int plc);
 	static int _ID_OF_CENTER_VERTEX;		// id of centeral vertex of the graph
