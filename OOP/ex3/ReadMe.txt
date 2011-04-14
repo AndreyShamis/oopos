@@ -109,6 +109,19 @@ very great just great!
 For example, for a square game length five the number of possible levels 
 of 98 ^ 3 * 12 = 11294304.
 
+******************************************************************************
+Created Files:
+
+	ex3.sln				Project file
+	ex3.vcproj			Project file
+	GameController.cpp	Game controller class
+	GameController.h	Game controller header
+	Graph.h				Graph class file
+	macros.h			Macros
+	main.cpp			Main file
+	ReadMe.txt			Radme file
+	Vertex.cpp			Vertex file cpp
+	Vertex.h			Vertex header
 *******************************************************************************
 Knowns bugs
 				No known bugs!

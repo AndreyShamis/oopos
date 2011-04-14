@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="ex3"
 	ProjectGUID="{2CF7A4D5-14ED-4EAA-84EB-D2D284D57953}"
 	RootNamespace="ex3"
@@ -175,10 +175,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Graph.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\main.cpp"
 				>
 			</File>
@@ -198,10 +194,6 @@
 			</File>
 			<File
 				RelativePath=".\Graph.h"
-				>
-			</File>
-			<File
-				RelativePath=".\iterator.h"
 				>
 			</File>
 			<File

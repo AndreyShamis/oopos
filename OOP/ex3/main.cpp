@@ -42,19 +42,8 @@
 //=============================================================================
 // main function
 int main(int argc, char** argv){
-
-
-	
-	glutInit(&argc, argv);
-	glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB);
-	glutInitWindowSize (500,500); 
-	glutInitWindowPosition (100,100);
-	//glPointSize(15);
-	glutCreateWindow ("Lights - Andrey Shamis AND Ilia Gaysinsky");
-	glClearColor(0.0, 0.0, 0.0,0.0);
-
 	GameController::getInst()->LoadGame();
-	glutMainLoop();
+	
 	return 0;
 }
 //=============================================================================
