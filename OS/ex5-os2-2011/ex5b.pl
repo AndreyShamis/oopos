@@ -22,86 +22,80 @@ else
 	print "Using Algorithm num: $alg_type\n";
 
 }
-#try to open the file file for reading
-if ($gzfile->open("DAS2-fs1-2003-1.swf.gz", "r")) 
+
+open(INFILE, "<$ARGV[0]")  or die("Cannot open file '$ARGV[0]'\n");
+
+
+@data = <INFILE>;		#get conntent into array of lines
+
+#	for each line
+foreach $line(@data)
 {
-	@data = <$gzfile>;		#get conntent into array of lines
-	
-	#	for each line
-	foreach $line(@data)
+	#	This block of code is for comments
+	if(substr($line,0,1) ne ';' && $counter == 0)
 	{
-		#	This block of code is for comments
-		if(substr($line,0,1) ne ';' && $counter == 0)
-		{
-			$counter = 1;
-		}
-
-		# if caoming to end of comments
-		if($counter>0)
-		{
-			$string =  $line;				# get the line
-			$string =~ s/^\s+//; 			# clear spaces on the start of str
-			
-			my (
-					$jobNumber, 			#	Jub Number
-					$Submit, 				#	Submit
-					$wait,					#	wait
-					$runtime, 				#	Run time
-					$procalloc, 			#	Proc allocate
-					$cpuused, 				#	cpu used
-					$memused,				#	memory used
-					$procreq,				# 	proc req
-					$userest,				#	user est
-					$memreq,				#	memory req
-					$status,				# 	the status
-					$uid,					#	uID
-					$gid,					#	gID
-					$exenum,				#	exe num
-					$qnum,					#	q num
-					$partition,				#	partiotion
-					$prevjob,				#	previous job
-					$thinktime				#	Think time
-				)
-				=	split(/\s+/,$string);
-			$counter++;						#	Increase counter
-			$HoH{'Process' . $jobNumber} = 
-			{
-				'jobNumber' 	=> $jobNumber,	
-				'submit' 		=> $Submit,
-				'wait' 			=> $wait,
-				'runtime' 		=> $runtime,
-				'procalloc' 	=> $procalloc,
-				'cpuused' 		=> $cpuused,
-				'memused' 		=> $memused,
-				'procreq' 		=> $procreq,
-				'userest' 		=> $userest,
-				'memreq' 		=> $memreq,
-				'status' 		=> $status,
-				'uid' 			=> $uid,
-				'gid' 			=> $gid,
-				'exenum' 		=> $exenum,
-				'qnum' 			=> $qnum,
-				'partition' 	=> $partition,
-				'prevjob' 		=> $prevjob,
-				'thinktime' 	=> $thinktime,
-			};
-			
-		}
-
-		#	This block give to program take only MAX_DATA lines
-		if($counter > $MAX_DATA && $MAX_DATA != 0)
-		{
-			last;			#	exit from loop
-		}
+		$counter = 1;
 	}
-	$gzfile->close;		#	close file
+
+	# if caoming to end of comments
+	if($counter>0)
+	{
+		$string =  $line;				# get the line
+		$string =~ s/^\s+//; 			# clear spaces on the start of str
+		
+		my (
+				$jobNumber, 			#	Jub Number
+				$Submit, 				#	Submit
+				$wait,					#	wait
+				$runtime, 				#	Run time
+				$procalloc, 			#	Proc allocate
+				$cpuused, 				#	cpu used
+				$memused,				#	memory used
+				$procreq,				# 	proc req
+				$userest,				#	user est
+				$memreq,				#	memory req
+				$status,				# 	the status
+				$uid,					#	uID
+				$gid,					#	gID
+				$exenum,				#	exe num
+				$qnum,					#	q num
+				$partition,				#	partiotion
+				$prevjob,				#	previous job
+				$thinktime				#	Think time
+			)
+			=	split(/\s+/,$string);
+		$counter++;						#	Increase counter
+		$HoH{'Process' . $jobNumber} = 
+		{
+			'jobNumber' 	=> $jobNumber,	
+			'submit' 		=> $Submit,
+			'wait' 			=> $wait,
+			'runtime' 		=> $runtime,
+			'procalloc' 	=> $procalloc,
+			'cpuused' 		=> $cpuused,
+			'memused' 		=> $memused,
+			'procreq' 		=> $procreq,
+			'userest' 		=> $userest,
+			'memreq' 		=> $memreq,
+			'status' 		=> $status,
+			'uid' 			=> $uid,
+			'gid' 			=> $gid,
+			'exenum' 		=> $exenum,
+			'qnum' 			=> $qnum,
+			'partition' 	=> $partition,
+			'prevjob' 		=> $prevjob,
+			'thinktime' 	=> $thinktime,
+		};
+		
+	}
+
+	#	This block give to program take only MAX_DATA lines
+	if($counter > $MAX_DATA && $MAX_DATA != 0)
+	{
+		last;			#	exit from loop
+	}
 }
-else
-{
-	# if can not open file
-	print "Can not open the file\n";
-}	
-	
+
 	
 #	print dump(%HoH);		#	used for see the Hash of Hash
 ###############################################################################
