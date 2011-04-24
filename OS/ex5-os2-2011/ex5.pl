@@ -13,9 +13,6 @@
 #	one you must provide algorithm number for check. The value can be 
 #	between 1-4.
 ###############################################################################
-#use Data::Dump qw(dump);			#used for indication what is in hash
-
-print "Наченаем мозгаёбку. Срать кирпичами запрещенно!\n";
 
 my $counter = 0;						#	counter used in how manu lines read
 my %HoH = () ;							#	Hash for input data
@@ -24,7 +21,7 @@ my %HoH = () ;							#	Hash for input data
 #	you want to load. If you not intereseted in this just set the value be 0.
 my $MAX_DATA = 100;					
 
-my $processors_size = $ARGV[1];			#	Number of CPU
+my $CPUs_size = $ARGV[1];			#	Number of CPU
 my $memory_size 	= $ARGV[2];			#	Memory max size
 my $alg_type 		= $ARGV[3]+0;		#	Algorithm type
 
@@ -48,7 +45,7 @@ if($alg_type <1 || $alg_type >4)
 #	Check how many CPU user want to use in test. The minimum is 1 but you
 #	will se that the minimum is the maximum of number CPU about what some
 #	process can use.
-if($processors_size < 1)
+if($CPUs_size < 1)
 {
 	print "Please enter number of CPU more than 0\n";
 	exit;
@@ -64,7 +61,7 @@ if($memory_size < 1)
 #	Open log file for reading
 open(INFILE, "<$ARGV[0]")  or die("Cannot open file '$ARGV[0]'\n");
 
-open(OUT_CPU_UTIL, ">cpu_util_proc-".$processors_size . "_MemSize-" . $memory_size . "_AlgType-". $alg_type . ".out.txt")  or die("Cannot open file 'Cpu_Usage_Log_File'\n");
+open(EVENTS_CAL, ">cpu_log-".$CPUs_size . "_MemSize-" . $memory_size . "_AlgType-". $alg_type . ".out.txt")  or die("Cannot open file 'Cpu_Usage_Log_File'\n");
 
 @data = <INFILE>;		#get conntent into array of lines
 
@@ -160,7 +157,7 @@ my $previous_cpu_usage	=	0;		#
 #my $counter_proc_finished	=	0;	#	Number of proc ended
 
 #	Loading start informtion into processors
-for($i=0;$i<$processors_size;$i++)
+for($i=0;$i<$CPUs_size;$i++)
 {
 	$processor[$i] = '0';
 }
@@ -170,7 +167,7 @@ for($i=0;$i<$processors_size;$i++)
 #	If no free CPU return negative number
 sub FindFreeProc
 {
-	for($i=0;$i<$processors_size;$i++)
+	for($i=0;$i<$CPUs_size;$i++)
 	{
 		if($processor[$i] eq '0')	#	Check if processor busy
 		{
@@ -198,7 +195,7 @@ sub PutProcessReadyToQueue
 		'procalloc'		=> $HoH{$proc_ind}{'procalloc'},	#	Number of CPU
 	};
 	
-	print "Start,\t" . $HoH{$proc_ind}{'jobNumber'} . ",\t" . $sys_time . "\n";
+	print EVENTS_CAL "Start,\t" . $HoH{$proc_ind}{'jobNumber'} . ",\t" . $sys_time . "\n";
 }
 
 
@@ -209,7 +206,7 @@ sub PutProcessReadyToQueue
 sub HaveenoughProc
 {
 	#	Cheking 
-	if($processors_size - $processors_used >= $_[0])
+	if($CPUs_size - $processors_used >= $_[0])
 	{
 		return(1);					#	Return true
 	}
@@ -296,7 +293,7 @@ sub ShortestJobFirst
 sub LoadFromQueueToProcessor
 {
 	#	While have free cpu
-	while($processors_used < $processors_size)
+	while($processors_used < $CPUs_size)
 	{
 		#	Get CPU id be used
 		$processor_free = FindFreeProc();
@@ -329,8 +326,8 @@ sub LoadFromQueueToProcessor
 				#	Update CPU usage(size)
 				$processors_used+=$queue{$betoken}{"procalloc"};
 				#	Print needed informatio
-				print "Run,\t" . $queue{$betoken}{'jobNumber'} . ",\t";
-				print $sys_time . "\n";	
+				print EVENTS_CAL "Run,\t" . $queue{$betoken}{'jobNumber'} . ",\t";
+				print EVENTS_CAL $sys_time . "\n";	
 			}
 			else
 			{
@@ -368,8 +365,8 @@ sub CPUWork
 		#	Free memory which this process used
 		$memory_used-=$queue{$processor[$_[0]]}{"memreq"};
 		#	Print the End message
-		print "END ,\t" . $queue{$processor[$_[0]]}{"jobNumber"} . ",\t";
-		print  $sys_time . "\n";
+		print EVENTS_CAL "END ,\t" . $queue{$processor[$_[0]]}{"jobNumber"} . ",\t";
+		print EVENTS_CAL $sys_time . "\n";
 		
 		#	Free CPU wich this process used
 		$processors_used-=$queue{$processor[$_[0]]}{"procalloc"};
@@ -392,13 +389,13 @@ sub allProcWork
 	{
 		$proc_usage++;							#	Update statistic var
 		$cpu_util+=$processors_used;			#	Update statistic var
-		if($previous_cpu_usage != $processors_used/$processors_size)
-		{
-			$previous_cpu_usage  = $processors_used/$processors_size;
-			print OUT_CPU_UTIL "" . $sys_time . " \t" . $processors_used/$processors_size . "\n";
-		}
+		#if($previous_cpu_usage != $processors_used/$CPUs_size)
+		#{
+		#	$previous_cpu_usage  = $processors_used/$CPUs_size;
+		#	print OUT_CPU_UTIL "" . $sys_time . " \t" . $processors_used/$CPUs_size . "\n";
+		#}
 		#	Do work for each CPU
-		for($i=0;$i<$processors_size;$i++)
+		for($i=0;$i<$CPUs_size;$i++)
 		{
 			if($processor[$i] ne '0')
 			{
@@ -414,6 +411,7 @@ my 	$process_counter	=	0;		#	Number process loaded to queue
 my	$simulator_status 	= 	1;		#	Bool for when simulation have job to do
 my 	$next_value 		= 	0;		#	Axelerator variable
 
+print EVENTS_CAL "Events calendar:\n";
 #	Start do main loop of simulator of computer work
 while($simulator_status)
 {
@@ -441,7 +439,7 @@ while($simulator_status)
 			}
 			
 			#	Check if have enough CPU only first iteration
-			if($sys_time == 0 && $HoH{$key}{"procalloc"} > $processors_size)
+			if($sys_time == 0 && $HoH{$key}{"procalloc"} > $CPUs_size)
 			{
 				print "Not enough processors!\n";
 				print "Need >=".$HoH{$key}{"procalloc"}. "\n";
@@ -451,7 +449,7 @@ while($simulator_status)
 			#	Process from input hash going be loaded into queue
 		  	if($HoH{$key}{"submit"} <= $sys_time)
 		  	{
-				if($HoH{$key}{"procalloc"} >= 0 && $HoH{$key}{"status"} == 1)
+				if($HoH{$key}{"procalloc"} >= 0)
 				{
 					$process_counter++;				#	Incarease statistic var
 					PutProcessReadyToQueue($key);	#	Put int queue
@@ -491,13 +489,25 @@ while($simulator_status)
   	}
 ###############################################################################
 ###############################################################################
-	print "CPU usage $proc_usage \n";
-	print "CPU util $cpu_util \n";
-	
-	$formula = ($proc_usage *$processors_size )/($cpu_util * $sys_time);
-	print "The formula result is $formula \n";
-	print "Wait time is : ". $wait_time/$process_counter ." \n";
 
+	$cpu_util = ($cpu_util)/($CPUs_size*$proc_usage);
+	$cpu_util = sprintf("%.2f", $cpu_util);
+	$cpu_util*=100;
+	print EVENTS_CAL "\n\nStatistics:\nTurnaround time:\t\t $sys_time .\n";
+	print EVENTS_CAL "CPU utilization:\t\t $cpu_util% .\n ";
+	print EVENTS_CAL "\n\nWaiting time(for each process):\n";
+
+foreach $key(keys(%completed))
+{
+	print  EVENTS_CAL $completed{$key}{'jobNumber'} . ":" . $completed{$key}{'wait'} . "\n";
+}
+
+
+#foreach $key( sort {$completed{$a}{"number"} <=> $completed{$b}{"number"}}  keys(%completed))
+#{
+#	print  $completed{$key}{'submit'} ."\n";
+#}
+close EVENTS_CAL;
 ###############################################################################
 ###############################################################################
 ###############################################################################
