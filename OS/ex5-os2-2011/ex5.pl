@@ -389,11 +389,6 @@ sub allProcWork
 	{
 		$proc_usage++;							#	Update statistic var
 		$cpu_util+=$processors_used;			#	Update statistic var
-		#if($previous_cpu_usage != $processors_used/$CPUs_size)
-		#{
-		#	$previous_cpu_usage  = $processors_used/$CPUs_size;
-		#	print OUT_CPU_UTIL "" . $sys_time . " \t" . $processors_used/$CPUs_size . "\n";
-		#}
 		#	Do work for each CPU
 		for($i=0;$i<$CPUs_size;$i++)
 		{
@@ -480,13 +475,14 @@ while($simulator_status)
 }
 ###############################################################################
 ###############################################################################
-	$wait_time = 0;
-	foreach $key ((keys(%completed))) 
-	{
+	#	Calculating wait time and other statistic data
+$wait_time = 0;
+foreach $key ((keys(%completed))) 
+{
 
-	  	$wait_time+=$completed{$key}{"wait"} ;
-	  	
-  	}
+	$wait_time+=$completed{$key}{"wait"} ;
+	
+}
 ###############################################################################
 ###############################################################################
 
@@ -499,27 +495,7 @@ while($simulator_status)
 
 foreach $key(keys(%completed))
 {
-	print  EVENTS_CAL $completed{$key}{'jobNumber'} . ":" . $completed{$key}{'wait'} . "\n";
+	print  EVENTS_CAL $completed{$key}{'jobNumber'}.":".$completed{$key}{'wait'}."\n";
 }
 
-
-#foreach $key( sort {$completed{$a}{"number"} <=> $completed{$b}{"number"}}  keys(%completed))
-#{
-#	print  $completed{$key}{'submit'} ."\n";
-#}
-close EVENTS_CAL;
-###############################################################################
-###############################################################################
-###############################################################################
-###############################################################################
-###############################################################################
-###############################################################################
-#		UDALIT PERED SDACHEY
-foreach $key (sort {$HoH{$a}{"submit"} <=> $HoH{$b}{"submit"}} (keys(%HoH))) 
-{
-  	if($HoH{$key}{"runtime"}>0 )
-  	{
-		print "Bad - Если бачишь цю хуйню - значит нехуя ты не ебу... \n";	
-		last;
-	}
-}
+close EVENTS_CAL;			#	Close file
