@@ -1,0 +1,59 @@
+	EX5	::	The script wich provide comparing the 4 algorythms type
+===============================================================================
+Authors:
+	Andrey Shamis,  	id: 321470882, login: andreysh
+	Ilia Gaisinsky, 	id: 309480051, login: iliaga
+=============================================================================== 
+	for run the script:
+			# ex5.pl 	<input_file_name>
+				-	<CPU`s number>
+				-	<Memory size>
+				-	<Algrotithm type>
+	
+	for set executable:
+	
+		chmod +x ex5.pl
+======================= description of the script =============================
+
+	Program to compare the four types of algorithms run processes in a super 
+computer (since the required number of processors exceeds the number that we 
+see today in our desktop PCs). 
+
+	Precisely the fact that it was told by and shown on tutoring and program 
+up and running. The program receives four types of data: 
+
+	The first is as mentioned above with the incoming data file that 
+contains all sorts of necessary and unnecessary information (not needed 
+because we do not use).
+	Then get the number of virtual processors, well, actually what is 
+called memory. It is worth noting immediately that we seem to share the memory 
+between processes, as follows, namely, call the choice of a random number 
+within a predetermined value, so stupid to ask the program because of the 
+value of memory a value equal to zero. 
+	And the last is the most important parameter that receives the program 
+is a type of algorithm which we will test. As said and shown but the 
+extra lessons. 
+
+	At the end of the job all the information printed in the log file name 
+is equal to incoming data, the number of processors, memory, and of others. 
+
+	Log file contains any additional information and Owned by the late start 
+time and start implementation of a specific process, the waiting time for 
+each of them, time just, well, the overall employment rate of the processor 
+because of the percentage numbers. 
+
+	Just during the script run every kind of simulation accelerators, 
+that is, if there is no process that should start to work or even work, 
+as well as at a particular time does not enter a new process, and we know 
+exactly when this process should proceed, then we jump to that time . 
+And the wisdom of other programming to accelerate the simulation, taking 
+into account the fact that we have no influence on the statistics that 
+interest us.
+
+============================== Files used =====================================
+			
+script file:		ex5.pl		//	PERL script
+
+ReadMe-os2-ex5-2011-andreysh_iliaga		//	txt file
+
+===============================================================================
