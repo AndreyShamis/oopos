@@ -1,0 +1,60 @@
+/*
+ * EX6:: Program to calculate Pi with server and clients using safe 
+ * comunication through semaphore
+ * ===========================================================================
+ * Writen by:	Ilia Gaisinsky,	id: 309480051, login: iliaga
+	      		Andrey Shamis,  id: 321470882, login: andreysh
+ *      
+ * ===========================================================================
+ *
+ *		to compile : 
+ 					gcc -Wall ex6_server.c -o ex6_server
+ 					gcc -Wall ex6_client.c -o ex6_client
+ *
+ *		to run:	
+ 		
+ 			Server:
+ 				./ex6_server X Y
+			X		-  id of internal queue comunication
+			Y		-  working time
+		 		
+ 			Client
+	 			./ex6_client X Y
+	 		X		-  id of internal queue comunication
+ 			Y		-  multple of pai calculation.	
+ *
+ */
+
+============================= ex6_server ======================================
+At first, The server criate queue of messegs, than it retreive from clients pi 
+value and mutple in evry messege he get. the server get number of messege as 
+number of seconds that user give as argument to the server program. each second 
+the chek server if he get messege and if there is - he save it to linked list.
+After that we calculate the everage of all pai value that we get 
+(the calculation include multple value).
+In the end the program we print the evarage pai value and close messege queue. 
+#####
+also we add semaphore for safe comunication, when the server read from 
+the queue - the client is wating.
+#####
+
+============================= ex6_client ======================================
+At first, client open the msg for send to server the pi which gona be 
+calculated. then we calculate the pai value an d send it to server.
+* calcylation of pai: we retrive multiple form user that pultipling number
+1000 and that number randomize to calculate pai thrugh MOTE CARLO method.
+#####
+also we add semaphore for safe comunication, when the client wright to 
+the queue - the server is wating.
+#####
+
+//---------------------------------------------------------------------------//
+Files used
+
+ex6_server.c						//	Server file
+ex6_client.c 						//	Client File
+
+ReadMe-os2-ex6-2011-andreysh_iliaga	//	readme
+
+===============================================================================
+
