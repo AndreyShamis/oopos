@@ -162,19 +162,19 @@ int main()
 	
 	sim_database *sim_db = vm_constructor(EXEC_FILE,TEXT_SIZE,DATA_SIZE, BSS_SIZE);
 	
-	/*
+	
 	int i;
 	unsigned short addr;
-	unsigned char *val = NULL;
+	unsigned char val ;
 	for(i=0;i<LOOPS;i++)
 	{
 		addr = rand()%EXEC_SIZE;
-		*val = vm_load(sim_db,addr);
-		*val = rand() %DIFF +LETTER_START;
-		vm_store(sim_db,addr+1,*val);
+		val = vm_load(sim_db,addr);
+	//	val = rand() %DIFF +LETTER_START;
+	//	vm_store(sim_db,addr+1,val);
 	
 	}
-	*/
+	
 	vm_print(sim_db);
 	vm_destructor(sim_db);
 	
