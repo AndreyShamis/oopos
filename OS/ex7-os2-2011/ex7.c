@@ -9,6 +9,12 @@
 #include <stdlib.h>		//	used for EXIT_SUCCESS
 #include <math.h>		//	used for rand
 #include <time.h>		//	used for srand
+#include <unistd.h>
+
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 //=============================================================================
 
 #define TEXT_SIZE 256	//	size of text segment of executable
@@ -46,11 +52,11 @@ typedef struct sim_database
 
 	
 
-	char *swap_file;
-	char *swap_fd;
+	char 	*swap_file;
+	int 	swap_fd;
 
-	char *program_file;
-	char *program_fd;	
+	char 	*program_file;
+	int 	program_fd;	
 
 }sim_database; 
 
@@ -83,17 +89,44 @@ void CreateVM()
 sim_database *vm_constructor(char *executable,unsigned short text,
 unsigned short data,unsigned short bss)
 {
-
 	
-	sim_database *ret=NULL;
+	//	Craete and set ptable
+	sim_database *ret=NULL;	
 	
+	//int pageTableSize = 1024;
+	ret = (sim_database *) malloc(1); 	
+	if(ret == NULL)
+	{
+		perror("Cannot allocate memory\n");
+		exit(EXIT_FAILURE);
+	}
+	//	Open SWAP file in correct size
+	ret->swap_fd 	= open("swap_file",O_CREAT | O_RDWR | O_TRUNC);
 	
+	//	Open program file
+	ret->program_fd 	= open(executable,O_RDWR | O_CREAT);
+	//ret->swap_file = "swap_file";
+	ret->program_file = executable;
 	return(ret);
 }
 //=============================================================================
 char vm_load(sim_database *sim_db,unsigned short virtual_addr)
 {
-
+/*
+	if(virtual_addr <= DATA_SIZE+TEXT_SIZE)
+	{
+	
+	}
+	else if(virtual_addr >DATA_SIZE+TEXT_SIZE+BSS)
+	{
+	
+	}
+	else
+	{
+		
+	}
+*/
+	
 	return('a');
 }
 //=============================================================================
@@ -106,13 +139,17 @@ int vm_store(sim_database *sim_db,unsigned short virtual_addr,
 //=============================================================================
 void vm_destructor(sim_database *sim_db)
 {
-
-	;
+	close(sim_db->swap_fd);
+	close(sim_db->program_fd);
+	
+	free(sim_db);
 }
 
 int vm_print(sim_database *sim_db)
 {
-
+	
+	printf("Swap descriptor %d\n",sim_db->swap_fd);
+	printf("File descriptor %d\n",sim_db->program_fd);
 	return(0);
 }
 
@@ -125,6 +162,7 @@ int main()
 	
 	sim_database *sim_db = vm_constructor(EXEC_FILE,TEXT_SIZE,DATA_SIZE, BSS_SIZE);
 	
+	/*
 	int i;
 	unsigned short addr;
 	unsigned char *val = NULL;
@@ -136,7 +174,7 @@ int main()
 		vm_store(sim_db,addr+1,*val);
 	
 	}
-	
+	*/
 	vm_print(sim_db);
 	vm_destructor(sim_db);
 	
