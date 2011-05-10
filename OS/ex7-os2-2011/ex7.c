@@ -25,16 +25,14 @@
 #define EXEC_FILE "exec"
 #define SWAP_FILE "swap_file"
 
-#define P_SIZE 16
 #define LOOPS 200
-#define PHISYCAL_MEM_SIZE 64
+
 
 #define EXEC_SIZE 1024
 #define PAGE_NUM 64
-
-#define SWAP 	11
-#define HARD 	12
-#define MMEM	13
+#define P_SIZE 16
+#define FRAME_NUM 4
+#define PHISYCAL_MEM_SIZE 64
 
 #define TEXT_R 	0
 #define DATA_R 	1
@@ -44,14 +42,23 @@
 
 
 
-char MEM[PHISYCAL_MEM_SIZE];
-int BLOCKS[4];
-unsigned int BLOCKS_T[4];
-int block_used;
-unsigned int FCFS = 0;
+char 			MEM[PHISYCAL_MEM_SIZE];
+int 			BLOCKS[FRAME_NUM];
+unsigned int 	BLOCKS_T[FRAME_NUM];
+int 			block_used;
+unsigned int 	FCFS = 0;
 //=============================================================================
 
 
+typedef struct stats_struct
+{
+	unsigned int page_faults;
+	unsigned int swap_outs;
+	unsigned int bring_swap;
+	unsigned int bring_hard;
+	unsigned int hits;
+	
+}stats_struct;
 
 typedef struct page_descriptor
 {
@@ -73,28 +80,31 @@ typedef struct sim_database
 
 }sim_database; 
 
+	stats_struct stats;
 //=============================================================================
 void vm_destructor(sim_database *sim_db)
 {
-	printf("Close files...\n");
+	//printf("Close files...\n");
 	close(sim_db->swap_fd);
 	close(sim_db->program_fd);
 	
-	printf("Clear memory\n");
+	//printf("Clear memory\n");
+	free(sim_db->swap_file);
 	free(sim_db->ptable);
 	free(sim_db);
 }
 
 //=============================================================================
 
-sim_database *vm_constructor(char *executable,unsigned short text,
-unsigned short data,unsigned short bss)
+sim_database *vm_constructor(char *executable,const unsigned short text,
+const unsigned short data,const unsigned short bss)
 {
-	
-	BLOCKS[0] = 0;
-	BLOCKS[1] = 0;
-	BLOCKS[2] = 0;
-	BLOCKS[3] = 0;
+	int i;
+	for(i=0;i<FRAME_NUM;i++)
+	{
+		BLOCKS[i] 	= 0;
+		BLOCKS_T[i] = 0;
+	}
 	block_used = 0;
 	//	Craete and set ptable
 	sim_database *ret=NULL;		
@@ -103,10 +113,11 @@ unsigned short data,unsigned short bss)
 	
 	//	Allocate memory for page table
 	ret->ptable = (page_descriptor *) malloc(PAGE_NUM*sizeof(page_descriptor)); 
+	ret->swap_file = (char *)malloc(strlen(SWAP_FILE)*sizeof(char)+1);
 		
 	//-------------------------------------------------------------------------
 	//	Check if allocated
-	if(ret == NULL || ret->ptable == NULL)
+	if(ret == NULL || ret->ptable == NULL || ret->swap_file == NULL)
 	{
 		perror("Cannot allocate memory\n");
 		exit(EXIT_FAILURE);
@@ -114,42 +125,27 @@ unsigned short data,unsigned short bss)
 	
 	//-------------------------------------------------------------------------
 	//	Open SWAP file in correct size
-	ret->swap_file = (char *)malloc(strlen(SWAP_FILE)*sizeof(char));
-	//	EXPECTED CHECK ALLOCATING
+	
 	strcpy(ret->swap_file,SWAP_FILE);
 	ret->swap_fd 	= open(ret->swap_file,O_CREAT | O_RDWR | O_TRUNC);
 	
 	//	Open program file
-	ret->program_fd 	= open(executable,O_RDWR | O_CREAT);
-	//ret->swap_file = "swap_file";
+	ret->program_fd 	= open(executable,O_RDONLY | O_CREAT);
 	ret->program_file = executable;
-	//char text[TEXT_SIZE];
-	//char data[DATA_SIZE];
-	//char bss[BSS_SIZE];
-	//read(program_fd,text,TEXT_SIZE);
-	//read(program_fd,data,DATA_SIZE);
-	//read(program_fd,bss,BSS_SIZE);
-	
 		
 	//-------------------------------------------------------------------------
-	int i=0;
+
 	short int section = TEXT_R;
 	printf("Start fill table\n");
 	for(i=0;i<PAGE_NUM;i++)
 	{
 		if(i*P_SIZE > TEXT_SIZE && section == 0)
-		{
 			section=DATA_R;
-		}
 		if(i*P_SIZE > TEXT_SIZE +DATA_SIZE && section == 1)
-		{
 			section = BSS_R;
-		}
 		if(i*P_SIZE > TEXT_SIZE+DATA_SIZE+BSS_SIZE && section == 2)
-		{
 			section=HEAP_R;
-		}
-		
+				
 		ret->ptable[i].valid 		= 0;
 		if(section == HEAP_R || section == BSS_R || section == DATA_R)
 			ret->ptable[i].permission 	= 1;
@@ -157,7 +153,7 @@ unsigned short data,unsigned short bss)
 			ret->ptable[i].permission 	= 0;
 			
 		ret->ptable[i].touched 		= 0;
-		ret->ptable[i].frame 		= HARD;
+		ret->ptable[i].frame 		= -1;
 	}
 	
 	return(ret);
@@ -175,11 +171,18 @@ void swap_out(sim_database *sim_db,const short int table,const short int block)
 		{
 			buff[i] = MEM[block+i];  
 		}
-		printf("2 - Table %d . Block: %d\n", table,block);
+		//printf("2 - Table %d . Block: %d\n", table,block);
 		lseek(sim_db->swap_fd,table*P_SIZE,SEEK_SET);
 		write(sim_db->swap_fd,buff,P_SIZE);	
-		sim_db->ptable[table].frame = SWAP;
+		sim_db->ptable[table].frame = 0;
 		sim_db->ptable[table].valid = 0;
+		stats.swap_outs++;
+	}
+	else
+	{
+		sim_db->ptable[table].frame = -1;
+		sim_db->ptable[table].valid = 0;	
+	
 	}
 	block_used--;
 }
@@ -213,6 +216,7 @@ short int getFreeBlock(sim_database *sim_db)
 			}
 		}
 		swap_out(sim_db,BLOCKS[block_f],block_f);
+		stats.swap_outs++;
 		return(block_f);
 	}
 	
@@ -220,7 +224,7 @@ short int getFreeBlock(sim_database *sim_db)
 }
 
 //=============================================================================
-char vm_load(sim_database *sim_db,unsigned short virtual_addr)
+char vm_load(sim_database *sim_db,const unsigned short virtual_addr)
 {
 	if(virtual_addr >=1024)
 	{
@@ -236,21 +240,25 @@ char vm_load(sim_database *sim_db,unsigned short virtual_addr)
 	if(sim_db->ptable[page_table].valid == 1)
 	{
 		//	In main memory
-		return(MEM[offset]);
+		stats.hits++;
+		return(MEM[offset+ sim_db->ptable[page_table].frame*P_SIZE]);
+		
 	}
 	else if(sim_db->ptable[page_table].valid == 0)
 	{
-
-		if(sim_db->ptable[page_table].frame == SWAP)
+		stats.page_faults++;
+		if(sim_db->ptable[page_table].frame == 0)
 		{
+			stats.bring_swap++;
 			//	Go to SWAP
-			printf("Read from swap\n");
+			//printf("Read from swap\n");
 			lseek(sim_db->swap_fd,page_table*P_SIZE,SEEK_SET);
 			read(sim_db->swap_fd, buff,P_SIZE);	
 		}
-		else if(sim_db->ptable[page_table].frame == HARD)
+		else if(sim_db->ptable[page_table].frame == -1)
 		{
-			//	Go to HARD			
+			//	Go to HARD		
+			stats.bring_hard++;	
 			lseek(sim_db->program_fd,page_table*P_SIZE,SEEK_SET);
 			read(sim_db->program_fd, buff,P_SIZE);		
 		}
@@ -259,17 +267,17 @@ char vm_load(sim_database *sim_db,unsigned short virtual_addr)
 			printf("\t-\t-\t-\tError\n");
 		}
 		int i=0;
-		short int block_us = getFreeBlock(sim_db);
+		short int frame_id = getFreeBlock(sim_db);
 		for(i=0;i<P_SIZE;i++)
 		{
-			MEM[block_us+i] = buff[i];
+			MEM[frame_id+i] = buff[i];
 		}
 		
-		BLOCKS[block_us] = page_table;
-		BLOCKS_T[block_us] = FCFS;
+		BLOCKS[frame_id] 	= page_table;
+		BLOCKS_T[frame_id] 	= FCFS;
 		FCFS++;
 		block_used++;
-		sim_db->ptable[page_table].frame = MMEM;
+		sim_db->ptable[page_table].frame = frame_id;
 		sim_db->ptable[page_table].valid = 1;
 		return(buff[offset]);
 	}
@@ -278,8 +286,8 @@ char vm_load(sim_database *sim_db,unsigned short virtual_addr)
 	return('a');
 }
 //=============================================================================
-int vm_store(sim_database *sim_db,unsigned short virtual_addr,
-						unsigned char value)
+int vm_store(sim_database *sim_db,const unsigned short virtual_addr,
+						const unsigned char value)
 {
 	//	HUY ZNAET CHTO
 	unsigned short offset =	virtual_addr & 15;
@@ -290,22 +298,14 @@ int vm_store(sim_database *sim_db,unsigned short virtual_addr,
 		//printf("Cannot write to closed memory\n");
 		return(-1);
 	}
-	if(sim_db->ptable[page_table].valid == 1)
-	{	//	In main memory
-		MEM[offset] = value;
-	}
-	else if(sim_db->ptable[page_table].valid == 0)
+	
+	if(sim_db->ptable[page_table].valid == 0)
 	{
-		if(sim_db->ptable[page_table].frame == SWAP)
-		{	//	Go to SWAP			
-			sim_db->ptable[page_table].touched = 1;	
-		}
-		else if(sim_db->ptable[page_table].frame == HARD)
-		{	//	Go to HARD
-			sim_db->ptable[page_table].touched = 1;
-		}		
+			vm_load(sim_db,virtual_addr);
+			sim_db->ptable[page_table].touched = 1;		
 	}
 	
+	MEM[offset+ sim_db->ptable[page_table].frame*P_SIZE] = value;
 	return(0);
 }
 
@@ -315,6 +315,22 @@ int vm_print(sim_database *sim_db)
 	
 	printf("Swap descriptor %d\n",sim_db->swap_fd);
 	printf("File descriptor %d\n",sim_db->program_fd);
+	printf("Swap outed %d. \t\n",stats.swap_outs);
+	printf("Hits\t %d.\t Page fault %d.\t\n",stats.hits,stats.page_faults);
+	printf("Swap hit %d.\t HDD hit %d.\n",stats.bring_swap,stats.bring_hard);
+	
+	int i,j;
+	printf("==========================MEMORY==========================\n");
+	for(i=0;i<FRAME_NUM;i++)
+	{
+		printf("Frame[%d]:",i);
+		for(j=0;j<P_SIZE;j++)
+		{
+			printf("%c",MEM[i*P_SIZE+j]);
+		}
+		printf("\n");
+	
+	}
 	return(0);
 }
 
