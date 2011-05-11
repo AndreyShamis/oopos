@@ -29,18 +29,23 @@
 <location> inside the closet
 <location> under the stars
 <location> on the floor
+<location> on the moon
+<location> on the mars
 <time> at night
 <time> early
 <time> last time
+<dot> .
 <time> in the morning
 <time> when the woolfs cry
-<question> is the <noun> <adjective> ?
-<question> another <noun> <adjective> ?
+<question> what time it is
+<question> is the <noun> <adjective>
+<question> another <noun> <adjective>
 <sentence> the <noun-phrase> <verb> <location>
 <sentence> our <noun> can sometimes be <adjective>
-<sentence> <question>
+<sentence> <question> <dot> <dot> <dot>
 <sentence> <question> or <question>
-<sentence> <question> or maybe <negate> <question>
+<sentence> <question> or maybe <negate> <question> 
+<sentence> <question> or maybe <negate> <question> But <location> is <sentence>  
 <sentence> <negate>
 <sentence> <negate> <noun> <verb> <time>
 <sentence> I never saw a <noun-phrase> <time>
