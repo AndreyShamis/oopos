@@ -26,10 +26,10 @@ using namespace std;
 using std::ifstream;
 
 // Menu options
-#define GEN_RUND_SENTENCE	1
-#define LOAD_FILE			2
-#define DISPLAY_RULES		3
-#define EXIT				4
+#define GEN_RUND_SENTENCE	'1'
+#define LOAD_FILE			'2'
+#define DISPLAY_RULES		'3'
+#define EXIT				'4'
 
 
 #define SENTENCE "<sentence>"

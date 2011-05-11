@@ -51,15 +51,24 @@ void SentenceGenerator::loadGrammarFile()
 		if(words[0] == SENTENCE)			// search sentence-low existence
 			sentenceExist = true;
 
+		syntaxLaw = words.front();			// exract the low from deque
+
 		//chek if the first string is low and it is not the only string at line
-		if((char)line[0] != '<' || (int)words.size() == 1)
+		if((char)line[0] != '<' || (int)words.size() == 1 || 
+			syntaxLaw[syntaxLaw.length() -1] != '>')
 			fileIsGood = false;
 
-		syntaxLaw = words.front();			// exract the low from deque
 		words.pop_front();					// delete the low from deque
 
 		// insert the key low and the deque of words to the STL data base
 		new_db.insert(pair<string,deque<string>>(syntaxLaw,words));
+
+		if(_gFile.fail())		// chek if file ok
+		{
+			cerr << "### Error loading grammar file ###\n\n";
+			_gFile.clear();				// clear the error flags of iostream.
+			return;
+		}
 	}
 	if(!chekLowExistence(new_db))			// chek if all the low exist
 		fileIsGood = false;
@@ -72,7 +81,8 @@ void SentenceGenerator::loadGrammarFile()
 		cout << "### Grammar file loaded successfully :) ###\n\n";
 	}
 	else									// stay with the old data base
-		cout << "### Incomplete grammar or Wrong file format :( ###\n\n";
+		cerr << "### Incomplete grammar or Wrong file format :( ###\n\n";
+
 
 	_gFile.clear();				// clear the error flags of iostream.
 	_gFile.close();				// close file	
@@ -93,7 +103,7 @@ bool SentenceGenerator::openFile(ifstream &file)
 	if(file.is_open())				// if file is open return true
 		return true;
 
-	cout << "### File does not exist ###\n\n";
+	cerr << "### File does not exist ###\n\n";
 	return false;					// file didn't opened - return false
 
 }
@@ -141,8 +151,10 @@ bool SentenceGenerator::chekLowExistence(multimap<string,deque<string>> &_db)
 deque<string> SentenceGenerator::split(const string &sentence)
 {
 	deque<string> ret;						// deque of words (strings)
+
 	istringstream iss(sentence);			//Construct an object and optionally 
 											//initialize its content
+
 	copy(istream_iterator<string>(iss),		// copy strings
 		istream_iterator<string>(),			// iterator
 		back_inserter<deque<string> >(ret));// split to deque
@@ -151,29 +163,33 @@ deque<string> SentenceGenerator::split(const string &sentence)
 }
 
 //=============================================================================
-// function which 
+// function which display grammar file to the screen
 void SentenceGenerator::displayGrammarFile()
 {
+	// if data base exist: display grammar file to the screen
 	if(_dataBaseExist)
 	{
+		// Loop  the container keys (first)
 		for (multimap<string,deque<string>>::const_iterator it = _db.begin(); 
 			it != _db.end(); ++it) 
 		{
 			cout << it->first << "\t";
-			printDeque(it->second);
+			printDeque(it->second);			// print all the words at deque
 			cout << "\n";
 		}
 		cout << "\n";
 	}
+	// otherwise print operation canceled meseg
 	else
 		printOperationCanceledMsg();
 
 }
 
 //=============================================================================
-// function which 
+// function which print wards of deque
 void SentenceGenerator::printDeque(const deque<string> &deq)
 {
+	// loop deque values and print them (words)
 	for (deque<string>::const_iterator it = deq.begin();
 		it != deq.end(); ++it)
 	
@@ -181,53 +197,59 @@ void SentenceGenerator::printDeque(const deque<string> &deq)
 }
 
 //=============================================================================
-// function which 
+// function which interface of generator of random grammar sentence 
 void SentenceGenerator::generateRandomSentence()
 {
-	if(_dataBaseExist)
+	if(_dataBaseExist) // if data base exist - generate random sentence
 	{
 		cout << "Random generated sentence is:\n"; 
-		generRandSenteRecur(SENTENCE);
+		generRandSenteRecur(SENTENCE);		// call generator of sentence
 		cout << "\n\n";
 	}
+	// otherwise print operation canceled meseg 
 	else
 		printOperationCanceledMsg();
 }
 
 
 //=============================================================================
-// function which 
+// function which recursevly generate random grammar sentence
+// get: syntax low (string)
 void SentenceGenerator::generRandSenteRecur(const string &syntaxLaw)
 {
-	multimap<string,deque<string>>::iterator it;
-	pair<multimap<string,deque<string>>::iterator,multimap<string,
+	multimap<string,deque<string>>::iterator it; // make iterator to container
+
+	// Make iterator to pair containers (templet)- to find renge of key (low)
+	pair<multimap<string,deque<string>>::iterator,multimap<string, 
 	deque<string>>::iterator> ret;
 
-	ret = _db.equal_range(syntaxLaw);
+	ret = _db.equal_range(syntaxLaw);			// get renge of spesific key
 
-	int rnd = rand()%(int)_db.count(syntaxLaw);
+	int rnd = rand()%(int)_db.count(syntaxLaw); // randomize key at the range
 
-	it = ret.first;
-
-	for(int i = 0; i < rnd; i++) //  && it!=ret.second
+	it = ret.first;						// bring iterator to begin of renge		
+	for(int i = 0; i < rnd; i++)		// move to the random key
 	{
-		++it;
+		++it;							
 	}
+	// loop truogh deque 
 	for (deque<string>::const_iterator itr = (*it).second.begin();
 		itr != (*it).second.end(); ++itr)
 	{
-
+		// if that string is low - call recursivly to this low
 		if((char)(*itr)[0] == '<')
 			generRandSenteRecur(*itr);
+
+		// othewise print the words
 		else
 			cout << " " << *itr;
 	}
 }
 
 //=============================================================================
-// function which 
+// function which print operation canceled msg to the screen
 void SentenceGenerator::printOperationCanceledMsg()
 {
-	cout << "### OPERATION CANCELED ###";  
+	cerr << "### OPERATION CANCELED ###";  
 	cout << " - Yoy need to load a grammar file first!\n\n";
 }

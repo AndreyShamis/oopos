@@ -2,7 +2,7 @@
 <noun> mummy
 <noun> computer
 <noun> korkinet
-<noun> nun
+<noun> n
 <noun-phrase> <noun>
 <noun-phrase> <adjective> <noun-phrase>
 <adjective> amazing
