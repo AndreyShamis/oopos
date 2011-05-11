@@ -1,0 +1,46 @@
+<noun> hamster
+<noun> mummy
+<noun> computer
+<noun> korkinet
+<noun> nun
+<noun> zombie
+<noun> computer
+screen screenn
+<noun> protector
+<noun> car
+<noun> train
+<noun-phrase> <noun>
+<noun-phrase> <adjective> <noun-phrase>
+<adjective> amazing
+<adjective> blue
+<adjective> free
+<adjective> green
+<adjective> nice
+<adjective> weird
+<negate> <noun-phrase> does not <verb> <location>
+<verb> sleeps
+<verb> sits
+<verb> eats
+<verb> come
+<verb> study
+<verb> drink
+<verb> bring
+<verb> drive
+<location> inside the closet
+<location> under the stars
+<location> on the floor
+<time> at night
+<time> early
+<time> last time
+<time> in the morning
+<time> when the woolfs cry
+<question> is the <noun> <adjective> ?
+<question> another <noun> <adjective> ?
+<sentence> the <noun-phrase> <verb> <location>
+<sentence> our <noun> can sometimes be <adjective>
+<sentence> <question> 
+<sentence> <question> or <question> 
+<sentence> <question> or maybe <negate> <question> 
+<sentence> <negate>
+<sentence> <negate> <noun> <verb> <time>
+<sentence> I never saw a <noun-phrase> <time>

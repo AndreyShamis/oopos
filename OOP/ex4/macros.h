@@ -3,7 +3,7 @@
 //  @ File Name : macros.h
 //  @ Date : 06/05/2011
 //  @ Authors : Ilia Gaysinski and Andrey Shamis
-//	@ Description :
+//	@ Description : maintanace\configuration file.
 
 #pragma once
 
@@ -23,7 +23,9 @@
 #include <time.h>
 
 using namespace std;
+using std::ifstream;
 
+// Menu options
 #define GEN_RUND_SENTENCE	1
 #define LOAD_FILE			2
 #define DISPLAY_RULES		3
