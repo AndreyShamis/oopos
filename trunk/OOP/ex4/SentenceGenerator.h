@@ -3,12 +3,11 @@
 //  @ File Name : SentenceGenerator.h
 //  @ Date : 06/05/2011
 //  @ Authors : Ilia Gaysinski and Andrey Shamis
-//	@ Description :
+//	@ Description : A heder of class Sentence Generator
 
 #pragma once
 
 #include "macros.h"
-
 
 class SentenceGenerator
 {
@@ -27,7 +26,7 @@ private:
 	void printDeque(const deque<string> &deq);
 	deque<string> split(const string &sentence);
 	bool openFile(ifstream &file);
-	multimap<string,deque<string>>	_db;
-	ifstream						_gFile;
-	bool							_dataBaseExist;
+	multimap<string,deque<string>>	_db;			// the main data base (STL)
+	ifstream						_gFile;			// file descriptor
+	bool							_dataBaseExist;//define data base existence
 };

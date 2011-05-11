@@ -1,0 +1,24 @@
+<noun> hamster
+<noun> mummy
+<noun> computer
+<noun> korkinet
+<noun> nun
+<noun-phrase> <noun>
+<noun-phrase> <adjective> <noun-phrase>
+<adjective> amazing
+<adjective> blue
+<adjective> weird
+<negate> <noun-phrase> does not <verb> <location>
+<verb> sleeps
+<verb> sits
+<verb> eats
+
+<location> inside the closet
+<location> under the stars
+<location> on the floor
+<time> at night
+<time> in the morning
+<time> when the woolfs cry
+<question> is the <noun> <adjective> ?
+<sentence> the <noun-phrase> <verb> <location>
+<sentence> our <noun> can sometimes be <adjective>
