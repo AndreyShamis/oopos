@@ -1,10 +1,7 @@
-<noun> hamster
-<noun> mummy
-<noun> computer
-<noun> korkinet
-<noun> n
+<noun> <noun>
+
 <noun-phrase> <noun>
-<noun-phrase> <adjective> <noun-phrase>
+<noun-phrase> <noun-phrase>
 <adjective> amazing
 <adjective> blue
 <adjective> weird
@@ -13,9 +10,8 @@
 <verb> sits
 <verb> eats
 
-<location> inside the closet
-<location> under the stars
-<location> on the floor
+<location> <location>
+
 <time> at night
 <time> in the morning
 <time> when the woolfs cry
