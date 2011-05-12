@@ -28,7 +28,5 @@ private:
 	bool openFile(ifstream &file);
 	multimap<string,deque<string>>	_db;			// the main data base (STL)
 	ifstream						_gFile;			// file descriptor
-	bool							_dataBaseExist;//define data base existence
-	int								_infiCounter;	// privent ifinity recurtion
-	
+	bool							_dataBaseExist;//define data base existence	
 };

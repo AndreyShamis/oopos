@@ -33,3 +33,4 @@ using std::ifstream;
 
 
 #define SENTENCE "<sentence>"
+#define INF_REC_LIMIT		5 // limit of infinity recurtion
