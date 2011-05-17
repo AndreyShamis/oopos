@@ -1,0 +1,58 @@
+/*
+ * EX7:: Virtual memory manipulations
+ * ===========================================================================
+ * Writen by: Andrey Shamis,  id: 321470882, login: andreysh
+ * and:       Ilia Gaisinsky, id: 309480051, login: iliaga
+ * ===========================================================================
+ *
+ * ===========================================================================
+	This program provide tools for manipulations with virtual memory
+	
+	For compile just run:
+		
+		make
+		
+	for run the program use next comand line
+		
+		./ex7
+		
+	The Directory must have file exec.
+	And after runing the program file directory get new file called
+	swap_file
+
+============================= EX7 ============================================
+	Program - manipulator of virtual memory. The program creates a simulation 
+of virtual memory in the computer. 
+	
+	At the end of the program execution, the program prints a report on the use 
+of memory and the memory state that it is at the moment, but also prints a 
+status page table. 
+	
+	It should be noted that the program was used by the algorithm pulling 
+a block of memory on slightly different criteria, namely the elongated 
+block of memory that has been accessed after all.
+
+	Also worth noting that the program should also take into consideration in 
+mind that the main it is necessary to run a successful program execution 
+spellings us should be placed in the directory that contains the program 
+itself is a text file that serves as a principle the program itself which
+is supposedly we run. 
+	
+	It is desirable that this file would contain a 1024-byte because the 
+consequences are more or less that file is not predictable. 
+
+	Which in turn is explained by the task, since no one had asked to check 
+a file size that is also not mentioned in the specification of all sizes 
+should be a file.
+
+//---------------------------------------------------------------------------//
+
+Files used
+
+ex7.c		-	ex7.h 				// program
+exec 		//	exec file
+makefile  							//	makefile
+ReadMe-os2-ex7-2011-andreysh_iliaga	//	readme
+
+===============================================================================
+
