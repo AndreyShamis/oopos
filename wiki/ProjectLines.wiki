@@ -7,4 +7,6 @@ Add your content here.
 
 = Details =
 Colored Balls:
-The game has N number of colored balls. Balls appear on the map with a certain probability. That is, if we have a map 4 red 3 blue and 2 green. Then the probability of loss is P (Red) > P(Blue) > P(Green)
+The game has N number of colored balls. Balls appear on the map with a certain probability. That is, if we have a map 4 red 3 blue and 2 green. Then the probability of loss is 
+ 
+ P(Red) > P(Blue) > P(Green)
