@@ -183,6 +183,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Cell.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\GameController.cpp"
 				>
 			</File>
@@ -206,6 +210,10 @@
 			</File>
 			<File
 				RelativePath=".\Board.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Cell.h"
 				>
 			</File>
 			<File
