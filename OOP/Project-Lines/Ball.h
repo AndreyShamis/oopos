@@ -1,6 +1,6 @@
 #pragma once
-
-class Ball
+#include "Cell.h"
+class Ball : public Cell
 {
 public:
 	Ball(void);
