@@ -3,6 +3,11 @@
 class Ball : public Cell
 {
 public:
-	Ball(void);
+	Ball(BallColor color);
 	~Ball(void);
+
+private:
+
+	vector <BallColor> _colors;
+
 };

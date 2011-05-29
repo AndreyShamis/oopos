@@ -32,8 +32,11 @@ public:
 
 private:
 	//static 
-	static	RGBA **_image;
-	static int _height;		//	height of image
-	static int _width;			//	width of image
+	//static	
+		RGBA **_image;
+	//static 
+		int _height;		//	height of image
+	//static 
+		int _width;			//	width of image
 	
 };
