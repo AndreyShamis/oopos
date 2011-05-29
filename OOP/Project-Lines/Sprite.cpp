@@ -67,7 +67,7 @@ void Sprite::Draw(const float &cordX, float &cordY){
 		x=_width;
 		for(int j=0; j< _width; j++){
 			glColor4ub(_image[i][j]._r, _image[i][j]._g, _image[i][j]._b, _image[i][j]._a);
-			glVertex2f((float)x*(1.0/940) + cordX ,0.9- ((float)y*(1.0/540) + cordY));//(20*PIC_WIDTH)-
+			glVertex2f((float)x*(1.0/540) + cordX ,((float)y*(1.0/540) + cordY));//(20*PIC_WIDTH)-
 			x++;
 		}
 		y++;
@@ -76,3 +76,22 @@ void Sprite::Draw(const float &cordX, float &cordY){
 	glEnd();
 
 }
+////=============================================================================
+////	Draw function
+//void Sprite::Draw(const float &cordX, float &cordY, Action action)
+//{
+//	if(action == Nothing)
+//	{
+//		DrowSprite(cordX, cordY, 0);
+//	}
+//	else if(action == Appear)
+//	{
+//		for(int alpha = 0; alpha <=255  alpha =+ 17)
+//			DrowSprite(cordX, cordY, alpha);
+//	}
+//	else if(ction == Disappear)
+//	{
+//		for(int alpha = 255; alpha >=0  alpha =- 17)
+//			DrowSprite(cordX, cordY, alpha);
+//	}
+//}
