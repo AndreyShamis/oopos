@@ -17,7 +17,7 @@ public:
 		return(_cordY);
 	}
 protected:
-	static Graph<Sprite> _sprites;
+	static std::vector <Sprite> _sprites;
 
 	float _cordX;
 	float _cordY;
