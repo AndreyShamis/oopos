@@ -3,7 +3,9 @@
 class Ball : public Cell
 {
 public:
-	Ball(BallColor color);
+	Ball(const float &X,const float &Y, BallColor color);
+	void Draw();
+	bool Ball::doYouThatColor(BallColor color);
 	~Ball(void);
 
 private:

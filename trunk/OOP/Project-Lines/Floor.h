@@ -4,9 +4,9 @@
 class Floor : public Cell
 {
 public:
-	static std::vector <Sprite> _sprite;
+	//static std::vector <Sprite> _sprite;
 	Floor(const float &X,const float &Y);
-	void setFloorType(FloorType type);
+	void setFloorType(Types type);
 	bool operator==(const Floor &Other)const
 	{
 		return(true);
@@ -14,12 +14,12 @@ public:
 	void Draw()
 	{
 		if(_type== Simple)
-			_sprite[0].Draw(_cordX, _cordY);
+			_sprites[0].Draw(_cordX, _cordY);
 		else if(_type = Selected)
-			_sprite[1].Draw(_cordX, _cordY);
+			_sprites[1].Draw(_cordX, _cordY);
 	}
 	~Floor(void);
 private:
 
-	FloorType _type;
+	Types _type;
 };

@@ -19,6 +19,7 @@
 #define WHITE_BALL			"white_ball_rgba.txt"
 #define W_B_BALL			"white_blue_ball_rgba.txt"
 #define YELLOW_BALL			"yellow_ball_rgba.txt"
+#define MIXED_BALL			"mixed_ball_rgba.txt"
 
 
 
@@ -106,6 +107,8 @@ struct RGBA{
 	short int  _r, _g, _b, _a;
 };
 
-enum FloorType { Simple, Selected };
-enum BallColor { Green, White, Black, Yellow, Orange, Blue, Mixed , OrangeRed,
-				 WhiteRlue, green_yellow };
+enum Types { Simple, Selected };
+enum Action { Nothing, Appear, Disappear };
+
+enum BallColor { Green, White, Black, Yellow, Orange, Blue, Red , Mixed , 
+				 OrangeRed, WhiteBlue, greenYellow };
