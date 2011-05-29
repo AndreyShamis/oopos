@@ -6,7 +6,16 @@
 class Cell
 {
 public:
+	float getX()const
+	{
 
+		return(_cordX);
+	}
+	float getY()const
+	{
+
+		return(_cordY);
+	}
 protected:
 	static Graph<Sprite> _sprites;
 

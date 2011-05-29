@@ -2,9 +2,9 @@
 
 using namespace std ;
 
-RGBA **Sprite::_image;
-int Sprite::_height;
-int Sprite::_width;
+//RGBA **Sprite::_image;
+//int Sprite::_height;
+//int Sprite::_width;
 //=============================================================================
 //	return height
 int Sprite::getHeight()

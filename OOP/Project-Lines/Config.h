@@ -107,4 +107,5 @@ struct RGBA{
 };
 
 enum FloorType { Simple, Selected };
-enum BallColor { Green, White, Black, Yellow, Orange, Blue, Mixed , orange_red };
+enum BallColor { Green, White, Black, Yellow, Orange, Blue, Mixed , OrangeRed,
+				 WhiteRlue, green_yellow };
