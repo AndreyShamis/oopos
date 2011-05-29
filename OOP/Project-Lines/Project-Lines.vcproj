@@ -187,11 +187,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Floor.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\GameController.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\main.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Sprite.cpp"
 				>
 			</File>
 		</Filter>
@@ -217,6 +225,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Config.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Floor.h"
+				>
+			</File>
+			<File
 				RelativePath=".\GameController.h"
 				>
 			</File>
@@ -226,6 +242,10 @@
 			</File>
 			<File
 				RelativePath=".\macros.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Sprite.h"
 				>
 			</File>
 		</Filter>

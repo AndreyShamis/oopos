@@ -1,8 +1,16 @@
 #pragma once
+#include "Sprite.h"
+#include "Graph.h"
+//#include "Config.h"
 
 class Cell
 {
 public:
-	Cell(void);
-	~Cell(void);
+
+protected:
+	static Graph<Sprite> _sprites;
+
+	float _cordX;
+	float _cordY;
+
 };
