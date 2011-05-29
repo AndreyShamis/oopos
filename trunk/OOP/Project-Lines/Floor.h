@@ -11,6 +11,19 @@ public:
 	{
 		return(true);
 	}
+
+	bool getBalled()const
+	{
+
+		return(_balled);
+
+	}
+	void setBalled(const bool &value)
+	{
+
+		_balled = value;
+
+	}
 	void Draw()
 	{
 		if(_type== Simple)
@@ -20,6 +33,6 @@ public:
 	}
 	~Floor(void);
 private:
-
+	bool	_balled;	//	have ball on this cell
 	Types _type;
 };
