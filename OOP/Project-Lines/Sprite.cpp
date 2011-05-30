@@ -58,15 +58,68 @@ Sprite::Sprite(const char* filename) {
 	imageFile.close();		//close the file
 }
 
+////=============================================================================
+////	Draw function
+//void Sprite::Draw(const float &cordX, float &cordY){
+//	glBegin(GL_POINTS);	
+//	int y=0,x=_width;
+//	for(int i=0; i<_height;i++){
+//		x=_width;
+//		for(int j=0; j< _width; j++){
+//			glColor4ub(_image[i][j]._r, _image[i][j]._g, _image[i][j]._b, _image[i][j]._a);
+//			glVertex2f((float)x*(1.0/540) + cordX ,((float)y*(1.0/540) + cordY));//(20*PIC_WIDTH)-
+//			x++;
+//		}
+//		y++;
+//	}
+//
+//	glEnd();
+//
+//}
 //=============================================================================
 //	Draw function
-void Sprite::Draw(const float &cordX, float &cordY){
+void Sprite::Draw(const float &cordX, float &cordY, Action action)
+{
+	int timer = 777;
+	if(action == Nothing)
+	{
+		DrowSprite(cordX, cordY, 255);
+	}
+	else if(action == Appear)
+	{
+		for(short int alpha = 0; alpha <=255;  alpha += 17)
+		{
+			//timer = 999999;
+			////cout <<alpha<<" ########################\n";
+			DrowSprite(cordX, cordY, alpha);
+			/*while(timer)
+				timer --;*/
+
+		}
+	}
+	else if(action == Disappear)
+	{
+		for(short int alpha = 255; alpha >=0;  alpha -= 17)
+		{
+			//timer = 999999;
+			////cout <<"#########################\n";
+			DrowSprite(cordX, cordY, alpha);
+			/*while(timer)
+				timer --;*/
+		}
+	}
+}
+
+
+//=============================================================================
+//	Draw function
+void Sprite::DrowSprite(const float &cordX, float &cordY, short int alpha){
 	glBegin(GL_POINTS);	
 	int y=0,x=_width;
 	for(int i=0; i<_height;i++){
 		x=_width;
 		for(int j=0; j< _width; j++){
-			glColor4ub(_image[i][j]._r, _image[i][j]._g, _image[i][j]._b, _image[i][j]._a);
+			glColor4ub(_image[i][j]._r, _image[i][j]._g, _image[i][j]._b, (_image[i][j]._a > 0) ? alpha : 0);
 			glVertex2f((float)x*(1.0/540) + cordX ,((float)y*(1.0/540) + cordY));//(20*PIC_WIDTH)-
 			x++;
 		}
@@ -76,22 +129,3 @@ void Sprite::Draw(const float &cordX, float &cordY){
 	glEnd();
 
 }
-////=============================================================================
-////	Draw function
-//void Sprite::Draw(const float &cordX, float &cordY, Action action)
-//{
-//	if(action == Nothing)
-//	{
-//		DrowSprite(cordX, cordY, 0);
-//	}
-//	else if(action == Appear)
-//	{
-//		for(int alpha = 0; alpha <=255  alpha =+ 17)
-//			DrowSprite(cordX, cordY, alpha);
-//	}
-//	else if(ction == Disappear)
-//	{
-//		for(int alpha = 255; alpha >=0  alpha =- 17)
-//			DrowSprite(cordX, cordY, alpha);
-//	}
-//}

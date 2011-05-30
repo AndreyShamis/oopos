@@ -65,11 +65,16 @@ bool Ball::doYouThatColor(BallColor color)
 	return false;
 }
 
-void Ball::Draw()
-{
-	_sprites[0].Draw(_cordX, _cordY);
-}
+//void Ball::Draw()
+//{
+//	_sprites[0].Draw(_cordX, _cordY);
+//}
  
 Ball::~Ball(void)
 {
+}
+
+void Ball::Draw(Action action)
+{
+	_sprites[0].Draw(_cordX, _cordY, action);
 }

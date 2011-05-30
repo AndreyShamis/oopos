@@ -2,7 +2,7 @@
 #include "Sprite.h"
 #include "Floor.h"
 #include "Cell.h"
-
+#include "Ball.h"
 #include "macros.h"
 #pragma once
 using namespace std;
@@ -21,7 +21,8 @@ public:
 	static void display();
 	static void KeyPress(unsigned char key, int x, int y);
 private:
-	static Graph<Floor> _floors;
+	static Graph<Floor>		_floors;
+	static Graph<Ball>		_balls;
 	static int _WindowHeight;
 	static int _WindowWidth;
 	static GameController *_instance;
