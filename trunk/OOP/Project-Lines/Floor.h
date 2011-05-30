@@ -24,13 +24,23 @@ public:
 		_balled = value;
 
 	}
-	void Draw()
+	//void Draw()
+	//{
+	//	if(_type== Simple)
+	//		_sprites[0].Draw(_cordX, _cordY);
+	//	else if(_type = Selected)
+	//		_sprites[1].Draw(_cordX, _cordY);
+	//}
+
+	void Draw(Action action)
 	{
 		if(_type== Simple)
-			_sprites[0].Draw(_cordX, _cordY);
+			_sprites[0].Draw(_cordX, _cordY, action);
 		else if(_type = Selected)
-			_sprites[1].Draw(_cordX, _cordY);
-	}
+			_sprites[1].Draw(_cordX, _cordY, action);
+	} 
+
+
 	~Floor(void);
 private:
 	bool	_balled;	//	have ball on this cell

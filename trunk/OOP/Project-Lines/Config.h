@@ -6,7 +6,7 @@
 #define RGBA_FOLDER			"RGBA"
 
 
-#define CHAR_MAX_STR_LEN    200
+#define CHAR_MAX_STR_LEN    290
 //balls
 #define BLACK_BALL			"black_ball_rgba.txt"
 #define BLUE_BALL			"blue_ball_rgba.txt"

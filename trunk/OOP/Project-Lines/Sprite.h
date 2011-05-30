@@ -21,7 +21,9 @@ public:
 
 	//=============================================================================
 	//	Draw function
-	void Draw(const float &cordX, float &cordY);
+	//void Draw(const float &cordX, float &cordY);
+	void Sprite::Draw(const float &cordX, float &cordY, Action action);
+	void Sprite::DrowSprite(const float &cordX, float &cordY, short int alpha);
 	//=============================================================================
 	//	return height
 	int getHeight();
