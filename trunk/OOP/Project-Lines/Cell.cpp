@@ -1,3 +1,3 @@
 #include "Cell.h"
 
-vector <Sprite> Cell::_sprites;
+//vector <Sprite> Cell::_sprites;

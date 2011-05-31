@@ -1,7 +1,5 @@
 #include "Ball.h"
 
-//std::vector <Sprite> Cell::_sprite;
-
 Ball::Ball(const float &X,const float &Y, BallColor color)
 {
 	switch(color){
@@ -74,7 +72,7 @@ Ball::~Ball(void)
 {
 }
 
-void Ball::Draw(Action action)
+void Ball::Draw()
 {
-	_sprites[0].Draw(_cordX, _cordY, action);
+	_sprites[0].Draw(_cordX, _cordY);
 }

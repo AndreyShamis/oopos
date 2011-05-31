@@ -26,5 +26,6 @@ private:
 	static int _WindowHeight;
 	static int _WindowWidth;
 	static GameController *_instance;
+	
 	GameController();
 };
