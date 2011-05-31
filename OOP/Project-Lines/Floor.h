@@ -7,10 +7,6 @@ public:
 	//static std::vector <Sprite> _sprite;
 	Floor(const float &X,const float &Y);
 	void setFloorType(Types type);
-	bool operator==(const Floor &Other)const
-	{
-		return(true);
-	}
 
 	bool getBalled()const
 	{
@@ -24,20 +20,12 @@ public:
 		_balled = value;
 
 	}
-	//void Draw()
-	//{
-	//	if(_type== Simple)
-	//		_sprites[0].Draw(_cordX, _cordY);
-	//	else if(_type = Selected)
-	//		_sprites[1].Draw(_cordX, _cordY);
-	//}
-
-	void Draw(Action action)
+	void Draw()
 	{
 		if(_type== Simple)
-			_sprites[0].Draw(_cordX, _cordY, action);
+			_sprites[0].Draw(_cordX, _cordY);
 		else if(_type = Selected)
-			_sprites[1].Draw(_cordX, _cordY, action);
+			_sprites[1].Draw(_cordX, _cordY);
 	} 
 
 

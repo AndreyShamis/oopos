@@ -6,6 +6,10 @@
 class Cell
 {
 public:
+	bool operator==(const Cell &Other)const
+	{
+		return(true);
+	}
 	float getX()const
 	{
 
@@ -17,7 +21,7 @@ public:
 		return(_cordY);
 	}
 protected:
-	static std::vector <Sprite> _sprites;
+	std::vector <Sprite> _sprites;
 
 	float _cordX;
 	float _cordY;
