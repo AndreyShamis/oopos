@@ -5,6 +5,7 @@
 #include "Ball.h"
 #include "Board.h"
 #include "macros.h"
+#include <map>
 #pragma once
 using namespace std;
 
@@ -39,6 +40,7 @@ private:
 	static unsigned int _StartCell;
 	static unsigned int _EndCell;
 
+	static multimap<short int,short int> _ballsMap;
 	static void BumBum();
 
 	static bool _canAddBalls;
