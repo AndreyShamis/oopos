@@ -4,3 +4,4 @@
 //#include <GL/glut.h>
 #include <glut.h>				//	USED IN OUR VERSION OF GLUT
 #include <stdio.h>
+#include <time.h>		//	need for random
