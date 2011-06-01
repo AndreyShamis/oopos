@@ -23,6 +23,7 @@ public:
 	static void display();
 	static void display2();
 	static void KeyPress(unsigned char key, int x, int y);
+	static void RealodGame();
 private:
 	static Graph<Floor>		_floors;
 	static Graph<Ball>		_balls;
@@ -38,8 +39,11 @@ private:
 	static unsigned int _StartCell;
 	static unsigned int _EndCell;
 
+	static void BumBum();
+
 	static bool _canAddBalls;
 	GameController();
 
+	static int _BallCounter;
 
 };
