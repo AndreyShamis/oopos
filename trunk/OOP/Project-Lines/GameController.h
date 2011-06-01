@@ -12,8 +12,9 @@ class GameController
 {
 public:
 
-	static GameController *getInst();
-	static void mouseButton(int button, int state, int x, int y);
+	static GameController *getInst();	
+		static void mouseButton(int button, int state, int x, int y);
+	static void mouseMove(int x, int y);
 	static void selectFromMenu(int commandId);
 	static void resizeWindow(int w, int h);
 	static void GameController::LoadCallBacksForGlut();
@@ -30,6 +31,15 @@ private:
 	static GameController *_instance;
 	static Board gameBoard;
 	static bool ones;
-	
+	static void CreateBall();
+	static void PutBall();
+	static vector <Ball> _newBalls;
+	static void SelectSimplePath();	
+	static unsigned int _StartCell;
+	static unsigned int _EndCell;
+
+	static bool _canAddBalls;
 	GameController();
+
+
 };
