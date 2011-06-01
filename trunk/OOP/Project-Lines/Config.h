@@ -30,6 +30,16 @@
 #define S_FLOOR				"selected_floor_rgba.txt"
 
 
+#define WINDOW_WIDTH		577
+#define WINDOW_HEIGHT		403
+
+#define FLOOR_SIZE			36.0f
+#define BALL_SIZE			32.0f
+#define POINT_SIZE			1.0f
+
+
+
+
 struct Vertex
 {
 	float _x;
@@ -44,3 +54,4 @@ enum Types { Simple, Selected };
 
 enum BallColor { Green, White, Black, Yellow, Orange, Blue, Red , Mixed , 
 				 OrangeRed, WhiteBlue, greenYellow };
+

@@ -4,6 +4,7 @@
 class Board : public Cell
 {
 public:
-	Board(void);
+	Board(const float &X,const float &Y);
+	void Draw();
 	~Board(void);
 };  

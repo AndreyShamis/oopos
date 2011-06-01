@@ -3,6 +3,7 @@
 #include "Floor.h"
 #include "Cell.h"
 #include "Ball.h"
+#include "Board.h"
 #include "macros.h"
 #pragma once
 using namespace std;
@@ -19,6 +20,7 @@ public:
 	static void LoadGame();
 	static void idle();
 	static void display();
+	static void display2();
 	static void KeyPress(unsigned char key, int x, int y);
 private:
 	static Graph<Floor>		_floors;
@@ -26,6 +28,8 @@ private:
 	static int _WindowHeight;
 	static int _WindowWidth;
 	static GameController *_instance;
+	static Board gameBoard;
+	static bool ones;
 	
 	GameController();
 };

@@ -10,9 +10,13 @@
 #include <string.h>
 #include <vector>
 
+
+
 using namespace std;
 class Sprite
 {
+//friend class GameController;
+
 public:
 	//=============================================================================
 	// Constructor
@@ -40,5 +44,6 @@ private:
 		int _height;		//	height of image
 	//static 
 		int _width;			//	width of image
+
 	
 };

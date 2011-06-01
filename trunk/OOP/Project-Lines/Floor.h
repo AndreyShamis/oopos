@@ -7,28 +7,9 @@ public:
 	//static std::vector <Sprite> _sprite;
 	Floor(const float &X,const float &Y);
 	void setFloorType(Types type);
-
-	bool getBalled()const
-	{
-
-		return(_balled);
-
-	}
-	void setBalled(const bool &value)
-	{
-
-		_balled = value;
-
-	}
-	void Draw()
-	{
-		if(_type== Simple)
-			_sprites[0].Draw(_cordX, _cordY);
-		else if(_type = Selected)
-			_sprites[1].Draw(_cordX, _cordY);
-	} 
-
-
+	bool getBalled()const;
+	void setBalled(const bool &value);
+	void Draw();
 	~Floor(void);
 private:
 	bool	_balled;	//	have ball on this cell

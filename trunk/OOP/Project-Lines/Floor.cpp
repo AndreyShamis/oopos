@@ -20,3 +20,21 @@ void Floor::setFloorType(Types type)
 	_type = type;
 }
 
+
+void Floor::Draw()
+{
+	if(_type== Simple)
+		_sprites[0].Draw(_cordX, _cordY);
+	else if(_type = Selected)
+		_sprites[1].Draw(_cordX, _cordY);
+} 
+
+void Floor::setBalled(const bool &value)
+{
+	_balled = value;
+}
+
+bool Floor::getBalled()const
+{
+	return(_balled);
+}

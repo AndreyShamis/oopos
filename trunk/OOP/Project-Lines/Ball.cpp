@@ -47,8 +47,9 @@ Ball::Ball(const float &X,const float &Y, BallColor color)
 							_colors.push_back(Blue);
 							break;
 	}
-	_cordX = X;
-	_cordY = Y;
+	float b_offset = ((FLOOR_SIZE - BALL_SIZE)/2)/WINDOW_WIDTH;
+	_cordX = X+b_offset*3;
+	_cordY = Y+b_offset;
 }
 
 bool Ball::doYouThatColor(BallColor color)

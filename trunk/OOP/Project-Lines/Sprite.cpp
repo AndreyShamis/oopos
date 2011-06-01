@@ -50,7 +50,8 @@ Sprite::Sprite(const char* filename) {
 	for(int i=0; i<_height; i++){
 		_image[i] = new RGBA[(int)_width];
 		for(int j=0; j< _width; j++){
-			imageFile >> _image[i][j]._r >> _image[i][j]._g >> _image[i][j]._b >> _image[i][j]._a;  
+			imageFile >> _image[i][j]._r >> _image[i][j]._g 
+			>> _image[i][j]._b >> _image[i][j]._a;  
 		}
 	}
 
@@ -122,8 +123,11 @@ void Sprite::Draw(const float &cordX, float &cordY){
 		for(int j=0; j< _width; j++){
 			if ( _image[i][j]._a >= 1)
 			{
-				glColor4ub(_image[i][j]._r, _image[i][j]._g, _image[i][j]._b, _image[i][j]._a);
-				glVertex2f((float)x*(1.0/540) + cordX ,((float)y*(1.0/540) + cordY));//(20*PIC_WIDTH)-
+				glColor4ub(_image[i][j]._r, _image[i][j]._g, _image[i][j]._b, 
+				_image[i][j]._a);
+				//glPointSize(1);//POINT_SIZE/WINDOW_HEIGHT
+				glVertex2f((float)x*(POINT_SIZE/WINDOW_WIDTH) + cordX ,
+					((float)y*(POINT_SIZE/WINDOW_HEIGHT) + cordY));//(20*PIC_WIDTH)-//GameController::_WindowHeight
 			}
 			x++;
 		}
