@@ -3,7 +3,7 @@
 */
 
 #pragma once
-#include "GraficLoader.h"
+//#include "GraficLoader.h"
 #include "Config.h"
 #include <fstream>
 #include <iostream>
@@ -38,7 +38,7 @@ public:
 
 
 private:
-	 GraficLoader _temp;
+	 //GraficLoader _temp;
 	//static 
 	//static	
 		RGBA **_image;

@@ -14,19 +14,20 @@ class GameController
 public:
 
 	static GameController *getInst();	
-		static void mouseButton(int button, int state, int x, int y);
+	static void mouseButton(int button, int state, int x, int y);
 	static void mouseMove(int x, int y);
 	static void selectFromMenu(int commandId);
 	static void resizeWindow(int w, int h);
-	static void GameController::LoadCallBacksForGlut();
+	static void LoadCallBacksForGlut();
 	static void LoadGame();
 	static void idle();
 	static void display();
 	static void KeyPress(unsigned char key, int x, int y);
-	static void RealodGame();
+	
 private:
 	static Graph<Floor>		_floors;
-	static Graph<Ball>		_balls;
+
+	static void RealodGame();
 	static int _WindowHeight;
 	static int _WindowWidth;
 	static GameController *_instance;
@@ -38,7 +39,7 @@ private:
 	static unsigned int _StartCell;
 	static unsigned int _EndCell;
 
-	static multimap<short int,short int> _ballsMap;
+	static vector <Ball>  _ballsMap;
 	static void BumBum();
 
 	static bool _canAddBalls;
@@ -48,4 +49,6 @@ private:
 	static void FloorDoAllSimple();
 
 	static vector <BallColor> _AllColors;
+
+	static unsigned int _PostRedisplay;
 };
