@@ -1,3 +1,4 @@
+#pragma once
 /*
 
 	This class provide config and define variables	
@@ -40,12 +41,13 @@
 
 
 
+/*
 struct Vertex
 {
 	float _x;
 	float _y;
 };
-
+*/
 struct RGBA{
 	short int  _r, _g, _b, _a;
 };

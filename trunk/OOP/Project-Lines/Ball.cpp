@@ -47,9 +47,9 @@ Ball::Ball(const float &X,const float &Y, BallColor color)
 							_colors.push_back(Blue);
 							break;
 	}
-	float b_offset = ((FLOOR_SIZE - BALL_SIZE)/2)/WINDOW_WIDTH;
-	_cordX = X+b_offset*3;
-	_cordY = Y+b_offset;
+	//float b_offset = ((FLOOR_SIZE - BALL_SIZE)/2)/WINDOW_WIDTH;
+	_cordX = X;//+b_offset*3;// + 0.2025;
+	_cordY = Y;//+b_offset;//	  + 0.063;
 }
 
 bool Ball::doYouThatColor(BallColor color)
@@ -75,5 +75,8 @@ Ball::~Ball(void)
 
 void Ball::Draw()
 {
-	_sprites[0].Draw(_cordX, _cordY);
+	float b_offset = ((FLOOR_SIZE - BALL_SIZE)/2)/WINDOW_WIDTH;
+	float b_cord_Y = _cordY + b_offset;
+	
+	_sprites[0].Draw(_cordX+b_offset*3, b_cord_Y);
 }

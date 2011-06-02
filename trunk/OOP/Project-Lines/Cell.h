@@ -1,7 +1,6 @@
 #pragma once
 #include "Sprite.h"
-#include "Graph.h"
-//#include "Config.h"
+//#include "Graph.h"
 
 class Cell
 {
@@ -39,6 +38,8 @@ public:
 	{
 		_id = val;
 	}
+
+
 protected:
 	std::vector <Sprite> _sprites;
 

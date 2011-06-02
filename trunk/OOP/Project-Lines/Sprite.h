@@ -3,6 +3,7 @@
 */
 
 #pragma once
+#include "GraficLoader.h"
 #include "Config.h"
 #include <fstream>
 #include <iostream>
@@ -20,7 +21,7 @@ class Sprite
 public:
 	//=============================================================================
 	// Constructor
-	Sprite(const char* filename);
+	Sprite(char* filename);
 	Sprite(void);
 
 	//=============================================================================
@@ -37,6 +38,7 @@ public:
 
 
 private:
+	 GraficLoader _temp;
 	//static 
 	//static	
 		RGBA **_image;
