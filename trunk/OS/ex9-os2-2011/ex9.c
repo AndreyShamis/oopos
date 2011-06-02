@@ -1,19 +1,19 @@
 #include "ex9.h"
-
+//=============================================================================
 #define FILENAME "testFS.dat"
+//=============================================================================
 
 
 
-
-
-
+//=============================================================================
+//=============================================================================
 int main()
 {
 	fs_t	*fs;
 	
 	char data[BLOCK_SIZE];
 	
-	int h1,h2;
+	int h1=0,h2=0;
 	
 	int size;
 	
@@ -23,7 +23,7 @@ int main()
 	
 	//	First Format
 	
-	res = fsFormat(fs,FILENAME,size);
+	int res = fsFormat(fs,FILENAME);
 	printf("File system size = %d\n",size);
 	
 	//	Create two test files
@@ -36,8 +36,8 @@ int main()
 	size = strlen(blockSizeData) +1;
 	
 	//write
-	
-	for(int t=0;t<BLOCKS_PEER_INODE;t++)
+	int t=0;
+	for(t=0;t<BLOCKS_PEER_INODE;t++)
 	{
 		sprintf(blockSizeData+size-3,"%2d",t);
 		blockSizeData[size-1]=0;
@@ -48,11 +48,16 @@ int main()
 	char zeros[110];
 	
 	memset(zeros,0xFF,sizeof(zeros));
-	res= fsReadFile(fs,h2,zeros,100,size);
+	res= fsReadFile(fs,h2,zeros,&size);
 
 
 	//unmount
 
 	res = fsUnMount(fs);
-}
 
+	printf("Bye Bye\n");
+	return(EXIT_SUCCESS);
+}
+//=============================================================================
+//=============================================================================
+//=============================================================================
