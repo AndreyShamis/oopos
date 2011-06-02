@@ -1,3 +1,19 @@
+/*
+ * 	This file provide header file for main program
+ * Which provide tools for simulation of work wich file system
+ * in computer.
+ *
+ */
+
+
+//=============================================================================
+//	Include Section
+#include <stdio.h>		//	standrard I/O
+#include <stdlib.h>		//	used for EXIT_SUCCESS
+#include <string.h>
+
+//=============================================================================
+//	Define section
 
 #define ROOT_DIRECTORY_HANDLE 0 // 	the root ('/') dir handle
 
@@ -33,7 +49,7 @@
 
 
 
-
+//=============================================================================
 struct FileDescriptor
 {
 	int 	inUse;
@@ -76,14 +92,66 @@ struct fs
 
 typedef struct fs fs_t;
 
-void fsFormat(fs_t *fs,char *filename);
+//=============================================================================
+int fsFormat(fs_t *fs,char *filename)
+{
+	return(0);
 
+}
 
-fs_t *fs fsMount(char *filename);
+//=============================================================================
+fs_t *fsMount(char *filename)
+{
+	fs_t *ret = NULL;
 
-void fsUnMount(fs_t *fs);
+	return(ret);
+}
+//=============================================================================
+int fsUnMount(fs_t *fs)
+{
+	return(0);
+}
 
+//	Blcok of CREATE/OPEN/CLOSE
+//=============================================================================
+int fsCreateFile(fs_t *fs,char *fileName)
+{
 
+	return(0);
+}
+//=============================================================================
+int fsOpenFile(fs_t *fs,char *fileName)
+{
 
+	return(0);
+}
+//=============================================================================
+int fsCloseFile(fs_t *fs,int fileHandle)
+{
 
+	return(0);
+}
 
+//	BLOCK OF Write/READ
+//=============================================================================
+int fsWriteFile(fs_t *fs,int fd,const char *buffer,const int size)
+{
+	return(0);
+}
+//=============================================================================
+int fsReadFile(fs_t *fs,int fd,char *buffer,int *readSize)
+{
+	return(0);
+}
+
+//=============================================================================
+void fsPrintRootDir(fs_t *fs)
+{
+
+	printf("The directory is <> and contain:\n");
+
+	printf("\n");
+}
+//=============================================================================
+//=============================================================================
+//=============================================================================
