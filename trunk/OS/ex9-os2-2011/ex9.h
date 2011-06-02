@@ -11,7 +11,12 @@
 #include <stdio.h>		//	standrard I/O
 #include <stdlib.h>		//	used for EXIT_SUCCESS
 #include <string.h>
+#include <unistd.h>
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/mman.h>	//	for use mmap function
+#include <fcntl.h>
 //=============================================================================
 //	Define section
 
@@ -21,6 +26,7 @@
 #define BLOCK_ADSRESS_SIZE 4
 
 #define MAX_FILE_NAME 12
+
 #define DIRECT_ENTRIES 3
 #define SINGLE_INDIRECT_ENTRIES 1
 #define DOUBLE_INDIRECT_ENTRIES 1
@@ -37,7 +43,7 @@
 //	maximum blocks an inode can hold
 #define BLOCKS_PER_INODE (DIRECT_ENTRIES \
 				+ SINGLE_INDIRECT_ENTRIES*SINGLE_INDIRECT_BLCOKS \
-				+ DOUBLE_INDIRECT_ENTRIES+DOUBLE_INDIRECT_BLOCKS)
+				+ DOUBLE_INDIRECT_ENTRIES*DOUBLE_INDIRECT_BLOCKS)
 
 //	maximum file size in bytes
 #define MAX_FILE_SIZE (BLOCKS_PER_INODE*BLOCK_SIZE)
@@ -46,9 +52,6 @@
 #define BLOCK_BITS (BLOCK_SIZE*sizeof(char))
 
 #define BLOCKS_PEER_INODE 10
-
-
-
 
 //=============================================================================
 struct FileDescriptor
@@ -87,8 +90,10 @@ struct fs
 	struct FileDescriptor fileTable[NR_INODES];
 	//	=	0 if initializes,i otherwise
 	int fsInitialized;
+
 	//	fd of our virtual HSS
-	FILE *fd;
+	//FILE *fd;
+	int fd;
 };
 
 typedef struct fs fs_t;
@@ -96,6 +101,13 @@ typedef struct fs fs_t;
 //=============================================================================
 int fsFormat(fs_t *fs,char *filename)
 {
+	//lseek(sim_db->swap_fd,sim_db->ptable[table].frame,SEEK_SET);
+	//lseek(fs->fd,66688,SEEK_SET);
+
+	//write(fs->fd,"-",1);
+
+	fs->pRootInode = &fs->inodeList[0];
+	fs->fsInitialized = 1;
 	return(0);
 
 }
@@ -105,11 +117,30 @@ fs_t *fsMount(char *filename)
 {
 	fs_t *ret = NULL;
 
+	ret = malloc(sizeof(fs_t));
+	if(ret == NULL)
+	{
+		perror("Can not  allocate memory in fsMount\n");
+		exit(EXIT_FAILURE);
+	}
+
+	//creat(filename,0600);
+	ret->fd = open(filename,O_RDWR | O_CREAT);
+	if(ret->fd == -1)
+	{
+		perror("Cannot open simulation file.\n");
+		exit(EXIT_FAILURE);
+	}
+
+	ret->fsInitialized = 0;
+
 	return(ret);
 }
 //=============================================================================
 int fsUnMount(fs_t *fs)
 {
+	close(fs->fd);
+	free(fs);
 	return(0);
 }
 
@@ -153,6 +184,24 @@ void fsPrintRootDir(fs_t *fs)
 
 	printf("\n");
 }
+
+void PrintStatistic(fs_t *fs)
+{
+	int coun = 0;
+
+	printf(" # - Printing table of bitmaps %d x %d = %d:\n",NR_BLOCKS/NR_INODES,NR_INODES,NR_BLOCKS);
+	for(coun=1;coun<=NR_BLOCKS;coun++)
+	{
+		printf("%d",fs->Bitmap[coun]);
+		if(coun%NR_INODES == 0)
+		{
+
+			printf("\n");
+		}
+	}
+	printf("\n");
+}
+
 //=============================================================================
 //=============================================================================
 //=============================================================================

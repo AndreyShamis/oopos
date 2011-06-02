@@ -11,20 +11,21 @@ int main()
 {
 	fs_t	*fs;
 	
-	char data[BLOCK_SIZE];
+	//char data[BLOCK_SIZE];
 	
 	int h1=0,h2=0;
 	
-	int size;
+	int size=0;
 	
 	//MOUNT
-	
 	fs = fsMount(FILENAME);
 	
 	//	First Format
 	
 	int res = fsFormat(fs,FILENAME);
-	printf("File system size = %d\n",size);
+
+	///////////////////// TODO Ubrat moyu dobavku  = %d byte
+	printf("File system size = %d = %d byte\n",size,size/8);
 	
 	//	Create two test files
 	
@@ -50,6 +51,9 @@ int main()
 	memset(zeros,0xFF,sizeof(zeros));
 	res= fsReadFile(fs,h2,zeros,&size);
 
+
+	//	Print staticstic
+	PrintStatistic(fs);
 
 	//unmount
 
