@@ -22,7 +22,6 @@ public:
 	static void LoadGame();
 	static void idle();
 	static void display();
-	static void display2();
 	static void KeyPress(unsigned char key, int x, int y);
 	static void RealodGame();
 private:
@@ -32,7 +31,6 @@ private:
 	static int _WindowWidth;
 	static GameController *_instance;
 	static Board gameBoard;
-	static bool ones;
 	static void CreateBall();
 	static void PutBall();
 	static vector <Ball> _newBalls;
@@ -47,5 +45,7 @@ private:
 	GameController();
 
 	static int _BallCounter;
+	static void FloorDoAllSimple();
 
+	static vector <BallColor> _AllColors;
 };
