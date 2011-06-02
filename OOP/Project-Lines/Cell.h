@@ -1,9 +1,10 @@
 #pragma once
 #include "Sprite.h"
-//#include "Graph.h"
+
 
 class Cell
 {
+
 public:
 	bool operator==(const Cell &Other)const
 	{
@@ -11,7 +12,6 @@ public:
 	}
 	float getX()const
 	{
-
 		return(_cordX);
 	}
 	void setX(float X)

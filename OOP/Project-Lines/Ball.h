@@ -8,7 +8,11 @@ public:
 	void Draw();
 	bool Ball::doYouThatColor(BallColor color);
 	~Ball(void);
+	 Ball(void)
+	 {
 
+		 ;
+	 }
 private:
 
 	vector <BallColor> _colors;

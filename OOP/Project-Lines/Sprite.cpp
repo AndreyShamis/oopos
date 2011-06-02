@@ -16,12 +16,10 @@ Sprite::Sprite()
 //	Class constructor 
 Sprite::Sprite(char* filename) {
 
+	//_image = _temp.getSprite(filename);
+	//_width = _temp.getWidth();
+	//_height = _temp.getHeight();
 	
-
-	_image = _temp.getSprite(filename);
-	_width = _temp.getWidth();
-	_height = _temp.getHeight();
-	/*
 	char path[CHAR_MAX_STR_LEN];		//	variable for get riht path
 	//	manipulation whith char
 	memset(path,'\0',CHAR_MAX_STR_LEN);
@@ -52,7 +50,7 @@ Sprite::Sprite(char* filename) {
 	}
 
 	imageFile.close();		//close the file
-	*/
+	
 }
 
 //=============================================================================
