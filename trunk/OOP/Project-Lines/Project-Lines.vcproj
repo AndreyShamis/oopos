@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="Project-Lines"
 	ProjectGUID="{0BAF9EC7-E64C-4EA9-8671-C234D10079E1}"
 	RootNamespace="ProjectLines"
@@ -60,6 +60,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="&quot;C:\Users\ilia\Documents\My Dropbox\TIHNUT\OOP\Project-Lines\fmodex_vc.lib&quot;"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -132,6 +133,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="add &quot;fmodex.lib&quot;"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -226,6 +228,10 @@
 			</File>
 			<File
 				RelativePath=".\Floor.h"
+				>
+			</File>
+			<File
+				RelativePath=".\fmod\inc\fmod.h"
 				>
 			</File>
 			<File
