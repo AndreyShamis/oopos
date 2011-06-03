@@ -19,6 +19,12 @@ int main()
 	
 	//char data[BLOCK_SIZE];
 	
+	int lol;
+	char try[4] = "1234";
+	forCharsToInt(try,lol);
+
+	printf("The number : %d.\n",lol);
+
 	int h1=0,h2=0;
 	
 	int size=0;
@@ -28,7 +34,8 @@ int main()
 	
 	//	First Format
 	int res = 0;
-	//res = fsFormat(fs,FILENAME);
+	res = fsFormat(fs,FILENAME);
+
 
 	///////////////////// TODO Ubrat moyu dobavku  = %d byte
 	printf("File system size = %d = %d byte\n",size,size/8);
