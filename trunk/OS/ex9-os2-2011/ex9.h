@@ -12,6 +12,7 @@
 #include <stdlib.h>		//	used for EXIT_SUCCESS
 #include <string.h>
 #include <unistd.h>
+#include <math.h>
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -95,26 +96,73 @@ struct fs
 	//FILE *fd;
 	int fd;
 
-	char 	*source;		//	maped array
+	char 	*source;		//	maped array for Bitmap and Indoe Section
 	size_t 	filesize;		//	size of mapped file
 };
 
 typedef struct fs fs_t;
 
+//=========================================
+//	Function which serach in struct which Inode not in use
+int findNotUsedIndoe(fs_t *fs)
+{
+	int coun = 0;
+	for(coun =0;coun <NR_INODES;coun++)
+	{
+		if(!fs->inodeList[coun].inUse)
+		{
+			return(coun);
+		}
+	}
+	return(-1);
+
+}
+int findNotUsedBitMap(fs_t *fs)
+{
+	int coun=0;
+	for(coun=0;coun<NR_BLOCKS;coun++)
+	{
+		//printf("Write to bitmap\n");
+		if(fs->Bitmap[coun] == 0)
+		{
+			return(coun);
+		}
+
+	}
+	return(-1);
+}
+
+void forCharsToInt(char val[4],int *retValue)
+{
+	int coun = 0;
+	*retValue = 0;
+	int tempRes = 0;
+	for(coun = 0; coun < 4;coun++)
+	{
+		tempRes = val[coun] - '0';
+		int step =pow(10,4-coun);
+		*retValue += (tempRes*step);
+	}
+}
 //=============================================================================
 int fsFormat(fs_t *fs,char *filename)
 {
 	//lseek(fs->fd,66688,SEEK_SET);
 	//write(fs->fd,"-",1);
 
+	printf("#Start formating\n");
  	int coun = 0;
-	for(coun=0;coun<NR_BLOCKS;coun++)
+
+
+	/*for(coun=0;coun<NR_BLOCKS;coun++)
 	{
+		//printf("Write to bitmap\n");
 		fs->Bitmap[coun] = 0;
 
-	}
+	}*/
+
 	fs->pRootInode = &fs->inodeList[0];
-	//fs->fsInitialized = 1;
+	fs->fsInitialized = 1;
 	return(0);
 
 }
@@ -124,7 +172,7 @@ fs_t *fsMount(char *filename)
 {
 	fs_t *ret = NULL;
 
-	ret = malloc(sizeof(fs_t));
+	ret = (fs_t*)malloc(sizeof(fs_t));
 	if(ret == NULL)
 	{
 		perror("Can not  allocate memory in fsMount\n");
@@ -143,7 +191,7 @@ fs_t *fsMount(char *filename)
 	ret->filesize = lseek(ret->fd, NR_BLOCKS+NR_INODES*BLOCK_SIZE,SEEK_SET);
 	//ret->filesize = lseek(ret->fd, 0, NR_BLOCKS+NR_INODES*BLOCK_SIZE);
 
-	ret->source = mmap(0,ret->filesize , PROT_READ,MAP_SHARED, ret->fd, 0);
+	ret->source = mmap(0,ret->filesize , PROT_READ| PROT_WRITE,MAP_SHARED, ret->fd, 0);
  	if(ret->source == (char *) -1)
  	{
   		perror("Can not open map file\n");
@@ -153,9 +201,10 @@ fs_t *fsMount(char *filename)
   	}
 
  	int coun = 0;
+ 	printf("Size located %d and size of NR_BLOCKS %d.\n",ret->filesize, NR_BLOCKS);
 	for(coun=0;coun<NR_BLOCKS;coun++)
 	{
-		ret->Bitmap[coun] = ret->source[coun];// - '0';
+		ret->Bitmap[coun] = ret->source[coun]- '0';
 
 	}
 	ret->fsInitialized = 0;
@@ -165,14 +214,19 @@ fs_t *fsMount(char *filename)
 //=============================================================================
 int fsUnMount(fs_t *fs)
 {
+	printf("TODO:+Start UnMount file system.\nTODO:+Start write Bitmap to mmap.\n");
 	int coun = 0;
+	char temp = '\0';
 	for(coun=0;coun<NR_BLOCKS;coun++)
 	{
-		fs->source[coun]= fs->Bitmap[coun] + '0';
+		temp = fs->Bitmap[coun] + '0';
+		//printf("Save char: {%c}.Digit:{%d}.\n",temp,temp);
+		fs->source[coun]= temp;
 
 	}
+	printf("TODO:Try unmap\n");
  	if(munmap(fs->source, fs->filesize) == -1)
-		perror("Error un-mmapping the file");
+		perror("Error un-mmapping the file\n");
 
 	close(fs->fd);
 	free(fs);
@@ -183,13 +237,44 @@ int fsUnMount(fs_t *fs)
 //=============================================================================
 int fsCreateFile(fs_t *fs,char *fileName)
 {
+	int coun = 0;
+	int freeBitMapAddress=0;
+	printf("TODO:?Start create file\n");
 	if(fs->fsInitialized)
 	{
-		return(0);
+		int newIndoeID = findNotUsedIndoe(fs);
+		printf("TODO:?Trying find free Inode\n");
+		if(newIndoeID>=0)
+		{
+			fs->inodeList[newIndoeID].inUse = 1;
+			printf("TODO:?Trying find free bitmap\n");
+			for(coun = 0 ;coun<DIRECT_ENTRIES;coun++)
+			{
+				freeBitMapAddress=findNotUsedBitMap(fs);
+				if(freeBitMapAddress>=0)
+				{
+					fs->inodeList[newIndoeID].directBlocks[coun] = freeBitMapAddress;
+					fs->Bitmap[freeBitMapAddress] = 1;
+				}
+				else
+				{
+					printf("TODO:-Cant get free bitMap\n");
+					return(freeBitMapAddress);
+				}
+			}
+
+		}
+		else
+		{
+			printf("TODO:-All Indoes used. Can`t create file!\n");
+			return(newIndoeID);
+		}
+		printf("TODO:+Success create file\n");
+		return(newIndoeID);
 	}
 	else
 	{
-		printf("Canot create file %s, you need format file system.\n",fileName);
+		printf("TODO:-Canot create file %s, you need format file system.\n",fileName);
 		return(-1);
 
 	}
@@ -233,10 +318,10 @@ void PrintStatistic(fs_t *fs)
 	int coun = 0;
 
 	printf(" # - Printing table of bitmaps %d x %d = %d:\n",NR_BLOCKS/NR_INODES,NR_INODES,NR_BLOCKS);
-	for(coun=1;coun<=NR_BLOCKS;coun++)
+	for(coun=0;coun< /*NR_INODES*/NR_BLOCKS;coun++)
 	{
 		printf("%d",fs->Bitmap[coun]);
-		if(coun%NR_INODES == 0)
+		if((coun+1)%NR_INODES == 0)
 		{
 
 			printf("\n");
