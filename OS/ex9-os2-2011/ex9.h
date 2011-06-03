@@ -202,7 +202,8 @@ fs_t *fsMount(char *filename)
 	ret->filesize = lseek(ret->fd, NR_BLOCKS+NR_INODES*BLOCK_SIZE,SEEK_SET);
 	//ret->filesize = lseek(ret->fd, 0, NR_BLOCKS+NR_INODES*BLOCK_SIZE);
 
-	ret->source = mmap(0,ret->filesize , PROT_READ| PROT_WRITE,MAP_SHARED, ret->fd, 0);
+	ret->source = mmap(0,ret->filesize,
+			PROT_READ|PROT_WRITE,MAP_SHARED,ret->fd,0);
  	if(ret->source == (char *) -1)
  	{
   		perror("Can not open map file\n");
@@ -212,10 +213,20 @@ fs_t *fsMount(char *filename)
   	}
 
  	int coun = 0;
- 	printf("Size located %d and size of NR_BLOCKS %d.\n",ret->filesize, NR_BLOCKS);
+ 	printf("Size located %d and size of NR_BLOCKS %d.\n",
+ 			ret->filesize, NR_BLOCKS);
 	for(coun=0;coun<NR_BLOCKS;coun++)
 	{
 		ret->Bitmap[coun] = ret->source[coun]- '0';
+
+	}
+
+	printf("TODO:?Preparing to set memory for inodes\n");
+	for(coun=0;coun<NR_INODES;coun++)
+	{
+		ret->inodeList[coun].inUse 		= 0;
+		ret->inodeList[coun].fileSize 	= 0;
+
 
 	}
 	ret->fsInitialized = 0;
