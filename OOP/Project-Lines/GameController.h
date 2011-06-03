@@ -6,6 +6,7 @@
 #include "Board.h"
 #include "macros.h"
 #include <map>
+
 #pragma once
 using namespace std;
 
