@@ -19,11 +19,20 @@ int main()
 	
 	//char data[BLOCK_SIZE];
 	
-	int lol;
-	char try[4] = "1234";
-	forCharsToInt(try,lol);
+	//-------------------------------------------------------------------------
+	//	Proverochniy block dlya char to int i naoborot
+/*	int lol=0;
+	char try[4] = "0234";
+	forCharsToInt(try,&lol);
 
 	printf("The number : %d.\n",lol);
+
+	lol=23;
+	intToChar(try,lol);
+	printf("The string : %s.\n",try);
+*/
+	//-------------------------------------------------------------------------
+
 
 	int h1=0,h2=0;
 	
