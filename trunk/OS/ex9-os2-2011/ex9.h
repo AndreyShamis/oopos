@@ -20,21 +20,22 @@
 //=============================================================================
 //	Define section
 
+#define FILENAME "testFS.dat"		//	file system file
 #define ROOT_DIRECTORY_HANDLE 0 // 	the root ('/') dir handle
 
-#define BLOCK_SIZE 16
-#define BLOCK_ADSRESS_SIZE 4
+#define BLOCK_SIZE 16				//	size of block
+#define BLOCK_ADSRESS_SIZE 4		//	blovk adress size
 
-#define MAX_FILE_NAME 12
+#define MAX_FILE_NAME 12			//	max file name size
 
 #define DIRECT_ENTRIES 3
-#define SINGLE_INDIRECT_ENTRIES 1
-#define DOUBLE_INDIRECT_ENTRIES 1
+#define SINGLE_INDIRECT_ENTRIES 1	//	variable
+#define DOUBLE_INDIRECT_ENTRIES 1	//	variable
 
 #define ENTRIES_PER_BLOCK (BLOCK_SIZE/BLOCK_ADSRESS_SIZE)
 
-#define NR_BLOCKS 3712
-#define NR_INODES 128
+#define NR_BLOCKS 3712				//	number of blocks
+#define NR_INODES 128				//	number of inodes
 
 //	maximum blocks held by the single/double indirect entries
 #define SINGLE_INDIRECT_BLCOKS ENTRIES_PER_BLOCK
@@ -51,7 +52,6 @@
 //	number of bits per block
 #define BLOCK_BITS (BLOCK_SIZE*sizeof(char))
 
-#define BLOCKS_PEER_INODE 10
 
 //=============================================================================
 struct FileDescriptor
@@ -94,6 +94,9 @@ struct fs
 	//	fd of our virtual HSS
 	//FILE *fd;
 	int fd;
+
+	char 	*source;		//	maped array
+	size_t 	filesize;		//	size of mapped file
 };
 
 typedef struct fs fs_t;
@@ -101,13 +104,17 @@ typedef struct fs fs_t;
 //=============================================================================
 int fsFormat(fs_t *fs,char *filename)
 {
-	//lseek(sim_db->swap_fd,sim_db->ptable[table].frame,SEEK_SET);
 	//lseek(fs->fd,66688,SEEK_SET);
-
 	//write(fs->fd,"-",1);
 
+ 	int coun = 0;
+	for(coun=0;coun<NR_BLOCKS;coun++)
+	{
+		fs->Bitmap[coun] = 0;
+
+	}
 	fs->pRootInode = &fs->inodeList[0];
-	fs->fsInitialized = 1;
+	//fs->fsInitialized = 1;
 	return(0);
 
 }
@@ -132,6 +139,25 @@ fs_t *fsMount(char *filename)
 		exit(EXIT_FAILURE);
 	}
 
+	//SEEK-SET
+	ret->filesize = lseek(ret->fd, NR_BLOCKS+NR_INODES*BLOCK_SIZE,SEEK_SET);
+	//ret->filesize = lseek(ret->fd, 0, NR_BLOCKS+NR_INODES*BLOCK_SIZE);
+
+	ret->source = mmap(0,ret->filesize , PROT_READ,MAP_SHARED, ret->fd, 0);
+ 	if(ret->source == (char *) -1)
+ 	{
+  		perror("Can not open map file\n");
+ 		//vm_destructor(ret);				//	call destructor
+		exit(EXIT_FAILURE);					//	exit
+
+  	}
+
+ 	int coun = 0;
+	for(coun=0;coun<NR_BLOCKS;coun++)
+	{
+		ret->Bitmap[coun] = ret->source[coun];// - '0';
+
+	}
 	ret->fsInitialized = 0;
 
 	return(ret);
@@ -139,6 +165,15 @@ fs_t *fsMount(char *filename)
 //=============================================================================
 int fsUnMount(fs_t *fs)
 {
+	int coun = 0;
+	for(coun=0;coun<NR_BLOCKS;coun++)
+	{
+		fs->source[coun]= fs->Bitmap[coun] + '0';
+
+	}
+ 	if(munmap(fs->source, fs->filesize) == -1)
+		perror("Error un-mmapping the file");
+
 	close(fs->fd);
 	free(fs);
 	return(0);
@@ -148,8 +183,16 @@ int fsUnMount(fs_t *fs)
 //=============================================================================
 int fsCreateFile(fs_t *fs,char *fileName)
 {
+	if(fs->fsInitialized)
+	{
+		return(0);
+	}
+	else
+	{
+		printf("Canot create file %s, you need format file system.\n",fileName);
+		return(-1);
 
-	return(0);
+	}
 }
 //=============================================================================
 int fsOpenFile(fs_t *fs,char *fileName)

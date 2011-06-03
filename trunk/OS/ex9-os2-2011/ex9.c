@@ -1,6 +1,12 @@
+/*
+ * 			ex9		::		File system simulation
+ * Students:
+ *
+ *
+ */
 #include "ex9.h"
 //=============================================================================
-#define FILENAME "testFS.dat"
+
 //=============================================================================
 
 
@@ -21,8 +27,8 @@ int main()
 	fs = fsMount(FILENAME);
 	
 	//	First Format
-	
-	int res = fsFormat(fs,FILENAME);
+	int res = 0;
+	//res = fsFormat(fs,FILENAME);
 
 	///////////////////// TODO Ubrat moyu dobavku  = %d byte
 	printf("File system size = %d = %d byte\n",size,size/8);
@@ -38,8 +44,10 @@ int main()
 	
 	//write
 	int t=0;
-	for(t=0;t<BLOCKS_PEER_INODE;t++)
+	for(t=0;t<BLOCKS_PER_INODE;t++)
 	{
+		//	TODO DELETE NEXT LINE
+		//printf("\t # In for\n");
 		sprintf(blockSizeData+size-3,"%2d",t);
 		blockSizeData[size-1]=0;
 		res =fsWriteFile(fs,h1,blockSizeData,size);
