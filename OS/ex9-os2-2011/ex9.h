@@ -134,15 +134,26 @@ int findNotUsedBitMap(fs_t *fs)
 
 void forCharsToInt(char val[4],int *retValue)
 {
+	*retValue = atoi(val);
+}
+void intToChar(char val[4],const int valInt)
+{
+	int n = valInt;
 	int coun = 0;
-	*retValue = 0;
-	int tempRes = 0;
-	for(coun = 0; coun < 4;coun++)
+	for(coun = 0;coun < 4 ; coun++)
 	{
-		tempRes = val[coun] - '0';
-		int step =pow(10,4-coun);
-		*retValue += (tempRes*step);
+		val[coun] = '0';
 	}
+
+	coun = 4;
+    while (n!=0)
+    {
+    	coun--;
+        val[coun] = (n%10) + '0';
+        n /= 10;
+    }
+
+
 }
 //=============================================================================
 int fsFormat(fs_t *fs,char *filename)
@@ -152,7 +163,7 @@ int fsFormat(fs_t *fs,char *filename)
 
 	printf("#Start formating\n");
  	int coun = 0;
-
+ 	coun = 0;
 
 	/*for(coun=0;coun<NR_BLOCKS;coun++)
 	{
@@ -318,7 +329,7 @@ void PrintStatistic(fs_t *fs)
 	int coun = 0;
 
 	printf(" # - Printing table of bitmaps %d x %d = %d:\n",NR_BLOCKS/NR_INODES,NR_INODES,NR_BLOCKS);
-	for(coun=0;coun< /*NR_INODES*/NR_BLOCKS;coun++)
+	for(coun=0;coun< NR_INODES*3 /*NR_BLOCKS*/;coun++)
 	{
 		printf("%d",fs->Bitmap[coun]);
 		if((coun+1)%NR_INODES == 0)
