@@ -1,11 +1,11 @@
 #pragma once
-#include "Cell.h"
+#include "Drawable.h"
 
-class Floor : public Cell
+class Floor : public Drawable
 {
 public:
 	//static std::vector <Sprite> _sprite;
-	Floor(const float &X,const float &Y);
+	Floor(const float &X,const float &Y, int natuX, int natuY);
 	void setFloorType(Types type);
 	bool getBalled()const;
 	void setBalled(const bool &value);

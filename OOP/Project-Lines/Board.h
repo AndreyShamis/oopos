@@ -1,7 +1,7 @@
 #pragma once
-#include "Cell.h"
+#include "Drawable.h"
 
-class Board : public Cell
+class Board : public Drawable
 {
 public:
 	Board(const float &X,const float &Y);
