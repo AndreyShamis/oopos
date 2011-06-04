@@ -1,10 +1,12 @@
 #include "Floor.h"
 
 //std::vector <Sprite> Cell::_sprite;
-Floor::Floor(const float &X,const float &Y)
+Floor::Floor(const float &X,const float &Y, int natuX, int natuY)
 {
 	_cordX = X;
 	_cordY = Y;
+	_natuX = natuX;
+	_natuY = natuY;
 	_balled = false;
 	 _type = Simple;
 	_sprites.push_back(FLOOR);		//	put the image to the cector of sprites

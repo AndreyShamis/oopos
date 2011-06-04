@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="Project-Lines"
 	ProjectGUID="{0BAF9EC7-E64C-4EA9-8671-C234D10079E1}"
 	RootNamespace="ProjectLines"
@@ -60,7 +60,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="&quot;C:\Users\ilia\Documents\My Dropbox\TIHNUT\OOP\Project-Lines\fmodex_vc.lib&quot;"
+				AdditionalOptions="&quot;fmod/fmodex_vc.lib&quot;&#x0D;&#x0A;"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -177,11 +177,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\BlackBall.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\BlueBall.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Board.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Cell.cpp"
+				RelativePath=".\BombBall.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Drawable.cpp"
 				>
 			</File>
 			<File
@@ -197,11 +209,47 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GreenBall.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\GreenYellowBall.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main.cpp"
 				>
 			</File>
 			<File
+				RelativePath=".\MixedBall.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OrangeBall.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OrangeRedBall.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\RedBall.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Sprite.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WhiteBall.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WhiteBlueBall.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\YellowBall.cpp"
 				>
 			</File>
 		</Filter>
@@ -215,15 +263,27 @@
 				>
 			</File>
 			<File
+				RelativePath=".\BlackBall.h"
+				>
+			</File>
+			<File
+				RelativePath=".\BlueBall.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Board.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Cell.h"
+				RelativePath=".\BombBall.h"
 				>
 			</File>
 			<File
 				RelativePath=".\Config.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Drawable.h"
 				>
 			</File>
 			<File
@@ -247,11 +307,47 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GreenBall.h"
+				>
+			</File>
+			<File
+				RelativePath=".\GreenYellowBall.h"
+				>
+			</File>
+			<File
 				RelativePath=".\macros.h"
 				>
 			</File>
 			<File
+				RelativePath=".\MixedBall.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OrangeBall.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OrangeRedBall.h"
+				>
+			</File>
+			<File
+				RelativePath=".\RedBall.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Sprite.h"
+				>
+			</File>
+			<File
+				RelativePath=".\WhiteBall.h"
+				>
+			</File>
+			<File
+				RelativePath=".\WhiteBlueBall.h"
+				>
+			</File>
+			<File
+				RelativePath=".\YellowBall.h"
 				>
 			</File>
 		</Filter>

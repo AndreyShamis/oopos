@@ -1,11 +1,22 @@
 #include "Graph.h"
 #include "Sprite.h"
 #include "Floor.h"
-#include "Cell.h"
+#include "Drawable.h"
 #include "Ball.h"
 #include "Board.h"
 #include "macros.h"
+
+
+#include "BombBall.h"
+#include "OrangeRedBall.h"
+#include "WhiteBlueBall.h"
+#include "MixedBall.h"
+#include "GreenYellowBall.h"
+
 #include <map>
+#include <fmod.h>
+#include <fmod.hpp>
+#include <windows.h>
 
 #pragma once
 using namespace std;
@@ -27,6 +38,12 @@ public:
 	
 private:
 	static Graph<Floor>		_floors;
+	static void loadSounds();
+	static void printErrorMSG(char *sentence);
+	static void playSound(SoundsName soundName);
+	static void setVecOfCoords(const int &coordX, const int &coordY);
+	static void loadBalls();
+	static void loadFloors();
 
 	static void RealodGame();
 	static int _WindowHeight;
@@ -35,12 +52,22 @@ private:
 	static Board gameBoard;
 	static void CreateBall();
 	static void PutBall();
+	static vector <Ball>  _ballsMap;
 	static vector <Ball> _newBalls;
+	static vector <BallColor> _AllColors;
+	static FMOD::Sound* _sounds[MAX_SOUNDS];
 	static void SelectSimplePath();	
 	static unsigned int _StartCell;
 	static unsigned int _EndCell;
+	static FMOD::System* _system;		// Sound system
+	static vector <int> _coords;
 
-	static vector <Ball>  _ballsMap;
+	static map<vector<int> ,Ball>	_BallMap;			// the main data base (STL)
+
+	static vector <Ball> _Balls;
+
+
+
 	static void BumBum();
 
 	static bool _canAddBalls;
@@ -49,7 +76,7 @@ private:
 	static int _BallCounter;
 	static void FloorDoAllSimple();
 
-	static vector <BallColor> _AllColors;
+	
 
 	static unsigned int _PostRedisplay;
 };
