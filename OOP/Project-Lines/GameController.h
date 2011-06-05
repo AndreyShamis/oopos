@@ -52,7 +52,7 @@ private:
 	static Board gameBoard;
 	static void CreateBall();
 	static void PutBall();
-	static vector <Ball>  _ballsMap;
+	//static vector <Ball>  _ballsMap;
 	static vector <Ball> _newBalls;
 	static vector <BallColor> _AllColors;
 	static FMOD::Sound* _sounds[MAX_SOUNDS];
@@ -62,7 +62,8 @@ private:
 	static FMOD::System* _system;		// Sound system
 	static vector <int> _coords;
 
-	static map<vector<int> ,Ball>	_BallMap;			// the main data base (STL)
+	static map<vector<int> ,Ball>	_BallMap;			// the balls data base (STL)
+	//static map<vector<int> ,*Floor>	_FloorsMap;			// the pointers to floors data base (STL)
 
 	static vector <Ball> _Balls;
 
