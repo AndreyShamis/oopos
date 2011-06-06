@@ -6,6 +6,7 @@ class Drawable
 {
 
 public:
+
 	bool operator==(const Drawable &Other)const
 	{
 		return(Other.getID() == this->getID());

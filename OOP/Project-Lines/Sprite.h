@@ -3,7 +3,6 @@
 */
 
 #pragma once
-//#include "GraficLoader.h"
 #include "Config.h"
 #include <fstream>
 #include <iostream>
@@ -16,7 +15,6 @@
 using namespace std;
 class Sprite
 {
-//friend class GameController;
 
 public:
 	//=============================================================================
@@ -36,11 +34,21 @@ public:
 	//	return width
 	int getWidth();
 
+	void setSelected()
+	{
+		_selected = true;
+
+	}
+	void unSelect()
+	{
+		_selected = false;
+	}
 
 private:
 	 //GraficLoader _temp;
 	//static 
 	//static	
+	bool _selected;
 		RGBA **_image;
 	//static 
 		int _height;		//	height of image
