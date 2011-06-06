@@ -21,6 +21,10 @@
 #pragma once
 using namespace std;
 
+#define _BOARD_SIZE_X 9
+#define _BOARD_SIZE_Y 9
+
+
 class GameController
 {
 public:
@@ -45,6 +49,21 @@ private:
 	static void loadBalls();
 	static void loadFloors();
 
+	static void BumBum();
+	static void checkRowsAndCols();
+	static void updateLineExistence(const short int &i,
+									const short int &j,
+									short int &matchCounter,
+									short int &start, short int &end);
+
+	static void updateBallEraseBoard(const short int &location,
+									 const short int &matchCounter,
+									 const short int &start,
+									 const short int &end,
+									 Direction direc);
+
+
+
 	static void RealodGame();
 	static int _WindowHeight;
 	static int _WindowWidth;
@@ -63,13 +82,12 @@ private:
 	static vector <int> _coords;
 
 	static map<vector<int> ,Ball>	_BallMap;			// the balls data base (STL)
-	//static map<vector<int> ,*Floor>	_FloorsMap;			// the pointers to floors data base (STL)
+
 
 	static vector <Ball> _Balls;
 
+	static bool _BallEraseBoard[_BOARD_SIZE_X][_BOARD_SIZE_Y];
 
-
-	static void BumBum();
 
 	static bool _canAddBalls;
 	GameController();
@@ -80,4 +98,5 @@ private:
 	
 
 	static unsigned int _PostRedisplay;
+
 };

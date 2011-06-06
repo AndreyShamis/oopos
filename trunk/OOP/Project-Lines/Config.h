@@ -39,7 +39,7 @@
 #define POINT_SIZE			1.0f
 
 
-#define MAX_SOUNDS			6
+#define MAX_SOUNDS			7
 
 
 
@@ -56,7 +56,9 @@ struct RGBA{
 
 enum Types { Simple, Selected };
 
-enum SoundsName { Appear, Disappear, double_bonus, error, explosion };
+enum Direction { Row, Column };
+
+enum SoundsName { Appear, Disappear, double_bonus, error, explosion ,BackGround};
 
 enum BallColor { Green, White, Black, Yellow, Orange, Blue, Red , Mixed , 
 				 OrangeRed, WhiteBlue, greenYellow };

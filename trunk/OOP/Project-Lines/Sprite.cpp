@@ -56,7 +56,13 @@ Sprite::Sprite(char* filename) {
 //=============================================================================
 //	Draw function
 void Sprite::Draw(const float &cordX, float &cordY){
+	
+	//glEnable(GL_ALPHA_TEST);
+	//glEnable(GL_ALPHA);
+
 	glBegin(GL_POINTS);	
+
+	//glEnable(GL_ALPHA_BITS);
 	int y=0,x=_width;
 	for(int i=0; i<_height;i++)
 	{
@@ -64,16 +70,20 @@ void Sprite::Draw(const float &cordX, float &cordY){
 		for(int j=0; j< _width; j++){
 			if ( _image[i][j]._a >= 1)
 			{
-				glColor4ub(_image[i][j]._r, _image[i][j]._g, _image[i][j]._b, _image[i][j]._a);
-				//glPointSize(1);//POINT_SIZE/WINDOW_HEIGHT
-				glVertex2f((float)x*(POINT_SIZE/WINDOW_WIDTH) + cordX ,	((float)y*(POINT_SIZE/WINDOW_HEIGHT) + cordY));//(20*PIC_WIDTH)-//GameController::_WindowHeight
+				if(_selected)
+					glColor4ub(_image[i][j]._r, _image[i][j]._g, _image[i][j]._b, 50);
+				else
+					glColor4ub(_image[i][j]._r, _image[i][j]._g, _image[i][j]._b, _image[i][j]._a);
+
+				glVertex2f((float)x*(POINT_SIZE/WINDOW_WIDTH) + cordX ,	((float)y*(POINT_SIZE/WINDOW_HEIGHT) + cordY));
 			}
 			x++;
 		}
 		y++;
 	}
-
+	
 	glEnd();
+	
 
 }
 
