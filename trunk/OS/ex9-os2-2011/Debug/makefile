@@ -22,19 +22,19 @@ endif
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: ex9_os2_2011
+all: ex9-os2-2011
 
 # Tool invocations
-ex9_os2_2011: $(OBJS) $(USER_OBJS)
+ex9-os2-2011: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C Linker'
-	gcc  -o"ex9_os2_2011" $(OBJS) $(USER_OBJS) $(LIBS)
+	gcc  -o"ex9-os2-2011" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(OBJS)$(C_DEPS)$(EXECUTABLES) ex9_os2_2011
+	-$(RM) $(OBJS)$(C_DEPS)$(EXECUTABLES) ex9-os2-2011
 	-@echo ' '
 
 .PHONY: all clean dependents
