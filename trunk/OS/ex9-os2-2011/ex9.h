@@ -503,7 +503,12 @@ int fsCloseFile(fs_t *fs,int fileHandle)
 #ifdef _DEBUG
 	printf(" - Start close file. File Handle : %d\n",fileHandle);
 #endif
-	fs->fileTable[fileHandle].inUse = 0;
+	fs->fileTable[fileHandle].inUse 		= 0;
+	fs->fileTable[fileHandle].fd   			= 0;
+	fs->fileTable[fileHandle].inode 		= 0;
+	fs->fileTable[fileHandle].fileOffset   	= 0;
+	memset(fs->fileTable[fileHandle].filename,'\0',MAX_FILE_NAME);
+
 #ifdef _DEBUG
 	printf(" - End close file.\n");
 #endif
@@ -517,29 +522,22 @@ int fsCloseFile(fs_t *fs,int fileHandle)
  */
 int fsWriteFile(fs_t *fs,int fd,const char *buffer,const int size)
 {
-#ifdef _DEBUG_WRITE
-	printf(" - Start write to file - %s.\n" , buffer);
-#endif
 
-
-	//int newBID = findNotUsedBitMap(fs);
-	int InodeID = fs->fileTable[fd].inode;
-	int need_b =fs->inodeList[InodeID].fileSize/BLOCK_SIZE;
+	int InodeID 	= 	fs->fileTable[fd].inode;
+	int need_b 		=	fs->inodeList[InodeID].fileSize/BLOCK_SIZE;
+	int writeOffset	=	0;
 	char address[BLOCK_ADSRESS_SIZE];
 
 	if(need_b < DIRECT_ENTRIES)
 	{
-		// - BLOCK_SIZE
 		fs->inodeList[InodeID].directBlocks[need_b] = AllocateBlock(fs);
 		lseek(fs->fd,DATA_START+
-				fs->inodeList[InodeID].directBlocks[need_b]*BLOCK_SIZE,
+				fs->inodeList[InodeID].directBlocks[need_b]*BLOCK_SIZE+writeOffset,
 				SEEK_SET);
 		write(fs->fd,buffer,size);
 
-
-
 		fs->inodeList[InodeID].fileSize += size;
-		printf ("Writed to file %d - FIle size is %d \n",size,fs->inodeList[InodeID].fileSize);
+		//printf ("1 Writed to file %d - %s - FIle size is %d \n",size,buffer,fs->inodeList[InodeID].fileSize);
 
 	}
 	else if(need_b >= DIRECT_ENTRIES && need_b < DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS)
@@ -565,29 +563,35 @@ int fsWriteFile(fs_t *fs,int fd,const char *buffer,const int size)
 		write(fs->fd,address,BLOCK_ADSRESS_SIZE);	//	write adress
 
 		//	Lseek for write data
-		lseek(fs->fd,DATA_START+ newBID_sing*BLOCK_SIZE, SEEK_SET);
+		lseek(fs->fd,DATA_START+ newBID_sing*BLOCK_SIZE + writeOffset, SEEK_SET);
 		write(fs->fd,buffer,size);					//	Write data
 
 		fs->inodeList[InodeID].fileSize += size;
-		printf ("Writed to file %d - FIle size is %d \n",size,fs->inodeList[InodeID].fileSize);
+		//printf ("2 Writed to file %d - %s - FIle size is %d \n",size,buffer,fs->inodeList[InodeID].fileSize);
 	}
 	//					6												23
-	else if(need_b>=DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS && need_b < DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS+DOUBLE_INDIRECT_BLOCKS)
+	else if(need_b>=DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS  && need_b < DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS+DOUBLE_INDIRECT_BLOCKS)
 	{
+
 		/*
 		 * 	Here is double block writing
 		 */
 		//	Get id of block on second level
-		int SecendLevelID = (need_b - DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS)/BLOCK_ADSRESS_SIZE ;
+		int SecendLevelID = (need_b - (DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS) )/BLOCK_ADSRESS_SIZE ;
 		int SecendLevelNewIDBlock = 0;	//	if need
-
+		//printf("Need %d - Second level block %d \n",DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS ,SecendLevelID );
 		//	if It is starting fill double block allocate first level block
-		if(need_b == DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS)			//	== 6=
+		if(need_b == DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS)
+		{
 			fs->inodeList[InodeID].doubleIndirectBlocks[0] = AllocateBlock(fs);
+			//printf(" ### Created block 1 - ");
+		}
+
 
 		//	if need new block on second level - allocate him
-		if( (need_b - DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS)%BLOCK_ADSRESS_SIZE ==0 )
+		if( (need_b - (DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS))%BLOCK_ADSRESS_SIZE ==0 )
 		{
+			//printf(" ### Created block 2- \n");
 			SecendLevelNewIDBlock = AllocateBlock(fs);
 
 			intToChar(address,SecendLevelNewIDBlock);
@@ -598,39 +602,57 @@ int fsWriteFile(fs_t *fs,int fd,const char *buffer,const int size)
 					SEEK_SET);
 			write(fs->fd,address,BLOCK_ADSRESS_SIZE);	//	write adress
 
+			//SecendLevelID = SecendLevelNewIDBlock;
+
 		}
 
+		//	Read adress from first level
 		lseek(fs->fd,DATA_START+
 				fs->inodeList[InodeID].doubleIndirectBlocks[0]*BLOCK_SIZE +
 				SecendLevelID*BLOCK_ADSRESS_SIZE,
 				SEEK_SET);
+
+		//printf("1  Address %s Level ID- %d|||", address,SecendLevelID);
 		int secondLVLentry = 0;
+
 		read(fs->fd,address,BLOCK_ADSRESS_SIZE);
-		forCharsToInt(address,&secondLVLentry);
 
-		int offset_in2_lvl = (need_b - DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS)%BLOCK_ADSRESS_SIZE ;
+		forCharsToInt(address,&secondLVLentry);		//	Get address of second level block
 
+		//printf("2 Address %s Level ID- %d|||", address,secondLVLentry);
+
+
+
+		int offset_in2_lvl = (need_b - (DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS))%BLOCK_ADSRESS_SIZE ;
+
+		//	Allocating data block - Third levlel
 		int newBlcokID = AllocateBlock(fs);
-		forCharsToInt(address,&newBlcokID);
+		intToChar(address,newBlcokID);
+
 		lseek(fs->fd,DATA_START+
 				secondLVLentry*BLOCK_SIZE +
 				offset_in2_lvl*BLOCK_ADSRESS_SIZE,
 				SEEK_SET);
 		write(fs->fd,address,BLOCK_ADSRESS_SIZE);
+		//printf("3 Address %s Level ID- %d in assata %d | New block adress %d|||", address,newBlcokID,offset_in2_lvl,newBlcokID);
 
 
 
 		lseek(fs->fd,DATA_START+
-				newBlcokID*BLOCK_SIZE ,
+				newBlcokID*BLOCK_SIZE + writeOffset ,
 				SEEK_SET);
 
 
 		write(fs->fd,buffer,size);
 		fs->inodeList[InodeID].fileSize += size;
-		printf ("Writed to file %d - FIle size is %d \n",size,fs->inodeList[InodeID].fileSize);
+		//printf ("3 Writed to file %d - %s - FIle size is %d \n",size,buffer,fs->inodeList[InodeID].fileSize);
 
 	}
+	else
+	{
 
+		printf("You are here need_b %d\n",need_b);
+	}
 
 #ifdef _DEBUG_WRITE
 	printf(" - End write to file.\n");
@@ -644,17 +666,30 @@ void fsPrintRootDir(fs_t *fs)
 {
 
 	printf("The directory is <> and contain:\n");
-	char buffer[BLOCK_SIZE];
-	//int counter = fs->inodeList[ROOT_DIRECTORY_HANDLE].fileSize;
-	int res = fsReadFile(fs,ROOT_DIRECTORY_HANDLE,buffer,BLOCK_SIZE);
-	struct DirEntry tempDirEntry;
-	while(res>0)
-	{
 
+	char fileData[MAX_FILE_SIZE];
+	char buffer[BLOCK_SIZE];
+	int tempSize = 0;;
+	//int counter = fs->inodeList[ROOT_DIRECTORY_HANDLE].fileSize;
+	fsReadFile(fs,ROOT_DIRECTORY_HANDLE,fileData,&tempSize);
+
+	int coun =0;
+	int fileCounter = 0;
+	struct DirEntry tempDirEntry;
+	while(tempSize>0)
+	{
+		for(coun = 0; coun < BLOCK_SIZE;coun++)
+		{
+			buffer[coun] = fileData[fileCounter*BLOCK_SIZE+coun];
+		}
+		fileCounter++;
 		memcpy(&tempDirEntry,buffer,BLOCK_SIZE);
-		printf("File(): %s \t Inode: %d\n",tempDirEntry.filename,tempDirEntry.inode);
-		 res = fsReadFile(fs,ROOT_DIRECTORY_HANDLE,buffer,BLOCK_SIZE);
+		printf("%s \t Inode: %d\n",tempDirEntry.filename,tempDirEntry.inode);
+		 //res = fsReadFile(fs,ROOT_DIRECTORY_HANDLE,buffer,&tempSize);
+		 tempSize-=BLOCK_SIZE;
 	}
+
+	printf(" %d files\n",fileCounter);
 //	int counter = fs->inodeList[ROOT_DIRECTORY_HANDLE].fileSize;
 //
 //	int single_coun = 0;
@@ -712,7 +747,8 @@ int fsReadFile(fs_t *fs,int fd,char *buffer,int *readSize)
 #ifdef _DEBUG
 	printf(" - Start read from file.\n");
 #endif
-	int InodeID = fs->fileTable[fd].inode;
+/*
+ 	int InodeID = fs->fileTable[fd].inode;
 
 	if(fs->fileTable[fd].fileOffset >= fs->inodeList[InodeID].fileSize)
 	{
@@ -740,9 +776,9 @@ int fsReadFile(fs_t *fs,int fd,char *buffer,int *readSize)
 	}
 	else if(need_b >= DIRECT_ENTRIES && need_b < DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS)
 	{
-		/*
-		 * 	Here is single block reading
-		 */
+		//
+		 // 	Here is single block reading
+		 //
 		//	Lseek for write addres
 		lseek(fs->fd,DATA_START+
 				fs->inodeList[InodeID].singleIndirectBlocks[0]*BLOCK_SIZE +
@@ -763,9 +799,9 @@ int fsReadFile(fs_t *fs,int fd,char *buffer,int *readSize)
 	//					6												23
 	else if(need_b>=DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS && need_b < DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS+DOUBLE_INDIRECT_BLOCKS)
 	{
-		/*
-		 * 	Here is double block writing
-		 */
+		//
+		 // 	Here is double block writing
+		 //
 		//	Get id of block on second level
 		int SecendLevelID = (need_b - DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS)/BLOCK_ADSRESS_SIZE ;
 		int SecendLevelNewIDBlock = 0;	//	if need
@@ -802,10 +838,127 @@ int fsReadFile(fs_t *fs,int fd,char *buffer,int *readSize)
 		//printf ("Writed to file %d - FIle size is %d \n",size,fs->inodeList[InodeID].fileSize);
 
 	}
+*/
+	char tempBuffer[BLOCK_SIZE];
+	//int tempOffset = 0;
+	int coun = 0;
+	int readed = 0;
+	//int readedAll = 0;
+	*readSize = 0;
+	while(1)
+	{
+		//printf("Read block\n");
+		//*readSize
+		readed = fsReadFileBlock(fs,fd,tempBuffer);
+		fs->fileTable[fd].fileOffset += readed;
+
+		*readSize +=readed;
+
+		//printf("Readed %s - readed %d readSize %d Offset %d File Size %d\n",tempBuffer,readed,*readSize, fs->fileTable[fd].fileOffset,fs->inodeList[fs->fileTable[fd].inode].fileSize );
+		if(readed == 0)
+		{
+			break;
+
+		}
+		for(coun = 0 ; coun < readed;coun++)
+		{
+			buffer[*readSize - BLOCK_SIZE+coun] = tempBuffer[coun];
+		}
+	}
+
 
 #ifdef _DEBUG
 	printf(" - End read from file.\n");
 #endif
+	return(0);
+}
+//=============================================================================
+int fsReadFileBlock(fs_t *fs,int fd,char *buffer)
+{
+
+	int InodeID 	= 	fs->fileTable[fd].inode;
+	int need_b 		=	fs->fileTable[fd].fileOffset/BLOCK_SIZE;
+	char address[BLOCK_ADSRESS_SIZE];
+	int adrINT 		= 	0;
+
+	if(fs->fileTable[fd].fileOffset >= fs->inodeList[InodeID].fileSize)
+	{
+		return(0);
+	}
+
+
+	if(need_b < DIRECT_ENTRIES)
+	{
+		lseek(fs->fd,DATA_START+
+				fs->inodeList[InodeID].directBlocks[need_b]*BLOCK_SIZE,
+				SEEK_SET);
+
+		read(fs->fd,buffer,BLOCK_SIZE);
+		//fs->fileTable[fd].fileOffset += BLOCK_SIZE;
+		return(BLOCK_SIZE);
+
+	}
+	else if(need_b >= DIRECT_ENTRIES && need_b < DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS)
+	{
+		/*
+		 * 	Here is single block reading
+		 */
+		//	Lseek for write addres
+		lseek(fs->fd,DATA_START+
+				fs->inodeList[InodeID].singleIndirectBlocks[0]*BLOCK_SIZE +
+				(need_b-DIRECT_ENTRIES)*BLOCK_ADSRESS_SIZE,
+				SEEK_SET);
+
+		read(fs->fd,address,BLOCK_ADSRESS_SIZE);	//	write adress
+
+		//	Lseek for write data
+
+		forCharsToInt(address,&adrINT);
+		lseek(fs->fd,DATA_START+ adrINT*BLOCK_SIZE, SEEK_SET);
+		read(fs->fd,buffer,BLOCK_SIZE);					//	Write data
+
+		//fs->fileTable[fd].fileOffset += BLOCK_SIZE;
+		return(BLOCK_SIZE);
+	}
+	//					6												23
+	else if(need_b>=DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS && need_b < DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS+DOUBLE_INDIRECT_BLOCKS)
+	{
+		/*
+		 * 	Here is double block writing
+		 */
+		//	Get id of block on second level
+		int SecendLevelID = (need_b - (DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS))/BLOCK_ADSRESS_SIZE ;
+		int SecendLevelNewIDBlock = 0;	//	if need
+
+		lseek(fs->fd,DATA_START+
+				fs->inodeList[InodeID].doubleIndirectBlocks[0]*BLOCK_SIZE +
+				SecendLevelID*BLOCK_ADSRESS_SIZE,
+				SEEK_SET);
+		int secondLVLentry = 0;
+		read(fs->fd,address,BLOCK_ADSRESS_SIZE);
+		forCharsToInt(address,&secondLVLentry);
+
+		int offset_in2_lvl = (need_b - (DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS))%BLOCK_ADSRESS_SIZE ;
+
+		lseek(fs->fd,DATA_START+
+				secondLVLentry*BLOCK_SIZE +
+				offset_in2_lvl*BLOCK_ADSRESS_SIZE,
+				SEEK_SET);
+		read(fs->fd,address,BLOCK_ADSRESS_SIZE);
+
+
+		forCharsToInt(address,&adrINT);
+
+		lseek(fs->fd,DATA_START+
+				adrINT*BLOCK_SIZE ,
+				SEEK_SET);
+
+
+		read(fs->fd,buffer,BLOCK_SIZE);
+		//fs->fileTable[fd].fileOffset += BLOCK_SIZE;
+		return(BLOCK_SIZE);
+	}
+
 	return(0);
 }
 

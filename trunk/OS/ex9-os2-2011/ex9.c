@@ -49,7 +49,7 @@ int main()
 
 	//	Create two test files
 	
-	h1 = fsCreateFile(fs,"12.txt");
+	h1 = fsCreateFile(fs,"1.txt");
 
 	h2 = fsCreateFile(fs,"2.txt");
 	fsCreateFile(fs,"3.txt");
@@ -59,6 +59,10 @@ int main()
 	fsCreateFile(fs,"7.txt");
 	fsCreateFile(fs,"8.txt");
 	fsCreateFile(fs,"9.txt");
+	fsCreateFile(fs,"10.txt");
+	fsCreateFile(fs,"11.txt");
+	fsCreateFile(fs,"12.txt");
+	fsCreateFile(fs,"13.txt");
 	//printf("Created files FD1 %d - FD2 %d\n", h1,h2);
 	/*
 	char blockSizeData[BLOCK_SIZE] = " I`am  001 file ";
