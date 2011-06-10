@@ -23,10 +23,11 @@ void Ball::Draw()
 		_sprites[0].setSelected();
 
 	}
-	glEnable(GL_BLEND);	
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glEnable(GL_BLEND);									//	Alpha manipulation
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);	//	Alpha manipulation
 	_sprites[0].Draw(_cordX+b_offset*3, b_cord_Y);
-	glDisable(GL_BLEND);
+	glDisable(GL_BLEND);								//	Alpha manipulation
 
 	if(_selected)
 	{
@@ -36,35 +37,20 @@ void Ball::Draw()
 	}
 }
 
-
-
-//bool Ball::doYouThatColor(BallColor color)
-//{
-//	// loop vector colors and if colors matched return true.
-//	for(vector<BallColor>::const_iterator it = _colors.begin();
-//		it != _colors.end(); ++it)
-//	{
-//		if(*it == color)
-//			return true;
-//	}
-//	return false;
-//}
-
-// loop vector colors and if colors matched return true.
-
-
-
-
 bool Ball::operator==(const Ball &other)const
 {
-	for(vector<BallColor>::const_iterator itThis = this->_colors.begin();
+
+	//cout<< this->_colors[0]<<"\n";
+	for(vector<BallColor>::const_iterator itThis = _colors.begin();
 		itThis != _colors.end(); ++itThis)
 	{
 		for(vector<BallColor>::const_iterator itOther = other._colors.begin();
-			itOther != _colors.end(); ++itOther)
+			itOther != other._colors.end(); ++itOther)
 		{
 			if(*itThis == *itOther)
+			{
 				return true;
+			}
 		}
 	}
 	return false;

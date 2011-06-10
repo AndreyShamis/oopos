@@ -4,6 +4,9 @@ GreenYellowBall::GreenYellowBall(const float &X,const float &Y, int natuX, int n
 {
 	_sprites.push_back(G_Y_BALL);//	put the image to the cector of sprites
 
+	_colors.push_back(Yellow);
+	_colors.push_back(Green);
+
 	_cordX = X;
 	_cordY = Y;
 	_natuX = natuX;
