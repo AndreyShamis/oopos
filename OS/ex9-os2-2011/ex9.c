@@ -34,7 +34,7 @@ int main()
 */
 	//-------------------------------------------------------------------------
 
-
+	printf("Blocks peer indoe %d\n",BLOCKS_PER_INODE);
 	int h1=0,h2=0;
 	
 	int size=0;
@@ -242,6 +242,25 @@ int findNotUsedIndoe(fs_t *fs)
 	//	For each entry to inode check if the inode
 	for(coun =0;coun <NR_INODES;coun++)
 		if(!fs->inodeList[coun].inUse)
+			return(coun);				//	return founded
+
+	return(-1);							//	if not found return -1
+
+}
+
+//=============================================================================
+/*
+ * 		Function which serach in struct which fileTable not in use.
+ * 	Geting pointer to main data base structure.
+ * Return n>0 if finded somthing ot -1 if not
+ */
+int findNotUsedFD(fs_t *fs)
+{
+	int coun = 0;						//	temp variable
+
+	//	For each entry to inode check if the inode
+	for(coun =1;coun <NR_INODES;coun++)
+		if(!fs->fileTable[coun].inUse)
 			return(coun);				//	return founded
 
 	return(-1);							//	if not found return -1
