@@ -54,8 +54,8 @@ private:
 	static void updateLineExistence(const short int &i,
 									const short int &j,
 									short int &matchCounter,
-									short int &start, short int &end);
-
+									short int &start, short int &end,
+									Direction direc);
 	static void updateBallEraseBoard(const short int &location,
 									 const short int &matchCounter,
 									 const short int &start,

@@ -3,10 +3,11 @@
 */
 
 #pragma once
+#include "macros.h"
 #include "Config.h"
 #include <fstream>
 #include <iostream>
-#include <glut.h>
+//#include <glut.h>
 #include <string.h>
 #include <vector>
 
