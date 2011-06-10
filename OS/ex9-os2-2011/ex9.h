@@ -110,7 +110,8 @@ int fsWriteFile(fs_t *fs,int fd,const char *buffer,const int size);
  * 		Function wich reading all data in file
  * 	Function get pointer to main data structure , file descriptor of file
  * wich we wont to read, also buffer for data (must be in size of file), and
- * in last we get pointer */
+ * in last we get pointer
+ * 	Function return 0 on success or -1 on fail */
 int fsReadFileAll(fs_t *fs,int fd,char *buffer,int *readSize);
 //=============================================================================
 /*
@@ -134,33 +135,43 @@ void fsPrintRootDir(fs_t *fs);
  *		Function wich load all inodes from file system from inode sector
  *		Function get pointer to main data structure */
 void PrepareAllInodesOnMount(fs_t *fs);
-
+//=============================================================================
+/*
+ *		Function for create new file system file
+ *		Function get New system file name.
+ *		Function return 0 on success*/
+int fsCreateFileSystem(char *filename);
+//=============================================================================
+/*
+ *		Function for saving bit maps(coverting to int) and saving indes
+ *		without converting
+ *		Function get pointer to main data structure */
 void SaveToFS_BitMap_INODES(fs_t *fs);
+//=============================================================================
+/*
+ *		Function for format file system
+ *		Function get pinter to main dta structure
+ *		Function return 0 on seccess or -1 on fail*/
+int fsFormat(fs_t *fs);
+
+
+
+
 
 //=============================================================================
 /*
- *
+ *		Function for format file system
+ *		Function get pinter to main dta structure
+ *		Function return 0 on seccess or -1 on fail
  */
 int fsFormat(fs_t *fs)
 {
-	//lseek(fs->fd,66688,SEEK_SET);
-	//write(fs->fd,"-",1);
+	int coun = 0;						//	temp variable
 
-	int coun = 0;
- 	coun = 0;
-
-	for(coun=0;coun<NR_BLOCKS;coun++)
-	{
-		//printf("Write to bitmap\n");
+	for(coun=0;coun<NR_BLOCKS;coun++)	//	preapre bitmap
 		fs->Bitmap[coun] = 0;
 
-	}
-//	for(coun=NR_BLOCKS;coun<DATA_START;coun++)
-//	{
-//		//printf("Write to bitmap\n");
-//		fs->Bitmap[coun] = 'A';
-//
-//	}
+	//	Prepare Inodes
 	for(coun=0;coun<NR_INODES;coun++)
 	{
 		fs->inodeList[coun].inUse 		= 0;
@@ -172,21 +183,24 @@ int fsFormat(fs_t *fs)
 		fs->inodeList[coun].doubleIndirectBlocks[0] = 0;
 
 	}
- 	//fs->inodeList[0] =
+
+	//	Prepare root direcotory information
 	fs->pRootInode = &fs->inodeList[ROOT_DIRECTORY_HANDLE];
 	fs->pRootInode->inUse = 1;
-	fs->fileTable[ROOT_DIRECTORY_HANDLE].inode = ROOT_DIRECTORY_HANDLE;
+	fs->fileTable[ROOT_DIRECTORY_HANDLE].inode 	= 	ROOT_DIRECTORY_HANDLE;
+	fs->fileTable[ROOT_DIRECTORY_HANDLE].inUse 	= 	1;
+	fs->fileTable[ROOT_DIRECTORY_HANDLE].fd		=	ROOT_DIRECTORY_HANDLE;
 	fs->fileTable[ROOT_DIRECTORY_HANDLE].fileOffset =0 ;
 
 
-	fs->fsInitialized = 1;
-	SaveToFS_BitMap_INODES(fs);
+	fs->fsInitialized = 1;				//	set initilized
+	SaveToFS_BitMap_INODES(fs);			//	Save Main structure to file
 
-	lseek(fs->fd,DATA_START,SEEK_SET);
+	lseek(fs->fd,DATA_START,SEEK_SET);	//	lseek into data sector
 
-	char tmpBuffer[BLOCK_SIZE];
+	char tmpBuffer[BLOCK_SIZE];			//	Create temp buffer
 
-	memset(tmpBuffer,'-',BLOCK_SIZE);
+	memset(tmpBuffer,'-',BLOCK_SIZE);	//	write some information to tmpBLock
 
 	int res= 0;
 	for(coun = 0 ; coun < NR_BLOCKS;coun++)
@@ -236,21 +250,19 @@ void PrepareAllInodesOnMount(fs_t *fs)
 		}
 		memcpy(&fs->inodeList[coun],buffer,NODE_SIZE);
 		//memmove
-		fs->fileTable[coun].inUse = 0;//=============================================================================
-		/*
-		 * 		Function wich reading all data in file
-		 * 	Function get pointer to main data structure , file descriptor of file
-		 * wich we wont to read, also buffer for data (must be in size of file), and
-		 * in last we get pointer
-		 */
-		int fsReadFileAll(fs_t *fs,int fd,char *buffer,int *readSize);
+		fs->fileTable[coun].inUse = 0;
 		fs->fileTable[coun].fileOffset = 0;
 		fs->fileTable[coun].fd = 0;
 		fs->fileTable[coun].inode = 0;
 
 	}
 }
-
+//=============================================================================
+/*
+ *		Function for saving bit maps(coverting to int) and saving indes
+ *		without converting
+ *		Function get pointer to main data structure
+ */
 void SaveToFS_BitMap_INODES(fs_t *fs)
 {
 	int coun = 0;
@@ -334,7 +346,7 @@ fs_t *fsMount()
 	ret->fileTable[ROOT_DIRECTORY_HANDLE].fd = 0;
 	ret->fileTable[ROOT_DIRECTORY_HANDLE].fileOffset = ret->inodeList[ROOT_DIRECTORY_HANDLE].fileSize;
 
-	//ret->fsInitialized = 1;		//	TODO
+	ret->fsInitialized = 1;		//	TODO
 
 	return(ret);
 }
@@ -496,21 +508,22 @@ int findFileNode(fs_t *fs,char *fileName)
  */
 int fsOpenFile(fs_t *fs,char *fileName)
 {
-	int Inode 	= findFileNode(fs,fileName);
-	int FD		= findNotUsedFD(fs);
+	int Inode 	= findFileNode(fs,fileName);	//	Find Inode by name
+	int FD		= findNotUsedFD(fs);			//	Find free file table
 
+	//	Check if founded file by name and free file table
 	if(Inode >0 && FD >0 )
 	{
-		fs->fileTable[FD].inUse 		= 	1;
-		fs->fileTable[FD].inode 		= 	Inode;
-		strcpy(fs->fileTable[FD].filename,fileName);
-		fs->fileTable[FD].fd			=	FD;
-		fs->fileTable[FD].fileOffset	=	0;
+		fs->fileTable[FD].inUse 		= 	1;		//	set used
+		fs->fileTable[FD].inode 		= 	Inode;	//	set id of inode
+		strcpy(fs->fileTable[FD].filename,fileName);//	copy file name
+		fs->fileTable[FD].fd			=	FD;		//	set fd
+		fs->fileTable[FD].fileOffset	=	0;		//	reset offset
 
-		return(FD);
+		return(FD);									//	return file descriptor
 	}
 
-	return(-1);
+	return(-1);									//	on fail return error code
 }
 //=============================================================================
 /*
@@ -520,6 +533,7 @@ int fsOpenFile(fs_t *fs,char *fileName)
  */
 int fsCloseFile(fs_t *fs,int fileHandle)
 {
+	//	First check if file realy open
 	if(fs->fileTable[fileHandle].inUse)
 	{
 		fs->fileTable[fileHandle].inUse 		= 0;
@@ -546,16 +560,23 @@ int fsCloseFile(fs_t *fs,int fileHandle)
 int fsWriteFile(fs_t *fs,int fd,const char *buffer,const int size)
 {
 
-	int InodeID 	= 	fs->fileTable[fd].inode;
-	int need_b 		=	0;
-	int writeOffset	=	0;
-	int tempSize	=	0;
-	int coun		=	0;
-	int sizeCounter	=	size;
-	char address[BLOCK_ADSRESS_SIZE];
-	char tempBuf[BLOCK_SIZE+1];
+	int InodeID 	= 	fs->fileTable[fd].inode;	//	Get INODE ID
+	int need_b 		=	0;//Important var wich know to wich block write data
+	int writeOffset	=	0;				//	write offset
+	int tempSize	=	0;				//	temp variable off size be writed
+	int coun		=	0;				//	temp variable
+	int sizeCounter	=	size;			//	counter of bytes need write
+	char address[BLOCK_ADSRESS_SIZE];	//	temp Address variable
+	char tempBuf[BLOCK_SIZE+1];			//	temp buffer variable
 
-
+	//if(fd == ROOT_DIRECTORY_HANDLE && size != 16)
+	//{
+	//	return(-1);
+	//}
+	// if(fs->fileTable[fd].inUse != 1 || fs->inodeList[InodeID].inUse !=1)
+	//{
+	//	return(-1);
+	//}
 	while(sizeCounter>0)
 	{
 		memset(tempBuf,'+',BLOCK_SIZE);
@@ -564,25 +585,16 @@ int fsWriteFile(fs_t *fs,int fd,const char *buffer,const int size)
 		tempSize 		= 	BLOCK_SIZE - writeOffset;
 
 		if(sizeCounter <  BLOCK_SIZE)
-		{
 			tempSize= sizeCounter;
-		}
 		else
-		{
 			tempSize = BLOCK_SIZE;
-		}
 
 		if(writeOffset > 0 && tempSize >=BLOCK_SIZE)
-		{
 			tempSize 		= 	BLOCK_SIZE - writeOffset;
-		}
 
 
 		for(coun=0;coun<tempSize;coun++)
-		{
 			tempBuf[coun] = buffer[size-sizeCounter+coun];
-
-		}
 
 
 		if(need_b < DIRECT_ENTRIES)
@@ -598,12 +610,10 @@ int fsWriteFile(fs_t *fs,int fd,const char *buffer,const int size)
 			fs->inodeList[InodeID].fileSize += tempSize;
 
 		}
-		else if(need_b >= DIRECT_ENTRIES
-				&& need_b < DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS)
-		{
-			/* 	Here is single block writing*/
+		else if(need_b >= DIRECT_ENTRIES && need_b < DOUBLE_START)
+		{		/* 	Here is single block writing*/
 
-			int newBID_sing = 0;
+			int BlockID = 0;
 
 			//	if the block for single enties wasnt allocated, allocate him
 			if(need_b == DIRECT_ENTRIES && writeOffset == 0)
@@ -611,8 +621,8 @@ int fsWriteFile(fs_t *fs,int fd,const char *buffer,const int size)
 
 			if(writeOffset == 0)
 			{
-				newBID_sing = AllocateBlock(fs);
-				intToChar(address,newBID_sing);
+				BlockID = AllocateBlock(fs);
+				intToChar(address,BlockID);
 
 				//	Lseek for write addres
 				lseek(fs->fd,DATA_START+
@@ -630,20 +640,19 @@ int fsWriteFile(fs_t *fs,int fd,const char *buffer,const int size)
 						SEEK_SET);
 
 				read(fs->fd,address,BLOCK_ADSRESS_SIZE);	//	write adress
-				forCharsToInt(address,&newBID_sing);
+				forCharsToInt(address,&BlockID);
 
 			}
 
 			//	Lseek for write data
-			lseek(fs->fd,DATA_START+ newBID_sing*BLOCK_SIZE + writeOffset, SEEK_SET);
+			lseek(fs->fd,DATA_START+ BlockID*BLOCK_SIZE + writeOffset, SEEK_SET);
 			write(fs->fd,tempBuf,tempSize);					//	Write data
 
 			fs->inodeList[InodeID].fileSize += tempSize;
 		//	if(fd)
 		//		printf ("2 Writed to file(tempSize)[%d] -String:[%s] - FIle size is [%d] \n",tempSize,tempBuf,fs->inodeList[InodeID].fileSize);
 		}
-		else if(need_b>=DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS
-				&& need_b < BLOCKS_PER_INODE)
+		else if(need_b>=DOUBLE_START && need_b < BLOCKS_PER_INODE)
 		{
 
 			/*
@@ -652,17 +661,16 @@ int fsWriteFile(fs_t *fs,int fd,const char *buffer,const int size)
 			//	Get id of block on second level
 		//	if(fd)
 			//	printf("\n Work with Double\n");
-			int SecendLevelID =(need_b-(DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS))
-											/BLOCK_ADSRESS_SIZE ;
+			int SecendLevelID =(need_b-DOUBLE_START)/BLOCK_ADSRESS_SIZE ;
 			int SecendLevelNewIDBlock = 0;	//	if need
 
 			//	if It is starting fill double block allocate first level block
-			if(need_b == DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS && writeOffset == 0)
+			if(need_b == DOUBLE_START && writeOffset == 0)
 				fs->inodeList[InodeID].doubleIndirectBlocks[0] = AllocateBlock(fs);
 
 
 			//	if need new block on second level - allocate him
-			if( (need_b - (DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS))%BLOCK_ADSRESS_SIZE ==0 && writeOffset == 0)
+			if( (need_b - (DOUBLE_START))%BLOCK_ADSRESS_SIZE ==0 && writeOffset == 0)
 			{
 				SecendLevelNewIDBlock = AllocateBlock(fs);
 
@@ -690,7 +698,7 @@ int fsWriteFile(fs_t *fs,int fd,const char *buffer,const int size)
 			forCharsToInt(address,&secondLVLentry);		//	Get address of second level block
 
 			//printf("2 Address %s Level ID- %d|||", address,secondLVLentry);
-			int offset_in2_lvl = (need_b - (DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS))%BLOCK_ADSRESS_SIZE ;
+			int offset_in2_lvl = (need_b - DOUBLE_START)%BLOCK_ADSRESS_SIZE ;
 
 			//	Allocating data block - Third levlel
 			int newBlcokID = 0;
@@ -768,17 +776,19 @@ void fsPrintRootDir(fs_t *fs)
 
 	while(tempSize>0)
 	{
+		//	Copy data(block) into temp buffer
 		for(coun = 0; coun < BLOCK_SIZE;coun++)
-		{
 			buffer[coun] = fileData[fileCounter*BLOCK_SIZE+coun];
-		}
-		fileCounter++;
-		memcpy(&tempDirEntry,buffer,BLOCK_SIZE);
+
+		fileCounter++;					//	update file counter
+
+		memcpy(&tempDirEntry,buffer,BLOCK_SIZE);	//	copy memory
+		//	Print information to user
 		printf("%s \t Inode: %d\n",tempDirEntry.filename,tempDirEntry.inode);
-		 tempSize-=BLOCK_SIZE;
+		 tempSize-=BLOCK_SIZE;			//	decrase size wich need to read
 	}
 
-	printf("%d files\n",fileCounter);
+	printf("%d files\n",fileCounter);	//	print how many files in directory
 
 }
 
@@ -788,6 +798,7 @@ void fsPrintRootDir(fs_t *fs)
  * 	Function get pointer to main data structure , file descriptor of file
  * wich we wont to read, also buffer for data (must be in size of file), and
  * in last we get pointer
+ * 	Function return 0 on success or -1 on fail
  */
 int fsReadFileAll(fs_t *fs,int fd,char *buffer,int *readSize)
 {
@@ -806,12 +817,12 @@ int fsReadFileAll(fs_t *fs,int fd,char *buffer,int *readSize)
 		*readSize +=readed;				//	update returned variable
 //		if(readed == 0)					//	check if readed something
 //			break;						//	if no exit
-
+		//	Copy readed data from tempBuffer
 		for(coun = 0 ; coun < readed;coun++)
 			buffer[*readSize - BLOCK_SIZE+coun] = tempBuffer[coun];
 	}
 
-	return(0);
+	return(0);							//	return 0 on success
 }
 
 //=============================================================================
@@ -911,8 +922,7 @@ int fsReadFileBlock(fs_t *fs,int fd,char *buffer)
 		read(fs->fd,buffer,BLOCK_SIZE);				//	read data
 		return(BLOCK_SIZE);							//	retunr readed
 	}
-	else if(need_b >= DIRECT_ENTRIES
-			&& need_b < DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS)
+	else if(need_b >= DIRECT_ENTRIES && need_b < DOUBLE_START)
 	{
 		/* 	Here is single block reading*/
 		//	Lseek for write addres
@@ -930,13 +940,11 @@ int fsReadFileBlock(fs_t *fs,int fd,char *buffer)
 
 		return(BLOCK_SIZE);							//	return readed
 	}
-	else if(need_b>=DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS
-											&& need_b < BLOCKS_PER_INODE)
+	else if(need_b>=DOUBLE_START && need_b < BLOCKS_PER_INODE)
 	{
 		/* 	Here is double block reading*/
 		//	Get id of block on second level
-		int SecendLevelID = (need_b - (DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS))
-														/BLOCK_ADSRESS_SIZE ;
+		int SecendLevelID = (need_b - DOUBLE_START)	/BLOCK_ADSRESS_SIZE ;
 		int secondLVLentry = 0;			//	block on second level
 		int offset_in2_lvl = 0;			//	offset in second level block
 
@@ -949,8 +957,7 @@ int fsReadFileBlock(fs_t *fs,int fd,char *buffer)
 		forCharsToInt(address,&secondLVLentry);		//	convert address
 
 		//	calculate offset in side of first level block
-		offset_in2_lvl = (need_b - (DIRECT_ENTRIES+SINGLE_INDIRECT_BLCOKS))
-														%BLOCK_ADSRESS_SIZE ;
+		offset_in2_lvl = (need_b -DOUBLE_START)%BLOCK_ADSRESS_SIZE ;
 		//	do lseek to right postition
 		lseek(fs->fd,DATA_START+ secondLVLentry*BLOCK_SIZE +
 								offset_in2_lvl*BLOCK_ADSRESS_SIZE,SEEK_SET);
@@ -966,6 +973,184 @@ int fsReadFileBlock(fs_t *fs,int fd,char *buffer)
 	return(-1);										//	else
 }
 
+//=============================================================================
+/*
+ *		Function for create new file system file
+ *		Function get New system file name.
+ *		Function return 0 on success
+ */
+int fsCreateFileSystem(char *filename)
+{
+	int fileSize 	= 	NR_BLOCKS+NR_INODES*NODE_SIZE+NR_BLOCKS*BLOCK_SIZE;
+	int fd			=	0;	//	file descriptor
+
+	if(creat(filename,0600) == -1)
+	{
+		perror("Cannot create new simulation file.\n");
+		exit(EXIT_FAILURE);
+	}
+
+	fd = open(FILENAME,O_RDWR | O_CREAT);
+
+	if(fd == -1)
+	{
+		perror("Cannot open simulation file.\n");
+		exit(EXIT_FAILURE);
+	}
+
+
+	lseek(fd,fileSize,SEEK_SET);
+	if(write(fd,"-",1) == -1)
+	{
+		perror("Cannot write to simulation file.\n");
+		exit(EXIT_FAILURE);
+	}
+	else
+	{
+		printf("Created simulation file[%s], of size %d\n",filename,fileSize);
+	}
+
+	return(0);
+}
+
+
+
+
+
+
+
+
+
+
+//=============================================================================
+/*
+ * 		Function for convert char(string) to int
+ * 	Geting String wich need convert and pointer to int in wich be returned
+ * 	the value.
+ */
+void forCharsToInt(char val[BLOCK_ADSRESS_SIZE],int *retValue)
+{
+	*retValue = atoi(val);			//	Convert string to int
+}
+
+//=============================================================================
+/*
+ * 		Function for convert int to char
+ * 	Geting integer wich need convert and char in wich be retuned
+ * converted value
+ */
+void intToChar(char val[BLOCK_ADSRESS_SIZE],const int valInt)
+{
+	int n = valInt;						//	work variable
+	int coun = 0;						//	temp variable
+
+	//	Filing the char by zeros
+	for(coun = 0;coun < BLOCK_ADSRESS_SIZE ; coun++)
+		val[coun] = '0';
+
+	coun = BLOCK_ADSRESS_SIZE;							//	size of char
+	//	While have devision do
+    while (n!=0)
+    {
+    	coun--;							//	decrease counter
+        val[coun]=(n%DEC_DEV) + '0';	//put the new value in spec index in
+        n /= DEC_DEV;					//	char-string and devide by 10
+    }
+}
+
+//=============================================================================
+/*
+ * 		Function which serach in struct which Inode not in use.
+ * 	Geting pointer to main data base structure.
+ * Return n>0 if finded somthing ot -1 if not
+ */
+int findNotUsedIndoe(fs_t *fs)
+{
+	int coun = 0;						//	temp variable
+
+	//	For each entry to inode check if the inode
+	for(coun =0;coun <NR_INODES;coun++)
+		if(!fs->inodeList[coun].inUse)
+			return(coun);				//	return founded
+
+	return(-1);							//	if not found return -1
+
+}
+
+//=============================================================================
+/*
+ * 		Function which serach in struct which fileTable not in use.
+ * 	Geting pointer to main data base structure.
+ * Return n>0 if finded somthing ot -1 if not
+ */
+int findNotUsedFD(fs_t *fs)
+{
+	int coun = 0;						//	temp variable
+
+	//	For each entry to inode check if the inode
+	for(coun =1;coun <NR_INODES;coun++)
+		if(!fs->fileTable[coun].inUse)
+			return(coun);				//	return founded
+
+	return(-1);							//	if not found return -1
+
+}
+
+//=============================================================================
+/*		Function wich looking in main data base wich bitmap is in not use.
+ * 		Get pointer to main data base.
+ * 		Return n>=0 if found; -1 if not found
+ */
+int findNotUsedBitMap(fs_t *fs)
+{
+	int coun=0;							//	temp variable
+
+	//	Trying to find free block in disk weich not used
+	for(coun=0;coun<NR_BLOCKS;coun++)
+		if(fs->Bitmap[coun] == 0)		//	if not used
+			return(coun);				//	return index
+
+	return(-1);							//	return negative value
+}
+
+//=============================================================================
+/*
+ * 		Function wich print statistic about program simulation.
+ * 	Get pointer to main data base.
+ *
+ * 	Print information such:
+ * 	-	Status of bitmap usage
+ * 	-	Files in directory(we have only one)
+ * 	-	Size of each file
+ * 	-	And list of block for each file
+ */
+void PrintStatistic(fs_t *fs)
+{
+
+	#ifdef _SHOW_STATISTIC
+
+	int coun = 0;					//	temp variable
+
+	printf(" # - Printing table of bitmaps %d x %d = %d:\n",
+			NR_BLOCKS/NR_INODES,NR_INODES,NR_BLOCKS);
+
+	//	For each block print if the block used ot not
+	for(coun=0;coun< NR_BLOCKS;coun++)
+	{
+		printf("%d",fs->Bitmap[coun]);
+
+		//	Print the information in few lines for better understeind
+		if((coun+1)%NR_INODES == 0)
+			printf("\n");
+
+	}
+	printf("\n");
+
+	fsPrintRootDir(fs);				//	print files in our directory
+
+
+	#endif
+}
 
 #endif
 //=============================================================================
