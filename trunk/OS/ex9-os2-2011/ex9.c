@@ -16,25 +16,7 @@
 int main()
 {
 	fs_t	*fs;
-	
-	printf("Data start from %d\n",DATA_START);
-	//char data[BLOCK_SIZE];
-	
-	//-------------------------------------------------------------------------
-	//	Proverochniy block dlya char to int i naoborot
-/*	int lol=0;
-	char try[4] = "0234";
-	forCharsToInt(try,&lol);
-
-	printf("The number : %d.\n",lol);
-
-	lol=23;
-	intToChar(try,lol);
-	printf("The string : %s.\n",try);
-*/
-	//-------------------------------------------------------------------------
-
-	printf("Blocks peer indoe %d\n",BLOCKS_PER_INODE);
+	//fsCreateFileSystem(FILENAME);
 	int h1=0,h2=0;
 	
 	int size=0;
@@ -44,14 +26,14 @@ int main()
 	
 	//	First Format
 	int res = 0;
-	res = fsFormat(fs);
+	//res = fsFormat(fs);
 
 
 	//	Create two test files
 	
-	h1 = fsCreateFile(fs,"1.txt");
+	h1 = fsOpenFile(fs,"1.txt");
 
-	h2 = fsCreateFile(fs,"2.txt");
+	h2 = fsOpenFile(fs,"2.txt");
 
 	fsCreateFile(fs,"3.txt");
 	fsCreateFile(fs,"4.txt");
@@ -64,7 +46,7 @@ int main()
 	fsCreateFile(fs,"11.txt");
 	fsCreateFile(fs,"12.txt");
 	fsCreateFile(fs,"13.txt");
-
+	fsCreateFile(fs,"14.txt");
 	printf("Created files FD1 %d - FD2 %d\n", h1,h2);
 
 //	char blockSizeData[BLOCK_SIZE] = "I` 001";
@@ -90,8 +72,8 @@ int main()
 	
 	memset(zeros,0xFF,sizeof(zeros));
 	res= fsReadFile(fs,h2,zeros,100);
-
-	printf("Readed from file \n%s \n", zeros);
+	if(res>0)
+		printf("Readed from file \n%s \n", zeros);
 
 
 	printf("Print \n");
