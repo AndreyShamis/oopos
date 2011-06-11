@@ -214,7 +214,7 @@ int fsFormat(fs_t *fs)
 		}
 
 	}
-	PrepareAllInodesOnMount(fs);
+	//PrepareAllInodesOnMount(fs);
 
 	return(0);
 
@@ -480,8 +480,10 @@ int findFileNode(fs_t *fs,char *fileName)
 	int coun =0;
 	int fileCounter = 0;
 	struct DirEntry tempDirEntry;
+
 	while(tempSize>0)
 	{
+		//printf("LA LA %d\n",tempSize);
 		for(coun = 0; coun < BLOCK_SIZE;coun++)
 		{
 			buffer[coun] = fileData[fileCounter*BLOCK_SIZE+coun];
@@ -496,7 +498,7 @@ int findFileNode(fs_t *fs,char *fileName)
 
 		 tempSize-=BLOCK_SIZE;
 	}
-
+	//printf("END LA\n");
 	return(-1);
 }
 //=============================================================================
@@ -512,6 +514,7 @@ int fsOpenFile(fs_t *fs,char *fileName)
 	int FD		= findNotUsedFD(fs);			//	Find free file table
 
 	//	Check if founded file by name and free file table
+	//printf("Inode found %d FD found %d\n",Inode,FD);
 	if(Inode >0 && FD >0 )
 	{
 		fs->fileTable[FD].inUse 		= 	1;		//	set used
@@ -573,10 +576,11 @@ int fsWriteFile(fs_t *fs,int fd,const char *buffer,const int size)
 	//{
 	//	return(-1);
 	//}
-	// if(fs->fileTable[fd].inUse != 1 || fs->inodeList[InodeID].inUse !=1)
-	//{
-	//	return(-1);
-	//}
+	if(fd <0 || fs->fileTable[fd].inUse != 1 || fs->inodeList[InodeID].inUse !=1 )
+	{
+		//printf("####We are here %d %d %d\n",fs->fileTable[fd].inUse,fs->inodeList[InodeID].inUse,fd  );
+		return(-1);
+	}
 	while(sizeCounter>0)
 	{
 		memset(tempBuf,'+',BLOCK_SIZE);
@@ -649,18 +653,11 @@ int fsWriteFile(fs_t *fs,int fd,const char *buffer,const int size)
 			write(fs->fd,tempBuf,tempSize);					//	Write data
 
 			fs->inodeList[InodeID].fileSize += tempSize;
-		//	if(fd)
-		//		printf ("2 Writed to file(tempSize)[%d] -String:[%s] - FIle size is [%d] \n",tempSize,tempBuf,fs->inodeList[InodeID].fileSize);
 		}
 		else if(need_b>=DOUBLE_START && need_b < BLOCKS_PER_INODE)
 		{
-
-			/*
-			 * 	Here is double block writing
-			 */
+			/* * 	Here is double block writing*/
 			//	Get id of block on second level
-		//	if(fd)
-			//	printf("\n Work with Double\n");
 			int SecendLevelID =(need_b-DOUBLE_START)/BLOCK_ADSRESS_SIZE ;
 			int SecendLevelNewIDBlock = 0;	//	if need
 
@@ -697,7 +694,6 @@ int fsWriteFile(fs_t *fs,int fd,const char *buffer,const int size)
 
 			forCharsToInt(address,&secondLVLentry);		//	Get address of second level block
 
-			//printf("2 Address %s Level ID- %d|||", address,secondLVLentry);
 			int offset_in2_lvl = (need_b - DOUBLE_START)%BLOCK_ADSRESS_SIZE ;
 
 			//	Allocating data block - Third levlel
@@ -731,15 +727,11 @@ int fsWriteFile(fs_t *fs,int fd,const char *buffer,const int size)
 
 			write(fs->fd,tempBuf,tempSize);
 			fs->inodeList[InodeID].fileSize += tempSize;
-			//if(fd)
-			//	printf ("3 Writed to file(tempSize)[%d] -String:[%s] - FIle size is [%d] \n",tempSize,tempBuf,fs->inodeList[InodeID].fileSize);
-
-
 		}
 		else
 		{
 
-			printf("You are here need_b %d\n",need_b);
+			printf("You cannot write any more\n");
 		}
 
 		sizeCounter -=tempSize;
@@ -809,6 +801,7 @@ int fsReadFileAll(fs_t *fs,int fd,char *buffer,int *readSize)
 	*readSize 		= 	0;				//	update returned value
 
 	//	Start reading off all data block by block
+	fs->fileTable[fd].fileOffset =0;
 	while(readed)						//	TODO was while 1 and readed =1
 	{
 		readed = 	fsReadFileBlock(fs,fd,tempBuffer);	//	read block
@@ -841,7 +834,11 @@ int fsReadFile(fs_t *fs,int fd,char *buffer,int readSize)
 	int readedAll = 0;						//	Size of readed in all
 	int offsetNeed = 0;						//	USed for copy string
 
-
+	if(fd <0 || fs->fileTable[fd].inUse != 1 || fs->inodeList[fs->fileTable[fd].inode].inUse !=1 )
+	{
+		//printf("####We are here %d %d %d\n",fs->fileTable[fd].inUse,fs->inodeList[InodeID].inUse,fd  );
+		return(-1);
+	}
 	//if(sizeof(buffer) > readSize)
 	//	return(-1);
 	//else
