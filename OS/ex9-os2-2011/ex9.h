@@ -161,6 +161,13 @@ int fsFormat(fs_t *fs);
 void privateWriteLog(fs_t *fs,const int errorID);
 
 
+void writeToBlock(fs_t *fs,const int blockID,char *buffer,const int offSet,const int size);
+//=============================================================================
+int getAddress(fs_t *fs,const int blockID,const int AdressSET);
+//=============================================================================
+void readBlockData(fs_t *fs,char *dataBuff,const int blockID);
+
+
 //=============================================================================
 /*
  *		Function for format file system
@@ -582,7 +589,35 @@ int fsCloseFile(fs_t *fs,int fileHandle)
 	}
 	return(-1);
 }
+//=============================================================================
+void writeToBlock(fs_t *fs,const int blockID,char *buffer,const int offSet,const int size)
+{
+	lseek(fs->fd,DATA_START+blockID*BLOCK_SIZE+offSet,SEEK_SET);
+	write(fs->fd,buffer,size);
+}
+//=============================================================================
+void readBlockData(fs_t *fs,char *dataBuff,const int blockID)
+{
+	lseek(fs->fd,DATA_START+blockID*BLOCK_SIZE,	SEEK_SET);
 
+	read(fs->fd,dataBuff,BLOCK_SIZE);				//	read data
+}
+//=============================================================================
+
+int getAddress(fs_t *fs,const int blockID,const int AdressSET)
+{
+
+	char address[BLOCK_ADSRESS_SIZE];				//	temp for address
+	int returnAdr = 0;
+	lseek(fs->fd,
+		DATA_START+blockID*BLOCK_SIZE+AdressSET*BLOCK_ADSRESS_SIZE,	SEEK_SET);
+
+	read(fs->fd,address,BLOCK_ADSRESS_SIZE);				//	read data
+	forCharsToInt(address,&returnAdr);				//	convert address to int
+
+
+	return(returnAdr);
+}
 //	BLOCK OF Write/READ
 //=============================================================================
 /*
@@ -604,13 +639,9 @@ int fsWriteFile(fs_t *fs,int fd,const char *buffer,const int size)
 	char address[BLOCK_ADSRESS_SIZE];	//	temp Address variable
 	char tempBuf[BLOCK_SIZE+1];			//	temp buffer variable
 
-	//if(fd == ROOT_DIRECTORY_HANDLE && size != 16)
-	//{
-	//	return(-1);
-	//}
+
 	if(fd <0 || fs->fileTable[fd].inUse != 1 || fs->inodeList[InodeID].inUse !=1 )
 	{
-		//printf("####We are here %d %d %d\n",fs->fileTable[fd].inUse,fs->inodeList[InodeID].inUse,fd  );
 		return(-1);
 	}
 	while(sizeCounter>0)
@@ -638,17 +669,12 @@ int fsWriteFile(fs_t *fs,int fd,const char *buffer,const int size)
 			if(writeOffset == 0)
 				fs->inodeList[InodeID].directBlocks[need_b]=AllocateBlock(fs);
 
-			lseek(fs->fd,DATA_START+
-					fs->inodeList[InodeID].directBlocks[need_b]*BLOCK_SIZE+
-													writeOffset,SEEK_SET);
-			write(fs->fd,tempBuf,tempSize);
-
+			writeToBlock(fs,fs->inodeList[InodeID].directBlocks[need_b],tempBuf,writeOffset,tempSize);
 			fs->inodeList[InodeID].fileSize += tempSize;
 
 		}
 		else if(need_b >= DIRECT_ENTRIES && need_b < DOUBLE_START)
 		{		/* 	Here is single block writing*/
-
 			int BlockID = 0;
 
 			//	if the block for single enties wasnt allocated, allocate him
@@ -659,31 +685,13 @@ int fsWriteFile(fs_t *fs,int fd,const char *buffer,const int size)
 			{
 				BlockID = AllocateBlock(fs);
 				intToChar(address,BlockID);
-
-				//	Lseek for write addres
-				lseek(fs->fd,DATA_START+
-						fs->inodeList[InodeID].singleIndirectBlocks[0]*BLOCK_SIZE +
-						(need_b-DIRECT_ENTRIES)*BLOCK_ADSRESS_SIZE,
-						SEEK_SET);
-
-				write(fs->fd,address,BLOCK_ADSRESS_SIZE);	//	write adress
+				writeToBlock(fs,fs->inodeList[InodeID].singleIndirectBlocks[0],address,(need_b-DIRECT_ENTRIES)*BLOCK_ADSRESS_SIZE,BLOCK_ADSRESS_SIZE);
 			}
 			else
 			{
-				lseek(fs->fd,DATA_START+
-						fs->inodeList[InodeID].singleIndirectBlocks[0]*BLOCK_SIZE +
-						(need_b-DIRECT_ENTRIES)*BLOCK_ADSRESS_SIZE,
-						SEEK_SET);
-
-				read(fs->fd,address,BLOCK_ADSRESS_SIZE);	//	write adress
-				forCharsToInt(address,&BlockID);
-
+				BlockID = getAddress(fs,fs->inodeList[InodeID].singleIndirectBlocks[0],(need_b-DIRECT_ENTRIES)*BLOCK_ADSRESS_SIZE);
 			}
-
-			//	Lseek for write data
-			lseek(fs->fd,DATA_START+ BlockID*BLOCK_SIZE + writeOffset, SEEK_SET);
-			write(fs->fd,tempBuf,tempSize);					//	Write data
-
+			writeToBlock(fs,BlockID,tempBuf,writeOffset,tempSize);
 			fs->inodeList[InodeID].fileSize += tempSize;
 		}
 		else if(need_b>=DOUBLE_START && need_b < BLOCKS_PER_INODE)
@@ -702,29 +710,15 @@ int fsWriteFile(fs_t *fs,int fd,const char *buffer,const int size)
 			if( (need_b - (DOUBLE_START))%BLOCK_ADSRESS_SIZE ==0 && writeOffset == 0)
 			{
 				SecendLevelNewIDBlock = AllocateBlock(fs);
-
 				intToChar(address,SecendLevelNewIDBlock);
-				//	Lseek for write addres
-				lseek(fs->fd,DATA_START+
-						fs->inodeList[InodeID].doubleIndirectBlocks[0]*BLOCK_SIZE +
-						SecendLevelID*BLOCK_ADSRESS_SIZE,
-						SEEK_SET);
-				write(fs->fd,address,BLOCK_ADSRESS_SIZE);	//	write adress
-
+				writeToBlock(fs,fs->inodeList[InodeID].doubleIndirectBlocks[0],
+			address,SecendLevelID*BLOCK_ADSRESS_SIZE,BLOCK_ADSRESS_SIZE);
 			}
-
-			//	Read adress from first level
-			lseek(fs->fd,DATA_START+
-					fs->inodeList[InodeID].doubleIndirectBlocks[0]*BLOCK_SIZE +
-					SecendLevelID*BLOCK_ADSRESS_SIZE,
-					SEEK_SET);
 
 			int secondLVLentry = 0;
 
-			read(fs->fd,address,BLOCK_ADSRESS_SIZE);
 			//	Get address of second level block
-			forCharsToInt(address,&secondLVLentry);
-
+			secondLVLentry = getAddress(fs,fs->inodeList[InodeID].doubleIndirectBlocks[0],SecendLevelID);
 			int offset_in2_lvl = (need_b - DOUBLE_START)%BLOCK_ADSRESS_SIZE ;
 
 			//	Allocating data block - Third levlel
@@ -732,30 +726,17 @@ int fsWriteFile(fs_t *fs,int fd,const char *buffer,const int size)
 			if(writeOffset == 0)
 			{
 				newBlcokID = AllocateBlock(fs);
-
 				intToChar(address,newBlcokID);
+				writeToBlock(fs,secondLVLentry,address,
+			offset_in2_lvl*BLOCK_ADSRESS_SIZE,BLOCK_ADSRESS_SIZE);
 
-				lseek(fs->fd,DATA_START+
-					secondLVLentry*BLOCK_SIZE +
-					offset_in2_lvl*BLOCK_ADSRESS_SIZE,
-					SEEK_SET);
-				write(fs->fd,address,BLOCK_ADSRESS_SIZE);
 			}
 			else
 			{
-				lseek(fs->fd,DATA_START+
-					secondLVLentry*BLOCK_SIZE +
-					offset_in2_lvl*BLOCK_ADSRESS_SIZE,
-					SEEK_SET);
-				read(fs->fd,address,BLOCK_ADSRESS_SIZE);
-				forCharsToInt(address,&newBlcokID);
+				newBlcokID = getAddress(fs,secondLVLentry,offset_in2_lvl);
 			}
 
-			lseek(fs->fd,DATA_START+
-					newBlcokID*BLOCK_SIZE + writeOffset ,
-					SEEK_SET);
-
-			write(fs->fd,tempBuf,tempSize);
+			writeToBlock(fs,newBlcokID,tempBuf,writeOffset,tempSize);
 			fs->inodeList[InodeID].fileSize += tempSize;
 		}
 		else
@@ -838,8 +819,7 @@ int fsReadFileAll(fs_t *fs,int fd,char *buffer,int *readSize)
 		fs->fileTable[fd].fileOffset += readed;			//	update offset
 
 		*readSize +=readed;				//	update returned variable
-//		if(readed == 0)					//	check if readed something
-//			break;						//	if no exit
+
 		//	Copy readed data from tempBuffer
 		for(coun = 0 ; coun < readed;coun++)
 			buffer[*readSize - BLOCK_SIZE+coun] = tempBuffer[coun];
@@ -867,19 +847,15 @@ int fsReadFile(fs_t *fs,int fd,char *buffer,int readSize)
 
 	if(fd <0 || fs->fileTable[fd].inUse != 1 || fs->inodeList[inode].inUse !=1)
 	{
-		//printf("####We are here %d %d %d\n",fs->fileTable[fd].inUse,fs->inodeList[InodeID].inUse,fd  );
 		return(-1);
 	}
-	//if(sizeof(buffer) > readSize)
-	//	return(-1);
-	//else
+
 
 	memset(buffer,0xFF,sizeof(buffer)*sizeof(char));//	inuse string format
 
 	while(readedAll<=readSize &&
 			fs->inodeList[inode].fileSize >= fs->fileTable[fd].fileOffset)
 	{
-		//printf("QQQQQQQQQQQQQq %d\n",readSize);
 		readed = fsReadFileBlock(fs,fd,tempBuffer);	//	Read block
 		readedAll +=readed;							//	Update readed size
 
@@ -906,42 +882,13 @@ int fsReadFile(fs_t *fs,int fd,char *buffer,int readSize)
 			}
 
 		}
-//		if(readedAll >= readSize)
-//		{
-//			readedAll == readSize;
-//			break;
-
-//		}
-		//printf("AAAAAAAAAAAAAAAAAAAAAAAAASsds %d\n",readedAll);
 	}
 
 	buffer[readSize] = '\0';				//	but backslashzero
 
 	return(readedAll);						//	return readed bytes
 }
-//=============================================================================
-void readBlockData(fs_t *fs,char *dataBuff,const int blockID)
-{
-	lseek(fs->fd,DATA_START+blockID*BLOCK_SIZE,	SEEK_SET);
 
-	read(fs->fd,dataBuff,BLOCK_SIZE);				//	read data
-}
-//=============================================================================
-
-int getAddress(fs_t *fs,const int blockID,const int AdressSET)
-{
-
-	char address[BLOCK_ADSRESS_SIZE];				//	temp for address
-	int returnAdr = 0;
-	lseek(fs->fd,
-		DATA_START+blockID*BLOCK_SIZE+AdressSET*BLOCK_ADSRESS_SIZE,	SEEK_SET);
-
-	read(fs->fd,address,BLOCK_ADSRESS_SIZE);				//	read data
-	forCharsToInt(address,&returnAdr);				//	convert address to int
-
-
-	return(returnAdr);
-}
 //=============================================================================
 /*
  * 		Function for reading only one block each call
@@ -957,7 +904,6 @@ int fsReadFileBlock(fs_t *fs,int fd,char *buffer)
 
 	int InodeID 	= 	fs->fileTable[fd].inode;	//	Inode of block
 	int need_b 		=	fs->fileTable[fd].fileOffset/BLOCK_SIZE;//Block need
-	char address[BLOCK_ADSRESS_SIZE];				//	temp for address
 	int adrINT 		= 	0;							//	variable see next
 
 	//	Check if we over the file size trying to read
@@ -973,13 +919,14 @@ int fsReadFileBlock(fs_t *fs,int fd,char *buffer)
 	{
 		/* Here is direct reading from block */
 		readBlockData(fs,buffer,fs->inodeList[InodeID].directBlocks[need_b]);
+
 		return(BLOCK_SIZE);							//	retunr readed
 	}
 	else if(need_b >= DIRECT_ENTRIES && need_b < DOUBLE_START)
 	{
 		/* 	Here is single block reading*/
-		//	Lseek for write addres
-		adrINT = getAddress(fs,fs->inodeList[InodeID].singleIndirectBlocks[0],(need_b-DIRECT_ENTRIES));
+		adrINT = getAddress(fs,fs->inodeList[InodeID].singleIndirectBlocks[0],
+				(need_b-DIRECT_ENTRIES));
 		readBlockData(fs,buffer,adrINT);
 		return(BLOCK_SIZE);							//	return readed
 	}
@@ -987,19 +934,18 @@ int fsReadFileBlock(fs_t *fs,int fd,char *buffer)
 	{
 		/* 	Here is double block reading*/
 		//	Get id of block on second level
-		int SecendLevelID = (need_b - DOUBLE_START)	/BLOCK_ADSRESS_SIZE ;
-		int secondLVLentry = 0;			//	block on second level
-		int offset_in2_lvl = 0;			//	offset in second level block
+		int AddressSET = (need_b - DOUBLE_START)	/BLOCK_ADSRESS_SIZE ;
 
-		secondLVLentry = getAddress(fs,fs->inodeList[InodeID].doubleIndirectBlocks[0],SecendLevelID);
-		//	calculate offset in side of first level block
-		offset_in2_lvl = (need_b -DOUBLE_START)%BLOCK_ADSRESS_SIZE ;
-		adrINT = getAddress(fs,secondLVLentry,offset_in2_lvl);
+		adrINT = getAddress(fs,fs->inodeList[InodeID].doubleIndirectBlocks[0],
+				AddressSET);
+		//	calculate offset in side of second level block
+		AddressSET = (need_b -DOUBLE_START)%BLOCK_ADSRESS_SIZE ;
+		adrINT = getAddress(fs,adrINT,AddressSET);
 		readBlockData(fs,buffer,adrINT);
 
 		return(BLOCK_SIZE);							//	return readed
 	}
-	printf("fsgsgdfgsdfgsfgsdfgsdfg %d\n",need_b);
+
 	return(-1);										//	else
 }
 
