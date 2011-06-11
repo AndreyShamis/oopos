@@ -1,4 +1,4 @@
-#define MAX_ERRORS			10		//	number of last errors saved in fs_struc
+#define MAX_ERRORS			40		//	number of last errors saved in fs_struc
 
 #define ERR_FILE_FULL 		1200	//	if tryed read/write more than can
 #define ERR_READ_CLOSED		1201	//	if read closed file
