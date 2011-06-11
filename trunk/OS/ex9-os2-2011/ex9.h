@@ -972,11 +972,6 @@ int fsReadFileBlock(fs_t *fs,int fd,char *buffer)
 	if(need_b < DIRECT_ENTRIES)
 	{
 		/* Here is direct reading from block */
-	//	lseek(fs->fd,DATA_START+
-	//			fs->inodeList[InodeID].directBlocks[need_b]*BLOCK_SIZE,
-	//			SEEK_SET);
-
-	//	read(fs->fd,buffer,BLOCK_SIZE);				//	read data
 		readBlockData(fs,buffer,fs->inodeList[InodeID].directBlocks[need_b]);
 		return(BLOCK_SIZE);							//	retunr readed
 	}
@@ -984,21 +979,8 @@ int fsReadFileBlock(fs_t *fs,int fd,char *buffer)
 	{
 		/* 	Here is single block reading*/
 		//	Lseek for write addres
-
-		//lseek(fs->fd,DATA_START+
-		//		fs->inodeList[InodeID].singleIndirectBlocks[0]*BLOCK_SIZE +
-		//		(need_b-DIRECT_ENTRIES)*BLOCK_ADSRESS_SIZE,
-		//		SEEK_SET);
-
-		//read(fs->fd,address,BLOCK_ADSRESS_SIZE);	//	read adress
-
-		//	Lseek for write data
-		//forCharsToInt(address,&adrINT);				//	convert address to int
 		adrINT = getAddress(fs,fs->inodeList[InodeID].singleIndirectBlocks[0],(need_b-DIRECT_ENTRIES));
 		readBlockData(fs,buffer,adrINT);
-		//lseek(fs->fd,DATA_START+ adrINT*BLOCK_SIZE, SEEK_SET);
-		//read(fs->fd,buffer,BLOCK_SIZE);				//	read data
-
 		return(BLOCK_SIZE);							//	return readed
 	}
 	else if(need_b>=DOUBLE_START && need_b < BLOCKS_PER_INODE)
@@ -1009,31 +991,11 @@ int fsReadFileBlock(fs_t *fs,int fd,char *buffer)
 		int secondLVLentry = 0;			//	block on second level
 		int offset_in2_lvl = 0;			//	offset in second level block
 
-		//lseek(fs->fd,DATA_START+
-		//		fs->inodeList[InodeID].doubleIndirectBlocks[0]*BLOCK_SIZE +
-		//								SecendLevelID*BLOCK_ADSRESS_SIZE,
-		//														SEEK_SET);
-
-		//read(fs->fd,address,BLOCK_ADSRESS_SIZE);	//	read address
-		//forCharsToInt(address,&secondLVLentry);		//	convert address
-
 		secondLVLentry = getAddress(fs,fs->inodeList[InodeID].doubleIndirectBlocks[0],SecendLevelID);
-		//readBlockData(fs,buffer,adrINT);
-		//readBlockData(fs,buffer,adrINT);
-
 		//	calculate offset in side of first level block
 		offset_in2_lvl = (need_b -DOUBLE_START)%BLOCK_ADSRESS_SIZE ;
-		//	do lseek to right postition
-		//lseek(fs->fd,DATA_START+ secondLVLentry*BLOCK_SIZE +
-		//						offset_in2_lvl*BLOCK_ADSRESS_SIZE,SEEK_SET);
-		//read(fs->fd,address,BLOCK_ADSRESS_SIZE);	//	read sdress
-		//forCharsToInt(address,&adrINT);				//	convert address
-
 		adrINT = getAddress(fs,secondLVLentry,offset_in2_lvl);
-		//readBlockData(fs,buffer,adrINT);
 		readBlockData(fs,buffer,adrINT);
-		//lseek(fs->fd,DATA_START+adrINT*BLOCK_SIZE ,	SEEK_SET);
-		//read(fs->fd,buffer,BLOCK_SIZE);				//	read DATA
 
 		return(BLOCK_SIZE);							//	return readed
 	}
