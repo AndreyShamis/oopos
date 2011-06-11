@@ -20,6 +20,9 @@ struct FileDescriptor
 	char 	filename[MAX_FILE_NAME];
 	int 	inode;
 	int		fileOffset;
+	int 	lastErrorID;
+	int		read;
+	int		write;
 };
 
 struct fs
@@ -37,5 +40,7 @@ struct fs
 
 	char 	*source;		//	maped array for Bitmap and Indoe Section
 	size_t 	filesize;		//	size of mapped file
+	int 	lastErrors[MAX_ERRORS];	//
+	int		lastErrEntry;
 
 };

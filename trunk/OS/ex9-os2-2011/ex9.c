@@ -26,14 +26,14 @@ int main()
 	
 	//	First Format
 	int res = 0;
-	//res = fsFormat(fs);
+	res = fsFormat(fs);
 
 
 	//	Create two test files
 	
-	h1 = fsOpenFile(fs,"1.txt");
+	h1 = fsCreateFile(fs,"1.txt");
 
-	h2 = fsOpenFile(fs,"2.txt");
+	h2 = fsCreateFile(fs,"2.txt");
 
 	fsCreateFile(fs,"3.txt");
 	fsCreateFile(fs,"4.txt");
@@ -47,6 +47,17 @@ int main()
 	fsCreateFile(fs,"12.txt");
 	fsCreateFile(fs,"13.txt");
 	fsCreateFile(fs,"14.txt");
+
+	fsCreateFile(fs,"16.txt");
+	fsCreateFile(fs,"17.txt");
+	fsCreateFile(fs,"18.txt");
+	fsCreateFile(fs,"19.txt");
+	fsCreateFile(fs,"110.txt");
+	fsCreateFile(fs,"111.txt");
+	fsCreateFile(fs,"112.txt");
+	fsCreateFile(fs,"113.txt");
+	fsCreateFile(fs,"114.txt");
+	fsCreateFile(fs,"1114.txt");
 	printf("Created files FD1 %d - FD2 %d\n", h1,h2);
 
 //	char blockSizeData[BLOCK_SIZE] = "I` 001";
@@ -94,7 +105,7 @@ int main()
 	char input2[80] = "Andrey Shamis Was here , Whats Up Gaus? Hello! Bye...\nI`m HERE :-)";
 	fsWriteFile(fs,h1,input2,66);
 	char input3[400] = "Google has already made some tough moves to tackle fragmentation,\nbut it's clearly still wary of the problem.\nIt's just tweaked the Android Market web store to show users which apps are compatible with which of their gadgets. ";
-	fsWriteFile(fs,h1,input3,180);
+	fsWriteFile(fs,h1,input3,110);
 	/*
 	char input1[81] = "Android Market web store now checks which apps are compatible with your devices";
 	fsWriteFile(fs,h1,input1,80);
@@ -112,7 +123,7 @@ int main()
 	//printf("Print dir\n");
 	fsPrintRootDir(fs);
 	//unmount
-
+	printLog(fs);
 	res = fsUnMount(fs);
 
 	printf("Bye Bye\n");
