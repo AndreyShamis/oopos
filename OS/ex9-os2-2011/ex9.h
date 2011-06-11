@@ -240,13 +240,6 @@ void PrepareAllInodesOnMount(fs_t *fs)
 
 
 	int fsReadFileBlock(fs_t *fs,int fd,char *buffer);
-	/*for(coun=0;coun<NR_INODES;coun++)
-	{
-		fs->inodeList[coun].inUse 		= 0;
-		fs->inodeList[coun].fileSize 	= 0;
-
-
-	}*/
 
 	int temp=0;
 	char buffer[sizeof(struct FSInode)];
@@ -275,29 +268,19 @@ void PrepareAllInodesOnMount(fs_t *fs)
  */
 void SaveToFS_BitMap_INODES(fs_t *fs)
 {
-	int coun = 0;
-	char temp = '\0';
+	int coun	= 	0;
+	int tempI	=	0;
+	char buffer[sizeof(struct FSInode)];
 
 	for(coun=0;coun<NR_BLOCKS;coun++)
-	{
-		temp = fs->Bitmap[coun] + '0';
-		//printf("Save char: {%c}.Digit:{%d}.\n",temp,temp);
-		fs->source[coun]= temp;
-
-	}
-
-
-	int tempI=0;
-	char buffer[sizeof(struct FSInode)];
+		fs->source[coun]= fs->Bitmap[coun] + '0';
 
 	for(coun = 0 ; coun < NR_INODES;coun++)
 	{
 		memcpy(buffer,&fs->inodeList[coun],NODE_SIZE);
 
 		for(tempI = 0;tempI < NODE_SIZE;tempI++)
-		{
 			fs->source[NR_BLOCKS+coun*NODE_SIZE + tempI] = buffer[tempI];
-		}
 
 	}
 }
@@ -366,7 +349,7 @@ fs_t *fsMount()
 
 	return(ret);
 }
-
+//=============================================================================
 void printLog(fs_t *fs)
 {
 	int coun = 0;
@@ -380,9 +363,8 @@ void printLog(fs_t *fs)
 void privateWriteLog(fs_t *fs,const int errorID)
 {
 	if(fs->lastErrEntry == MAX_ERRORS)
-	{
+		fs->lastErrEntry = 0;
 
-	}
 	fs->lastErrors[fs->lastErrEntry] = errorID;
 	fs->lastErrEntry++;
 
@@ -988,15 +970,6 @@ int fsCreateFileSystem(char *filename)
 
 	return(0);
 }
-
-
-
-
-
-
-
-
-
 
 //=============================================================================
 /*

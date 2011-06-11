@@ -57,7 +57,7 @@ int main()
 	fsCreateFile(fs,"112.txt");
 	fsCreateFile(fs,"113.txt");
 	fsCreateFile(fs,"114.txt");
-	fsCreateFile(fs,"1114.txt");
+	fsCreateFile(fs,"11114.txt");
 	printf("Created files FD1 %d - FD2 %d\n", h1,h2);
 
 //	char blockSizeData[BLOCK_SIZE] = "I` 001";
@@ -106,16 +106,11 @@ int main()
 	fsWriteFile(fs,h1,input2,66);
 	char input3[400] = "Google has already made some tough moves to tackle fragmentation,\nbut it's clearly still wary of the problem.\nIt's just tweaked the Android Market web store to show users which apps are compatible with which of their gadgets. ";
 	fsWriteFile(fs,h1,input3,110);
-	/*
-	char input1[81] = "Android Market web store now checks which apps are compatible with your devices";
-	fsWriteFile(fs,h1,input1,80);
-	char input2[80] = "Andrey Shamis Was here , Whats Up Gaus? Hello! Bye... I`m HERE :-)";
-	fsWriteFile(fs,h1,input2,50);
-*/
+
 	char zeros2[250];
 
 	memset(zeros,0xFF,sizeof(zeros2));
-	res= fsReadFile(fs,h1,zeros2,249);
+	res= fsReadFile(fs,h1,zeros2,149);
 
 	printf("Readed from file \n%s \n", zeros2);
 	//	Print staticstic
