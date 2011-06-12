@@ -6,10 +6,13 @@
 class Ball : public Drawable
 {
 public:
-	Ball(const float &X,const float &Y, int natuX, int natuY);
+	//virtual Ball(const float &X,const float &Y, int natuX, int natuY)=0;
 	bool operator==(const Ball &other)const;
 	void Draw();
-	Ball(){;};
+	Ball()
+	{
+		_selected = true;
+	}
 	//Ball(const float &X,const float &Y, int natuX, int natuY);
 	//void Draw();
 

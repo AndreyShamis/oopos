@@ -9,7 +9,7 @@
 // main function
 int main(int argc, char** argv){
 
-	GameController::getInst()->LoadGame();
+	GameController::getInst()->idle();
 
 	return 0;
 }

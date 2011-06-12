@@ -5,7 +5,7 @@ class Floor : public Drawable
 {
 public:
 	//static std::vector <Sprite> _sprite;
-	Floor(const float &X,const float &Y, int natuX, int natuY);
+	Floor();
 	//Floor(){1,1,-1,-1;};
 	void setFloorType(Types type);
 	bool getBalled()const;

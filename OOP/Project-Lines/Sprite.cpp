@@ -36,7 +36,7 @@ Sprite::Sprite(char* filename) {
 	}
 	else
 	{
-		cout << "File loaded\n";
+		cout << "+";
 	}
 		//get from the file width and hieght of image
 	imageFile >> _width >> _height;
