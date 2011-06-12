@@ -48,7 +48,7 @@ public:
 	void StartTurnOff()
 	{
 		_turnOff = true;
-		_alpha = 200;
+		_alpha = 250;
 	}
 
 private:

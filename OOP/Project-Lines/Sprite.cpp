@@ -58,9 +58,13 @@ Sprite::Sprite(char* filename) {
 void Sprite::Draw(const float &cordX, float &cordY){
 	if(_turnOff &&_alpha >0)
 	{
-		_alpha-= 30;
+		_alpha-= 70;
 	}
-
+	
+	if(_turnOff && _alpha < 0)
+	{
+		_alpha = 0;
+	}
 	//glEnable(GL_ALPHA_TEST);
 	//glEnable(GL_ALPHA);
 
