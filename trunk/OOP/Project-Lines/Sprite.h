@@ -45,6 +45,12 @@ public:
 		_selected = false;
 	}
 
+	void StartTurnOff()
+	{
+		_turnOff = true;
+		_alpha = 1;
+	}
+
 private:
 	 //GraficLoader _temp;
 	//static 
@@ -55,6 +61,8 @@ private:
 		int _height;		//	height of image
 	//static 
 		int _width;			//	width of image
+		float _alpha;
+		bool _turnOff;
 
 	
 };
