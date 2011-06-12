@@ -24,13 +24,6 @@ void Ball::Draw()
 		_sprites[0].setSelected();
 
 	}
-	if(_mustDie)
-	{
-		_sprites[0].unSelect();
-		_selected = false;
-		_sprites[0].StartTurnOff();
-	}
-
 	glEnable(GL_BLEND);									//	Alpha manipulation
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);	//	Alpha manipulation
 	_sprites[0].Draw(_cordX+b_offset*3, b_cord_Y);

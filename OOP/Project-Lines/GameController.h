@@ -35,7 +35,7 @@ using namespace std;
 
 #define _POINT_CHAR_SIZE 10
 
-#define _BALLS_MAX_SIZE_PER_PUTING 7
+#define _BALLS_MAX_SIZE_PER_PUTING 3
 #define _POS_BALL_X_START 0.8225
 #define _POS_BALL_Y_START 0.183
 #define _POS_BALL_Y_OFFSET 0.1

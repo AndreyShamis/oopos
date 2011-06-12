@@ -41,6 +41,7 @@ public:
 	void mustDie()
 	{
 		_mustDie = true;
+		_sprites[0].StartTurnOff();
 	}
 protected:
 

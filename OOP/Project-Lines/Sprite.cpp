@@ -56,10 +56,11 @@ Sprite::Sprite(char* filename) {
 //=============================================================================
 //	Draw function
 void Sprite::Draw(const float &cordX, float &cordY){
-	if(_turnOff &&_alpha < 250 )
+	if(_turnOff &&_alpha >0)
 	{
-		_alpha+= 0.00000001;
+		_alpha-= 30;
 	}
+
 	//glEnable(GL_ALPHA_TEST);
 	//glEnable(GL_ALPHA);
 
@@ -74,11 +75,11 @@ void Sprite::Draw(const float &cordX, float &cordY){
 			if ( _image[i][j]._a >= 1)
 			{
 				if(_selected && !_turnOff)
-					glColor4ub(_image[i][j]._r, _image[i][j]._g, _image[i][j]._b, 50);
+					glColor4ub(_image[i][j]._r, _image[i][j]._g, _image[i][j]._b, 120);
 				else if(!_turnOff)
 					glColor4ub(_image[i][j]._r, _image[i][j]._g, _image[i][j]._b, _image[i][j]._a);
 				else
-					glColor4ub(_image[i][j]._r, _image[i][j]._g, _image[i][j]._b,(int)_alpha);
+					glColor4ub(_image[i][j]._r, _image[i][j]._g, _image[i][j]._b,_alpha);
 
 				glVertex2f((float)x*(POINT_SIZE/WINDOW_WIDTH) + cordX ,	((float)y*(POINT_SIZE/WINDOW_HEIGHT) + cordY));
 			}
