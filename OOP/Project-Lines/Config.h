@@ -56,7 +56,7 @@ struct RGBA{
 
 enum Types { Simple, Selected };
 
-enum Direction { Row, Column };
+enum Direction { Row, Column, BackRow, BackColumn };
 
 enum SoundsName { Appear, Disappear, double_bonus, error, explosion ,BackGround};
 

@@ -27,6 +27,9 @@ using namespace std;
 
 class GameController
 {
+
+//friend 
+
 public:
 
 	static GameController *getInst();	
@@ -51,16 +54,22 @@ private:
 
 	static void BumBum();
 	static void checkRowsAndCols();
+	static void checkDiagonals();
+	static void updDiagonLftDownExis(const short int &i, Direction direc);
+
+
 	static void updateLineExistence(const short int &i,
-									const short int &j,
 									short int &matchCounter,
-									short int &start, short int &end,
-									Direction direc);
+									short int &start,Direction direc);
+
 	static void updateBallEraseBoard(const short int &location,
 									 const short int &matchCounter,
 									 const short int &start,
-									 const short int &end,
 									 Direction direc);
+
+
+	static bool ballsComp(map<vector<int>,Ball>::const_iterator &b1,
+						  map<vector<int>,Ball>::const_iterator &b2);
 
 
 
@@ -75,7 +84,7 @@ private:
 	static vector <Ball> _newBalls;
 	static vector <BallColor> _AllColors;
 	static FMOD::Sound* _sounds[MAX_SOUNDS];
-	static void SelectSimplePath();	
+	
 	static unsigned int _StartCell;
 	static unsigned int _EndCell;
 	static FMOD::System* _system;		// Sound system
@@ -96,7 +105,9 @@ private:
 	static void FloorDoAllSimple();
 
 	
-
+	static int PrevFounded;
+	static int GamePoints;
 	static unsigned int _PostRedisplay;
 
+	static void glutPrint(float x, float y, char* text, float r, float g, float b, float a);
 };

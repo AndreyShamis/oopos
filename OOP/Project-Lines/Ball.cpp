@@ -39,13 +39,12 @@ void Ball::Draw()
 
 bool Ball::operator==(const Ball &other)const
 {
-
-	//cout<< this->_colors[0]<<"\n";
-	for(vector<BallColor>::const_iterator itThis = _colors.begin();
-		itThis != _colors.end(); ++itThis)
+	vector<BallColor>::const_iterator itThis = _colors.begin(),
+									  itOther = other._colors.begin();
+				
+	for(;itThis != _colors.end(); ++itThis)
 	{
-		for(vector<BallColor>::const_iterator itOther = other._colors.begin();
-			itOther != other._colors.end(); ++itOther)
+		for(;itOther != other._colors.end(); ++itOther)
 		{
 			if(*itThis == *itOther)
 			{
