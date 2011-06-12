@@ -35,7 +35,7 @@ using namespace std;
 
 #define _POINT_CHAR_SIZE 10
 
-#define _BALLS_MAX_SIZE_PER_PUTING 3
+#define _BALLS_MAX_SIZE_PER_PUTING 7
 #define _POS_BALL_X_START 0.8225
 #define _POS_BALL_Y_START 0.183
 #define _POS_BALL_Y_OFFSET 0.1
@@ -114,6 +114,7 @@ private:
 	static GameController	*_instance;		//	Singleton
 	static Board			gameBoard;		//	Game board Background
 	static vector <Ball>	_newBalls;		//	ProGame vector of balls
+	static vector <Ball>	_postBalls;		//	PostGame vector of balls
 	static vector <BallColor> _AllColors;	//	Color of balls
 	static FMOD::Sound*		_sounds[MAX_SOUNDS];	//	Saund variable
 	static unsigned int		_StartCell;		//	ID of ball for simple path

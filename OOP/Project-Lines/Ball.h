@@ -12,6 +12,7 @@ public:
 	Ball()
 	{
 		_selected = true;
+		_mustDie = false;
 	}
 	//Ball(const float &X,const float &Y, int natuX, int natuY);
 	//void Draw();
@@ -36,10 +37,16 @@ public:
 	{
 		_selected = false;
 	}
+
+	void mustDie()
+	{
+		_mustDie = true;
+	}
 protected:
 
 
 	bool _selected;
+	bool _mustDie;
 	vector <BallColor> _colors;
 
 };
