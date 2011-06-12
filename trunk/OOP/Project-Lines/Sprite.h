@@ -48,7 +48,7 @@ public:
 	void StartTurnOff()
 	{
 		_turnOff = true;
-		_alpha = 1;
+		_alpha = 200;
 	}
 
 private:
@@ -61,7 +61,7 @@ private:
 		int _height;		//	height of image
 	//static 
 		int _width;			//	width of image
-		float _alpha;
+		short int _alpha;
 		bool _turnOff;
 
 	
