@@ -1,5 +1,5 @@
 #include "Ball.h"
-
+/*
 
 Ball::Ball(const float &X,const float &Y, int natuX, int natuY)
 {
@@ -7,9 +7,10 @@ Ball::Ball(const float &X,const float &Y, int natuX, int natuY)
 	_cordY = Y;
 	_natuX = natuX;
 	_natuY = natuY;
-	_selected = false;
+	
+	cout << "Ball constructor\n";
 }
-
+*/
 Ball::~Ball(void)
 {
 }

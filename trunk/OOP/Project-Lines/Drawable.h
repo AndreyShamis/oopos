@@ -7,6 +7,7 @@ class Drawable
 
 public:
 
+	virtual void Draw()=0;
 	bool operator==(const Drawable &Other)const
 	{
 		return(Other.getID() == this->getID());
@@ -14,6 +15,16 @@ public:
 	float getX()const
 	{
 		return(_cordX);
+	}
+	void setCord(float X,float Y)
+	{
+		_cordX = X;
+		_cordY = Y;
+	}
+	void setPosition(int X,int Y)
+	{
+		_natuX = X;
+		_natuY = Y;
 	}
 	void setX(float X)
 	{
