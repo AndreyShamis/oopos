@@ -58,7 +58,7 @@ Sprite::Sprite(char* filename) {
 void Sprite::Draw(const float &cordX, float &cordY){
 	if(_turnOff &&_alpha >0)
 	{
-		_alpha-= 70;
+		_alpha-= 50;
 	}
 	
 	if(_turnOff && _alpha < 0)
