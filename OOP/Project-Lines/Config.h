@@ -24,11 +24,14 @@
 
 //game bard
 #define GAME_BOARD			"game_board_rgba.txt"
+#define GAME_RULES			"rules_rgba.txt"
+#define GAME_OVER			"game_over_rgba.txt"
+
 
 
 //floor
 #define FLOOR				"floor_rgba.txt"
-#define S_FLOOR				"selected_floor_rgba.txt"
+#define S_FLOOR				"selected_floor2_rgba.txt"
 
 
 #define WINDOW_WIDTH		577
@@ -41,25 +44,23 @@
 
 #define MAX_SOUNDS			7
 
-
-
-
 struct Vertex
 {
 	float _x;
 	float _y;
 };
 
-struct RGBA{
+struct RGBA{					// for glut
 	short int  _r, _g, _b, _a;
 };
 
-enum Types { Simple, Selected };
+enum Types { Simple, Selected };		// floor type
 
-enum Direction { Row, Column, BackRow, BackColumn };
+enum Direction { Row, Column, BackRow, BackColumn }; // direction to find erase
 
-enum SoundsName { Appear, Disappear, double_bonus, error, explosion ,BackGround};
+enum SoundsName { Appear, Disappear, double_bonus, error, explosion,
+				  BackGround};
 
-enum BallColor { Green, White, Black, Yellow, Orange, Blue, Red , Mixed , Bomb, 
+enum BallColor { Green, White, Black, Yellow, Orange, Blue, Red , Mixed , Bomb,
 				 OrangeRed, WhiteBlue, greenYellow };
 
