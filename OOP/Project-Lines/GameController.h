@@ -27,7 +27,7 @@ using namespace std;
 
 
 
-ICON_SMALL IDR_PROJECTLINES1;    
+//IDR_PROJECTLINES1;    
 
 #define _EASY_REDISPLAY 10000
 #define _FAST_REDISPLAY 100
@@ -104,6 +104,7 @@ private:
 	static void checkRowsAndCols();
 	static void checkDiagonals();
 	static void FloorDoAllSimple();
+	static void BumAroundBomb(const short int &_x,const short int &_y);
 	static void updDiagonLftDownExis(const short int &i, Direction direc);
 	static void updateLineExistence(const short int &i,
 									short int &matchCounter,
