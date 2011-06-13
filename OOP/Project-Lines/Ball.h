@@ -9,10 +9,12 @@ public:
 	//virtual Ball(const float &X,const float &Y, int natuX, int natuY)=0;
 	bool operator==(const Ball &other)const;
 	void Draw();
+	bool doYouABall()const;
 	Ball()
 	{
+		_bombExist = false;
 		_selected = true;
-		_mustDie = false;
+
 	}
 	//Ball(const float &X,const float &Y, int natuX, int natuY);
 	//void Draw();
@@ -40,14 +42,17 @@ public:
 
 	void mustDie()
 	{
-		_mustDie = true;
 		_sprites[0].StartTurnOff();
+	}
+	void mustBorn()
+	{
+		_sprites[0].StartTurnOn();
 	}
 protected:
 
 
 	bool _selected;
-	bool _mustDie;
+	bool _bombExist;
 	vector <BallColor> _colors;
 
 };

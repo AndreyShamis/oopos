@@ -42,9 +42,9 @@ bool Ball::operator==(const Ball &other)const
 	vector<BallColor>::const_iterator itThis = _colors.begin(),
 									  itOther = other._colors.begin();
 				
-	for(;itThis != _colors.end(); ++itThis)
+	for(itThis = _colors.begin();itThis != _colors.end(); itThis++)
 	{
-		for(;itOther != other._colors.end(); ++itOther)
+		for(itOther = other._colors.begin();itOther != other._colors.end(); itOther++)
 		{
 			if(*itThis == *itOther)
 			{
@@ -53,4 +53,9 @@ bool Ball::operator==(const Ball &other)const
 		}
 	}
 	return false;
+}
+
+bool Ball::doYouABall()const
+{
+	return(_bombExist);
 }

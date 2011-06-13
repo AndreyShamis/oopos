@@ -60,6 +60,6 @@ enum Direction { Row, Column, BackRow, BackColumn };
 
 enum SoundsName { Appear, Disappear, double_bonus, error, explosion ,BackGround};
 
-enum BallColor { Green, White, Black, Yellow, Orange, Blue, Red , Mixed , 
+enum BallColor { Green, White, Black, Yellow, Orange, Blue, Red , Mixed , Bomb, 
 				 OrangeRed, WhiteBlue, greenYellow };
 
