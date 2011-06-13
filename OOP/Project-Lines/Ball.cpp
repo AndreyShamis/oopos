@@ -59,3 +59,7 @@ bool Ball::doYouABall()const
 {
 	return(_bombExist);
 }
+bool Ball::doYouMulColor()const
+{
+	return(_mulColor);
+}

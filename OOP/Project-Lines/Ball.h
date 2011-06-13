@@ -10,9 +10,11 @@ public:
 	bool operator==(const Ball &other)const;
 	void Draw();
 	bool doYouABall()const;
+	bool doYouMulColor()const;
 	Ball()
 	{
 		_bombExist = false;
+		_mulColor = true;
 		_selected = true;
 
 	}
@@ -53,6 +55,7 @@ protected:
 
 	bool _selected;
 	bool _bombExist;
+	bool _mulColor;
 	vector <BallColor> _colors;
 
 };
