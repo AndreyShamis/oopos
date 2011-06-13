@@ -300,7 +300,7 @@ fs_t *fsMount()
 	}
 
 	//creat(filename,0600);
-	ret->fd = open(FILENAME,O_RDWR | O_CREAT);
+	ret->fd = open(FILENAME,O_RDWR );//| O_CREAT
 	if(ret->fd == -1)
 	{
 		perror("Cannot open simulation file.\n");
@@ -501,7 +501,6 @@ int findFileNode(fs_t *fs,char *fileName)
 
 	while(tempSize>0)
 	{
-		//printf("LA LA %d\n",tempSize);
 		for(coun = 0; coun < BLOCK_SIZE;coun++)
 		{
 			buffer[coun] = fileData[fileCounter*BLOCK_SIZE+coun];
@@ -516,7 +515,9 @@ int findFileNode(fs_t *fs,char *fileName)
 
 		 tempSize-=BLOCK_SIZE;
 	}
-	//printf("END LA\n");
+
+	privateWriteLog(fs,ERR_CANT_FINE_INODE);	//	write error
+
 	return(-1);
 }
 //=============================================================================
@@ -532,7 +533,7 @@ int fsOpenFile(fs_t *fs,char *fileName)
 	int FD		= findNotUsedFD(fs);			//	Find free file table
 
 	//	Check if founded file by name and free file table
-	//printf("Inode found %d FD found %d\n",Inode,FD);
+
 	if(Inode >0 && FD >0 )
 	{
 		fs->fileTable[FD].inUse 		= 	1;		//	set used
@@ -567,22 +568,26 @@ int fsCloseFile(fs_t *fs,int fileHandle)
 	}
 	else
 	{
-		privateWriteLog(fs,ERR_CLOSE_CLOSED_F);
+		privateWriteLog(fs,ERR_CLOSE_CLOSED_F);	//	write error
 	}
+
 	return(-1);
 }
 //=============================================================================
-void writeToBlock(fs_t *fs,const int blockID,char *buffer,const int offSet,const int size)
+void writeToBlock(fs_t *fs,const int blockID,char *buffer,
+					const int offSet,const int size)
 {
+	int writeRes = 0;
 	lseek(fs->fd,DATA_START+blockID*BLOCK_SIZE+offSet,SEEK_SET);
-	write(fs->fd,buffer,size);
+	writeRes = write(fs->fd,buffer,size);		//	TODO error check
 }
 //=============================================================================
 void readBlockData(fs_t *fs,char *dataBuff,const int blockID)
 {
+	int readRes = 0;
 	lseek(fs->fd,DATA_START+blockID*BLOCK_SIZE,	SEEK_SET);
 
-	read(fs->fd,dataBuff,BLOCK_SIZE);				//	read data
+	readRes =read(fs->fd,dataBuff,BLOCK_SIZE);				//	read data
 }
 //=============================================================================
 
@@ -591,12 +596,12 @@ int getAddress(fs_t *fs,const int blockID,const int AdressSET)
 
 	char address[BLOCK_ADSRESS_SIZE];				//	temp for address
 	int returnAdr = 0;
+	int readRes = 0;
 	lseek(fs->fd,
 		DATA_START+blockID*BLOCK_SIZE+AdressSET*BLOCK_ADSRESS_SIZE,	SEEK_SET);
 
-	read(fs->fd,address,BLOCK_ADSRESS_SIZE);				//	read data
+	readRes = read(fs->fd,address,BLOCK_ADSRESS_SIZE);				//	read data
 	forCharsToInt(address,&returnAdr);				//	convert address to int
-
 
 	return(returnAdr);
 }
@@ -622,8 +627,18 @@ int fsWriteFile(fs_t *fs,int fd,const char *buffer,const int size)
 	char tempBuf[BLOCK_SIZE+1];			//	temp buffer variable
 
 
-	if(fd <0 || fs->fileTable[fd].inUse != 1 || fs->inodeList[InodeID].inUse !=1 )
+	if(fd <0 ||fs->fileTable[fd].inUse != 1 ||fs->inodeList[InodeID].inUse!=1)
 	{
+		if(fd < 0)
+			privateWriteLog(fs,ERR_INCORECT_FD);
+
+		if(fd >0 && fd< NR_INODES && fs->fileTable[fd].inUse != 1)
+			privateWriteLog(fs,ERR_WRITE_CLOSED);
+
+		if(fs->inodeList[InodeID].inUse != 1)
+			privateWriteLog(fs,ERR_INCORECT_INODE);
+
+		privateWriteLog(fs,ERR_ON_WRITE);
 		return(-1);
 	}
 	while(sizeCounter>0)
@@ -730,6 +745,7 @@ int fsWriteFile(fs_t *fs,int fd,const char *buffer,const int size)
 		sizeCounter -=tempSize;
 	}
 
+	privateWriteLog(fs,ERR_UNKNOWN_ON_WRITE);	//	write error
 	return(-1);
 }
 
@@ -928,6 +944,7 @@ int fsReadFileBlock(fs_t *fs,int fd,char *buffer)
 		return(BLOCK_SIZE);							//	return readed
 	}
 
+	privateWriteLog(fs,ERR_UNKNOWN_ON_WRITE_BLOCK);	//	write error
 	return(-1);										//	else
 }
 
@@ -948,7 +965,7 @@ int fsCreateFileSystem(char *filename)
 		exit(EXIT_FAILURE);
 	}
 
-	fd = open(FILENAME,O_RDWR | O_CREAT);
+	fd = open(FILENAME,O_RDWR);//O_CREAT
 
 	if(fd == -1)
 	{
@@ -1022,6 +1039,8 @@ int findNotUsedIndoe(fs_t *fs)
 		if(!fs->inodeList[coun].inUse)
 			return(coun);				//	return founded
 
+	privateWriteLog(fs,ERR_ALL_INODES_FULL);
+
 	return(-1);							//	if not found return -1
 
 }
@@ -1041,6 +1060,8 @@ int findNotUsedFD(fs_t *fs)
 		if(!fs->fileTable[coun].inUse)
 			return(coun);				//	return founded
 
+	privateWriteLog(fs,ERR_ALL_FDT_FULL);
+
 	return(-1);							//	if not found return -1
 
 }
@@ -1058,6 +1079,8 @@ int findNotUsedBitMap(fs_t *fs)
 	for(coun=0;coun<NR_BLOCKS;coun++)
 		if(fs->Bitmap[coun] == 0)		//	if not used
 			return(coun);				//	return index
+
+	privateWriteLog(fs,ERR_ALL_BLOCKS_FULL);
 
 	return(-1);							//	return negative value
 }

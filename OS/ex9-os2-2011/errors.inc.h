@@ -10,4 +10,18 @@
 #define ERR_OPEN_NEXIST		1207	//	if tryed open not exist file
 
 
+#define ERR_CANT_FINE_INODE 1208	//	if fail find inode of file by name
+//	Be careful this error can be setted if you truing create file , becouse
+//	check if the file with this name exist
+
+#define ERR_INCORECT_FD		1209
+#define ERR_INCORECT_INODE	1210
+#define ERR_ON_WRITE		1211
+#define ERR_UNKNOWN_ON_WRITE 		1212
+#define ERR_UNKNOWN_ON_WRITE_BLOCK 	1213
+
+
+#define ERR_ALL_FDT_FULL	1214	//	all fd-filetable is full
+#define ERR_ALL_BLOCKS_FULL	1215	//	no free blocks-updated on search bitmap
+#define ERR_ALL_INODES_FULL	1216	//	if all inodes used
 //#define ERR_			120
