@@ -18,8 +18,16 @@
 #include <fmod.h>
 #include <fmod.hpp>
 #include <windows.h>
+#include "resource.h"
+
 #include <map>
 using namespace std;
+
+
+
+
+
+ICON_SMALL IDR_PROJECTLINES1;    
 
 #define _EASY_REDISPLAY 10000
 #define _FAST_REDISPLAY 100
@@ -129,5 +137,6 @@ private:
 	static int				PrevFounded;	//	To know if in previous move user found combination
 	static int				GamePoints;		//	Points of Game
 	static unsigned int		_PostRedisplay;	//	Counter for redisplay
+	static bool				_bombExist;		//  bomb existence
 
 };

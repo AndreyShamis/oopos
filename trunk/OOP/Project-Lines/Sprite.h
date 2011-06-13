@@ -50,7 +50,11 @@ public:
 		_turnOff = true;
 		_alpha = 250;
 	}
-
+	void StartTurnOn()
+	{
+		_born = true;
+		_alpha = 2;
+	}
 private:
 	 //GraficLoader _temp;
 	//static 
@@ -63,6 +67,7 @@ private:
 		int _width;			//	width of image
 		short int _alpha;
 		bool _turnOff;
+		bool _born;
 
 	
 };
