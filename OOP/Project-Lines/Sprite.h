@@ -34,27 +34,11 @@ public:
 	//=============================================================================
 	//	return width
 	int getWidth();
+	void setSelected();
+	void unSelect();
+	void StartTurnOff();
+	void StartTurnOn();
 
-	void setSelected()
-	{
-		_selected = true;
-
-	}
-	void unSelect()
-	{
-		_selected = false;
-	}
-
-	void StartTurnOff()
-	{
-		_turnOff = true;
-		_alpha = 250;
-	}
-	void StartTurnOn()
-	{
-		_born = true;
-		_alpha = 2;
-	}
 private:
 	 //GraficLoader _temp;
 	//static 

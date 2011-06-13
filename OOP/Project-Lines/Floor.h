@@ -4,9 +4,7 @@
 class Floor : public Drawable
 {
 public:
-	//static std::vector <Sprite> _sprite;
 	Floor();
-	//Floor(){1,1,-1,-1;};
 	void setFloorType(Types type);
 	bool getBalled()const;
 	void setBalled(const bool &value);

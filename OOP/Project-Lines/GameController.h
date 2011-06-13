@@ -140,4 +140,5 @@ private:
 	static unsigned int		_PostRedisplay;	//	Counter for redisplay
 	static bool				_bombExist;		//  bomb existence
 
+
 };
