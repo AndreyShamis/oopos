@@ -1,20 +1,45 @@
 #include "Ball.h"
-/*
 
-Ball::Ball(const float &X,const float &Y, int natuX, int natuY)
+//=============================================================================
+//
+Ball::Ball()
 {
-	_cordX = X;
-	_cordY = Y;
-	_natuX = natuX;
-	_natuY = natuY;
-	
-	cout << "Ball constructor\n";
+	_bombExist = false;
+	_selected = true;
 }
-*/
+//=============================================================================
+//
 Ball::~Ball(void)
 {
+	;
 }
+//=============================================================================
+//
+void Ball::setSelected()
+{
+	_selected = true;
 
+}
+//=============================================================================
+//
+void Ball::unSelect()
+{
+	_selected = false;
+}
+//=============================================================================
+//
+void Ball::mustDie()
+{
+	_sprites[0].StartTurnOff();
+}
+//=============================================================================
+//
+void Ball::mustBorn()
+{
+	_sprites[0].StartTurnOn();
+}
+//=============================================================================
+//
 void Ball::Draw()
 {
 	float b_offset = ((FLOOR_SIZE - BALL_SIZE)/2)/WINDOW_WIDTH;
@@ -36,7 +61,8 @@ void Ball::Draw()
 
 	}
 }
-
+//=============================================================================
+//
 bool Ball::operator==(const Ball &other)const
 {
 	vector<BallColor>::const_iterator itThis = _colors.begin(),
@@ -54,12 +80,11 @@ bool Ball::operator==(const Ball &other)const
 	}
 	return false;
 }
-
-bool Ball::doYouABall()const
+//=============================================================================
+//
+bool Ball::doYouABomb()const
 {
 	return(_bombExist);
 }
-bool Ball::doYouMulColor()const
-{
-	return(_mulColor);
-}
+
+

@@ -1,5 +1,7 @@
 #include "BombBall.h"
 
+//=============================================================================
+//
 BombBall::BombBall(const float &X,const float &Y, int natuX, int natuY)
 {
 	_sprites.push_back(BOMB_BALL);//	put the image to the cector of sprites
@@ -19,6 +21,8 @@ BombBall::BombBall(const float &X,const float &Y, int natuX, int natuY)
 	_natuY = natuY;
 	_bombExist = true;
 }
+//=============================================================================
+//
 BombBall::~BombBall(void)
 {
 }
