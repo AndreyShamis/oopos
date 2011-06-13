@@ -516,7 +516,7 @@ int findFileNode(fs_t *fs,char *fileName)
 		 tempSize-=BLOCK_SIZE;
 	}
 
-	privateWriteLog(fs,ERR_CANT_FINE_INODE);	//	write error
+	//privateWriteLog(fs,ERR_CANT_FINE_INODE);	//	write error
 
 	return(-1);
 }
@@ -641,6 +641,7 @@ int fsWriteFile(fs_t *fs,int fd,const char *buffer,const int size)
 		privateWriteLog(fs,ERR_ON_WRITE);
 		return(-1);
 	}
+
 	while(sizeCounter>0)
 	{
 		memset(tempBuf,'+',BLOCK_SIZE);
@@ -745,7 +746,7 @@ int fsWriteFile(fs_t *fs,int fd,const char *buffer,const int size)
 		sizeCounter -=tempSize;
 	}
 
-	privateWriteLog(fs,ERR_UNKNOWN_ON_WRITE);	//	write error
+	//privateWriteLog(fs,ERR_UNKNOWN_ON_WRITE);	//	write error
 	return(-1);
 }
 

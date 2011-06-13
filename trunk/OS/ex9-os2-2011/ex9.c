@@ -23,12 +23,13 @@ int main()
 	
 	//MOUNT
 	fs = fsMount();
-	
+	h1 = fsOpenFile(fs,"1.txt");
 	//	First Format
+
 	int res = 0;
-	res = fsFormat(fs);
+	//res = fsFormat(fs);
 
-
+	/*
 	//	Create two test files
 	
 	h1 = fsCreateFile(fs,"1.txt");
@@ -96,9 +97,7 @@ int main()
 //	char input[5] = "abcd";
 //	fsWriteFile(fs,h1,input,4);
 
-	/*
-	printf("Print \n");
-	 */
+
 
 	char input1[81] = "Android Market web store now checks which apps are compatible with your\ndevices";
 	fsWriteFile(fs,h1,input1,79);
@@ -106,10 +105,10 @@ int main()
 	fsWriteFile(fs,h1,input2,66);
 	char input3[400] = "Google has already made some tough moves to tackle fragmentation,\nbut it's clearly still wary of the problem.\nIt's just tweaked the Android Market web store to show users which apps are compatible with which of their gadgets. ";
 	fsWriteFile(fs,h1,input3,110);
-
+*/
 	char zeros2[250];
 
-	memset(zeros,0xFF,sizeof(zeros2));
+	memset(zeros2,0xFF,sizeof(zeros2));
 	res= fsReadFile(fs,h1,zeros2,149);
 
 	printf("Readed from file \n%s \n", zeros2);

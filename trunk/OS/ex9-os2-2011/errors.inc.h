@@ -14,11 +14,11 @@
 //	Be careful this error can be setted if you truing create file , becouse
 //	check if the file with this name exist
 
-#define ERR_INCORECT_FD		1209
-#define ERR_INCORECT_INODE	1210
-#define ERR_ON_WRITE		1211
-#define ERR_UNKNOWN_ON_WRITE 		1212
-#define ERR_UNKNOWN_ON_WRITE_BLOCK 	1213
+#define ERR_INCORECT_FD		1209	//	when try used incorect file desc
+#define ERR_INCORECT_INODE	1210	//	when try use incorect inode
+#define ERR_ON_WRITE		1211	//	error on write
+#define ERR_UNKNOWN_ON_WRITE 		1212	//	unknown error on write
+#define ERR_UNKNOWN_ON_WRITE_BLOCK 	1213	//	ubknown error on write to block
 
 
 #define ERR_ALL_FDT_FULL	1214	//	all fd-filetable is full

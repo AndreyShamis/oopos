@@ -15,14 +15,12 @@ struct FSInode
 
 struct FileDescriptor
 {
-	int 	inUse;
-	int 	fd;
-	char 	filename[MAX_FILE_NAME];
-	int 	inode;
-	int		fileOffset;
-	int 	lastErrorID;
-	int		read;
-	int		write;
+	int 	inUse;					//	if descriptor use
+	int 	fd;						//	file descriptor
+	char 	filename[MAX_FILE_NAME];//	file name
+	int 	inode;					//	inode of file
+	int		fileOffset;				//	offset in file
+	int 	lastErrorID;			//	last error ID
 };
 
 struct fs
@@ -40,7 +38,7 @@ struct fs
 
 	char 	*source;		//	maped array for Bitmap and Indoe Section
 	size_t 	filesize;		//	size of mapped file
-	int 	lastErrors[MAX_ERRORS];	//
-	int		lastErrEntry;
+	int 	lastErrors[MAX_ERRORS];	//	array of error happened
+	int		lastErrEntry;			//	last error ID in array
 
 };
