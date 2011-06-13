@@ -10,6 +10,7 @@ GreenBall::GreenBall(const float &X,const float &Y, int natuX, int natuY)
 	_cordY = Y;
 	_natuX = natuX;
 	_natuY = natuY;
+	_mulColor = false;
 }
 
 GreenBall::~GreenBall(void)
