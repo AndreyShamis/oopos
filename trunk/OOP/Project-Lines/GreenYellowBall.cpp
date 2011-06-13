@@ -1,5 +1,7 @@
 #include "GreenYellowBall.h"
 
+//=============================================================================
+//
 GreenYellowBall::GreenYellowBall(const float &X,const float &Y, int natuX, int natuY)
 {
 	_sprites.push_back(G_Y_BALL);//	put the image to the cector of sprites
@@ -13,7 +15,8 @@ GreenYellowBall::GreenYellowBall(const float &X,const float &Y, int natuX, int n
 	_natuY = natuY;
 }
 
-
+//=============================================================================
+//
 GreenYellowBall::~GreenYellowBall(void)
 {
 }
