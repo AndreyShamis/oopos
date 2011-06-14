@@ -33,7 +33,7 @@
 #define FLOOR				"floor_rgba.txt"
 #define S_FLOOR				"selected_floor2_rgba.txt"
 
-
+// Game window dimension
 #define WINDOW_WIDTH		577
 #define WINDOW_HEIGHT		403
 

@@ -1,12 +1,12 @@
 #include "BombBall.h"
 
 //=============================================================================
-//
+// Constructor
 BombBall::BombBall(const float &X,const float &Y, int natuX, int natuY)
 {
 	_sprites.push_back(BOMB_BALL);//	put the image to the cector of sprites
 
-	//_colors.push_back(Bomb);
+	//	define the colors of the ball
 	_colors.push_back(Blue);
 	_colors.push_back(Yellow);
 	_colors.push_back(White);
@@ -15,6 +15,7 @@ BombBall::BombBall(const float &X,const float &Y, int natuX, int natuY)
 	_colors.push_back(Red);
 	_colors.push_back(Green);
 
+	// set real and natural coords
 	_cordX = X;
 	_cordY = Y;
 	_natuX = natuX;
@@ -22,7 +23,7 @@ BombBall::BombBall(const float &X,const float &Y, int natuX, int natuY)
 	_bombExist = true;
 }
 //=============================================================================
-//
+// Destructor
 BombBall::~BombBall(void)
 {
 }

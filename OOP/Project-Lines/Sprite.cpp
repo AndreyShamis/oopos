@@ -120,7 +120,8 @@ void Sprite::Draw(const float &cordX, float &cordY)
 				else
 					glColor4ub(_image[i][j]._r, _image[i][j]._g, _image[i][j]._b,_alpha);
 
-				glVertex2f((float)x*(POINT_SIZE/WINDOW_WIDTH) + cordX ,	((float)y*(POINT_SIZE/WINDOW_HEIGHT) + cordY));
+				glVertex2f((float)x*(POINT_SIZE/WINDOW_WIDTH) + cordX ,	
+							((float)y*(POINT_SIZE/WINDOW_HEIGHT) + cordY));
 			}
 			x++;
 		}

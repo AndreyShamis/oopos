@@ -1,20 +1,16 @@
 #include "Floor.h"
 
 //=============================================================================
-//
+// Constructor
 Floor::Floor()
 {
-/*	_cordX = X;
-	_cordY = Y;
-	_natuX = natuX;
-	_natuY = natuY;*/
 	_balled = false;
 	 _type = Simple;
 	_sprites.push_back(FLOOR);		//	put the image to the cector of sprites
-	_sprites.push_back(S_FLOOR);		//	put the image to the cector of sprites
+	_sprites.push_back(S_FLOOR);	//	put the image to the cector of sprites
 }
 //=============================================================================
-//
+// Destructor
 Floor::~Floor(void)
 {
 }

@@ -1,11 +1,12 @@
 #include "MixedBall.h"
 
 //=============================================================================
-//
+// Constructor
 MixedBall::MixedBall(const float &X,const float &Y, int natuX, int natuY)
 {
 	_sprites.push_back(MIXED_BALL);//	put the image to the cector of sprites
 
+	//	define the colors of the ball
 	_colors.push_back(Blue);
 	_colors.push_back(Yellow);
 	_colors.push_back(White);
@@ -14,6 +15,7 @@ MixedBall::MixedBall(const float &X,const float &Y, int natuX, int natuY)
 	_colors.push_back(Red);
 	_colors.push_back(Green);
 
+	// set real and natural coords
 	_cordX = X;
 	_cordY = Y;
 	_natuX = natuX;
@@ -21,7 +23,7 @@ MixedBall::MixedBall(const float &X,const float &Y, int natuX, int natuY)
 	
 }
 //=============================================================================
-//
+// Destructor
 MixedBall::~MixedBall(void)
 {
 }
