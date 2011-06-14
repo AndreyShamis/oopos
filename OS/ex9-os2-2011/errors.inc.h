@@ -1,5 +1,6 @@
 #define MAX_ERRORS			40		//	number of last errors saved in fs_struc
 
+
 #define ERR_FILE_FULL 		1200	//	if tryed read/write more than can
 #define ERR_READ_CLOSED		1201	//	if read closed file
 #define ERR_WRITE_CLOSED	1202	//	if tryed write closed file
@@ -24,4 +25,8 @@
 #define ERR_ALL_FDT_FULL	1214	//	all fd-filetable is full
 #define ERR_ALL_BLOCKS_FULL	1215	//	no free blocks-updated on search bitmap
 #define ERR_ALL_INODES_FULL	1216	//	if all inodes used
-//#define ERR_			120
+#define ERR_ON_READ			1217	//	error on read
+#define ERR_BITMAPS_FULL	1366	//	all bitmaps is full
+
+#define ERR_OS_WRITE_BAD	1412	//	OS error on write
+#define ERR_OS_READ_BAD		1423	//	OS error on read

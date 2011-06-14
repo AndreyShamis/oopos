@@ -40,8 +40,4 @@
 #define DATA_START (NR_BLOCKS+(NR_INODES*NODE_SIZE))
 #define DEC_DEV 10			//	devider used in converting int tostring
 
-
-//#define _DEBUG 1					//	Uncomment this for see debug messages
-//#define _DEBUG_WRITE 1
-//#define _SHOW_STATISTIC 1			//	Comment this if you dont need statistic
 //=============================================================================
