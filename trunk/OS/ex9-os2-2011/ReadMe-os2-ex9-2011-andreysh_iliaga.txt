@@ -17,13 +17,16 @@
 		./ex9
 */
 //=============================================================================
+
 	Important functions
-	
+
+							* * *	
 	fsWriteFile()	-	Function wich write data into file.
 	Function get pointer to main data structure,file descriptor of file
 in wich we wont to write data, buuffer contein the data wich we want to in 
 write and size of data wich be writed .
 	Function return size of writed data  or -1 on fail
+
  							* * *
 	This function work very well with anu lentgh of data
 be sended to function. If you write some string < BLOCK SIZE function write
@@ -41,8 +44,24 @@ Function get New system file name.Function return 0 on success.
 So our programm provide tools to use many many file systems. For example you 
 can ctreate two ot three file systems or even more
 
+							* * *
+	In Mount function we do not exactly fs->fsInitialized = 1 we have function
+for check if file system is good and was formated or if need format file 
+system. The function do simple check and not work so good(thats mean can be 
+improved) but not used any aditional variables ot data structure or any space 
+on disk. This function can be improved by adding anothers check. For example 
+checks wich do fdsk - but we not learn this.
+
+							* * *
+	Our main data structure have array(size can be changed in define.inc.h)
+for save errors happened in program such tryng write into full file or
+read more then can and any others code errors in next you can read some type
+of errors. And for more informattion look file error.inc.h.
+If you want to see errors just use function printLog(fs) on the end of program
+before you do UnMount operations.
 
 //=============================================================================
+
 	Important error codes
 
 ERR_FILE_FULL 		1200	//	if tryed read/write more than can
@@ -70,5 +89,21 @@ ERR_ALL_FDT_FULL	1214	//	all fd-filetable is full
 ERR_ALL_BLOCKS_FULL	1215	//	no free blocks-updated on search bitmap
 ERR_ALL_INODES_FULL	1216	//	if all inodes used
 
+For more errors codes see error.inc.h
+
+//=============================================================================
+	Unknown bugs
+	There is no bugs
+	
 //=============================================================================
 	Files Used
+	
+	# ex9.h		Header of filesystem
+	# ex9.c		body off file system-functions
+
+	# errors.inc.h		//	Errors include and code page
+	# structures.inc.h	//	Structures used in program
+	# defines.inc.h		//	All defines of program
+	
+	# main.c			//	Include main function
+//=============================================================================

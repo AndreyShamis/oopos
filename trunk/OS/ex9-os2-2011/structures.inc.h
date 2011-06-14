@@ -1,7 +1,7 @@
 struct DirEntry
 {
-	char 	filename[MAX_FILE_NAME];
-	int 	inode;
+	char 	filename[MAX_FILE_NAME];	//	file name
+	int 	inode;						//	inode id of file name
 };
 
 struct FSInode
@@ -20,7 +20,6 @@ struct FileDescriptor
 	char 	filename[MAX_FILE_NAME];//	file name
 	int 	inode;					//	inode of file
 	int		fileOffset;				//	offset in file
-	int 	lastErrorID;			//	last error ID
 };
 
 struct fs
