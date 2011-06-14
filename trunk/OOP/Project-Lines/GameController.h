@@ -33,11 +33,16 @@ using namespace std;
 #define _FAST_REDISPLAY 100
 #define _BOARD_SIZE_X 9
 #define _BOARD_SIZE_Y 9
+#define _BOARD_SIZE 9
+#define _H_BOARD_SIZE 4
 
+//	game status
 #define _STATUS_GAME_OFF 1
 #define _STATUS_GAME_ON 2
 #define _STATUS_GAME_END 3
+#define _STATUS_GAME_SHOW_HELP 4
 
+//	pos floor
 #define _POS_FLOOR_X_START 0.2025
 #define _POS_FLOOR_Y_START 0.063
 
@@ -50,9 +55,16 @@ using namespace std;
 
 #define _KEY_NEW_GAME 'n'
 #define _KEY_EXIT_GAME 'q'
+#define _KEY_HELP 'h'
+#define _KEY_HELP_EXIT 'g'
 
+#define _MNU_KEY_NEW_GAME 1
+#define _MNU_KEY_EXIT_GAME 2
+#define _MNU_KEY_HELP 3
+#define _MNU_KEY_HELP_EXIT 4
 
-
+#define _MAX_POST_REDISPLAY_VEC_SIZE 25
+#define _MIN_POST_REDISPLAY_VEC_SIZE 15
 struct Ball_Postion
 {
 	int x;
@@ -73,6 +85,7 @@ struct Ball_Postion
 
 class GameController
 {
+	// all the documentation of functions are located at cpp file
 public:
 	static GameController *getInst();	
 	static void mouseButton(int button, int state, int x, int y);
@@ -84,10 +97,12 @@ public:
 	static void idle();
 	static void display();
 	static void KeyPress(unsigned char key, int x, int y);
-	
+	static void CreateMenuForGlut();
+	static void Menu(const int val);
 private:
 	GameController();
-	static void glutPrint(float x, float y, char* text, float r, float g, float b, float a);
+	static void glutPrint(float x, float y, char* text, float r, float g,
+														float b, float a);
 	static int FindFloorByCord(const float &xPos ,const float &yPos);
 	static void MouseUp();
 	static void PrepareSimplePath();
@@ -105,18 +120,12 @@ private:
 	static void checkDiagonals();
 	static void FloorDoAllSimple();
 	static void BumAroundBomb(const short int &_x,const short int &_y);
-	static void updDiagonLftDownExis(const short int &i, Direction direc);
-	static void updateLineExistence(const short int &i,
-									short int &matchCounter,
-									short int &start,Direction direc);
-	static void updateBallEraseBoard(const short int &location,
-									 const short int &matchCounter,
-									 const short int &start,
-									 Direction direc);
+	static void scanDiagonal(const short int &i, Direction direc);
+	static void scanRowCol(const short int &i, Direction direc);
 	static bool ballsComp(map<_MAP_KEY,Ball>::const_iterator &b1,
 						  map<_MAP_KEY,Ball>::const_iterator &b2);
 
-	static int				GameStatus;		//	Game status / loaded/ unloaded/etc
+	static int				GameStatus;		// Game status/loaded/unloaded/etc
 	static Graph<Floor>		_floors;		//	Graph of cells
 	static int				_WindowHeight;	//	Window
 	static int				_WindowWidth;	//	Window
@@ -133,12 +142,13 @@ private:
 	static map<_MAP_KEY ,Ball>	_BallMap;	//	the balls data base (STL)
 	static vector <Ball>	_Balls;			//	all colors balls for copy
 	static bool				_BallEraseBoard[_BOARD_SIZE_X][_BOARD_SIZE_Y];
-	static bool				_canAddBalls;	//	Value to know if need put new ball
+	static bool				_canAddBalls;	//	Value to know if need put new 
+											//	ball
 	static int				_BallCounter;	//	Counter of balls on board
-	static int				PrevFounded;	//	To know if in previous move user found combination
+	static int				PrevFounded;	//	To know if in previous move 
+											//	user found combination
 	static int				GamePoints;		//	Points of Game
 	static unsigned int		_PostRedisplay;	//	Counter for redisplay
 	static bool				_bombExist;		//  bomb existence
-
 
 };

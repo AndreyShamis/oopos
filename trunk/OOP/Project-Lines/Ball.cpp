@@ -70,7 +70,8 @@ bool Ball::operator==(const Ball &other)const
 				
 	for(itThis = _colors.begin();itThis != _colors.end(); itThis++)
 	{
-		for(itOther = other._colors.begin();itOther != other._colors.end(); itOther++)
+		for(itOther = other._colors.begin();itOther != other._colors.end();
+																	itOther++)
 		{
 			if(*itThis == *itOther)
 			{

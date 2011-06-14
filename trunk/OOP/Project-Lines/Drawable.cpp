@@ -1,7 +1,7 @@
 #include "Drawable.h"
 
 //=============================================================================
-//
+// Constructor
 bool Drawable::operator==(const Drawable &Other)const
 {
 	return(Other.getID() == this->getID());
