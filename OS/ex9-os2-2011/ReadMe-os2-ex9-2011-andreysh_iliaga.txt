@@ -15,7 +15,52 @@
 	for run the program use next comand line
 		
 		./ex9
+	Note: valgrind checked - No errors
 */
+//=============================================================================
+	About program
+	
+	This program provides a simulated file system as specified. 
+	
+	The program can create virtual file system, mount it for further work and 
+also provides such important functions as a dismount, and formatting. Also 
+provides a recording function in the file is even with the file, open the 
+file, closing, and finally create the file. 
+
+	In this program, it is possible to have only one folder, then there is no
+possibility of creating papki.Vse files created in the file system will be 
+stored in this one main folder. 
+
+	Number of file permissions can be learned from the mission as well as 
+other important parameters which provides a program you can browse and find 
+the file defines.
+ 
+	In this version there is a primitive test for whether or not the file 
+format. It is worth noting that this is simply not there to check. And it 
+needs to be improved, but still it's better than nothing, as following the 
+instructions we had to create each file system to format it. That is, it 
+follows that - we have a file system is not only up and running, it also 
+should be retained as and indeed even boot properly. 
+It's like a hint of a bonus. 
+
+	In addition, it is possible to write into the block is not a constant 
+amount of data, rather than a block at a time, then we have the function 
+write to a file can get any length of string that both have also represents 
+and hints at bonus.
+ # Example:	 That is, at the time of writing we assume 5 bytes into a 
+file and then write 40 bytes of the following will occur in the first block 
+(imagine that the blocks we have sustained for better understanding) takes
+5 bytes and when the next record in the first block of 11 bytes written, 
+then the same moment creates the next block and it is written in another 
+16 and so on.
+
+	Also on the end of runing you can see statistic  as specified.
+
+	#	Map of BITMAPS - the map ordered in rows and cols. each row contain
+128 bitmaps
+	#	Files in root directory with size, inode, name, and numbers of blocks
+wich they use.
+
 //=============================================================================
 
 	Important functions

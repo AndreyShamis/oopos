@@ -1042,6 +1042,7 @@ void PrintStatistic(fs_t *fs)
 	int coun = 0;					//	temp variable
 
 	//	For each block print if the block used ot not
+	printf("\nInformation about bitmaps:\n");
 	for(coun=0;coun< NR_BLOCKS;coun++)
 	{
 		printf("%d",fs->Bitmap[coun]);
@@ -1061,7 +1062,7 @@ void PrintStatistic(fs_t *fs)
 	fs->fileTable[ROOT_DIRECTORY_HANDLE].fileOffset = 0;
 	//	Read all data in file-directory
 	fsReadFileAll(fs,ROOT_DIRECTORY_HANDLE,fileData,&tempSize);
-
+	printf("Information about files in root directory:\n");
 	while(tempSize>0)
 	{
 		//	Copy data(block) into temp buffer
