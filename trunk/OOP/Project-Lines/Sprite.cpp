@@ -1,15 +1,11 @@
 #include "Sprite.h"
 using namespace std ;
 
-Sprite::Sprite()
-{
-}
 //=============================================================================
 //
 void Sprite::setSelected()
 {
 	_selected = true;
-
 }
 //=============================================================================
 //
@@ -32,18 +28,11 @@ void Sprite::StartTurnOn()
 	_alpha = 2;
 }
 
-
-
-
 //=============================================================================
 //	Class constructor 
 Sprite::Sprite(char* filename) {
 	_turnOff = false;
 	_born = false;
-	//_image = _temp.getSprite(filename);
-	//_width = _temp.getWidth();
-	//_height = _temp.getHeight();
-	
 	char path[CHAR_MAX_STR_LEN];		//	variable for get riht path
 	//	manipulation whith char
 	memset(path,'\0',CHAR_MAX_STR_LEN);
@@ -58,11 +47,8 @@ Sprite::Sprite(char* filename) {
 		//cout << "Can`t load file " << path << "\n";
 		exit(EXIT_FAILURE);
 	}
-	///else
-	///{
-		//cout << "+";
-	///}
-		//get from the file width and hieght of image
+
+	//get from the file width and hieght of image
 	imageFile >> _width >> _height;
 
 	_image  = new RGBA*[(int)_height];

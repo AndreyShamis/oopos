@@ -16,5 +16,5 @@ class BombBall :	public WhiteBall, public GreenBall, public BlackBall,
 public:
 	BombBall(const float &X,const float &Y, int natuX, int natuY);
 	BombBall(){;};
-	~BombBall(void);
+	~BombBall();
 };
