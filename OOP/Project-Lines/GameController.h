@@ -101,6 +101,7 @@ public:
 	static void Menu(const int val);
 private:
 	GameController();
+	static void GarbageColector();
 	static void glutPrint(float x, float y, char* text, float r, float g,
 														float b, float a);
 	static int FindFloorByCord(const float &xPos ,const float &yPos);
