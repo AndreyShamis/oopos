@@ -1,12 +1,6 @@
 #include "Sprite.h"
-
-
 using namespace std ;
 
-//RGBA **Sprite::_image;
-//int Sprite::_height;
-//int Sprite::_width;
-//GraficLoader Sprite::_temp;
 Sprite::Sprite()
 {
 }
@@ -61,13 +55,13 @@ Sprite::Sprite(char* filename) {
 
 	if(!imageFile.is_open())
 	{
-		cout << "Can`t load file " << path << "\n";
+		//cout << "Can`t load file " << path << "\n";
 		exit(EXIT_FAILURE);
 	}
-	else
-	{
-		cout << "+";
-	}
+	///else
+	///{
+		//cout << "+";
+	///}
 		//get from the file width and hieght of image
 	imageFile >> _width >> _height;
 
