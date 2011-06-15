@@ -62,6 +62,7 @@ using namespace std;
 #define _MNU_KEY_EXIT_GAME 2
 #define _MNU_KEY_HELP 3
 #define _MNU_KEY_HELP_EXIT 4
+#define _MNU_KEY_GAME_OVER 5
 
 #define _MAX_POST_REDISPLAY_VEC_SIZE 25
 #define _MIN_POST_REDISPLAY_VEC_SIZE 15

@@ -1,7 +1,7 @@
 #pragma once
-#include "Drawable.h"
+#include "Dragable.h"
 
-class Floor : public Drawable
+class Floor :virtual public Dragable
 {
 public:
 	Floor();
