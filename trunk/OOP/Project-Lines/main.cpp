@@ -8,7 +8,7 @@
 //=============================================================================
 // main function
 int main(int argc, char** argv){
-	//FreeConsole();
+	FreeConsole();
 	GameController::getInst()->idle();
 	
 	return 0;
