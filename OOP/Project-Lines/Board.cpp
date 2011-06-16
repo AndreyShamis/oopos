@@ -25,4 +25,10 @@ void Board::Draw()
 {
 		_sprites[_showMode].Draw(_cordX, _cordY);
 }
-
+//=============================================================================
+//	Function wich say to class wich sprtie to shoe
+//	It depend on Game mode
+void Board::setShowMode(const short int val)
+{
+	_showMode = val;
+}

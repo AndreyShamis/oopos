@@ -102,6 +102,8 @@ public:
 	static void Menu(const int val);
 private:
 	GameController();
+	static bool CheckColsRowsFix(const int start,const int end, const int rowCol,Direction direc);
+
 	static void GarbageColector();
 	static void glutPrint(float x, float y, char* text, float r, float g,
 														float b, float a);

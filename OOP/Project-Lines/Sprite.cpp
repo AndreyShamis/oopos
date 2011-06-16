@@ -2,26 +2,26 @@
 using namespace std ;
 
 //=============================================================================
-//
+//		Set the sprite be selected for alpha
 void Sprite::setSelected()
 {
 	_selected = true;
 }
 //=============================================================================
-//
+//		Un select selected sprite
 void Sprite::unSelect()
 {
 	_selected = false;
 }
 //=============================================================================
-//
+//		Sprite alpha going down
 void Sprite::StartTurnOff()
 {
 	_turnOff = true;
 	_alpha = 250;
 }
 //=============================================================================
-//
+//		Sprite now created on the board
 void Sprite::StartTurnOn()
 {
 	_born = true;
@@ -43,10 +43,7 @@ Sprite::Sprite(char* filename) {
 	ifstream imageFile(path);		//open a file
 
 	if(!imageFile.is_open())
-	{
-		//cout << "Can`t load file " << path << "\n";
 		exit(EXIT_FAILURE);
-	}
 
 	//get from the file width and hieght of image
 	imageFile >> _width >> _height;
@@ -68,6 +65,7 @@ Sprite::Sprite(char* filename) {
 void Sprite::Draw(const float &cordX, float &cordY)
 {
 
+	//	Alpha manipulations
 	if(_turnOff &&_alpha >0)
 		_alpha-= 15;
 	
@@ -80,10 +78,6 @@ void Sprite::Draw(const float &cordX, float &cordY)
 	if(_born && _alpha > 220)
 		_born = false;
 
-	//glEnable(GL_ALPHA_TEST);
-	//glEnable(GL_ALPHA);
-
-	//glEnable(GL_POINT_SMOOTH);
 	glBegin(GL_POINTS);	
 
 	int y=0,x=_width;
@@ -109,14 +103,6 @@ void Sprite::Draw(const float &cordX, float &cordY)
 	}
 	
 	glEnd();
-	
-//int screenWidth, screenHeight, windowWidth, windowHeight;
-
-//screenWidth = glutGet(GLUT_SCREEN_WIDTH);
-//screenHeight = glutGet(GLUT_SCREEN_HEIGHT);
-//windowWidth = glutGet(GLUT_WINDOW_WIDTH);
-//windowHeight = glutGet(GLUT_WINDOW_HEIGHT);
-//	cout << screenWidth << " " << screenHeight << " " <<  windowWidth << " " << windowHeight << "\n";
 }
 
 //=============================================================================

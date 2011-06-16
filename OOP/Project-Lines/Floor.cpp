@@ -15,14 +15,14 @@ Floor::~Floor(void)
 {
 }
 //=============================================================================
-//
+//	Function used for selecting floor type
 void Floor::setFloorType(Types type)
 {
 	_type = type;
 }
 
 //=============================================================================
-//
+//	Function wich draw the floor
 void Floor::Draw()
 {
 	if(_type== Simple)
