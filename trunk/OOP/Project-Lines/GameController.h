@@ -13,21 +13,12 @@
 #include "WhiteBlueBall.h"
 #include "MixedBall.h"
 #include "GreenYellowBall.h"
-
-
 #include <fmod.h>
 #include <fmod.hpp>
 #include <windows.h>
-#include "resource.h"
-
 #include <map>
 using namespace std;
-
-
-
-
-
-//IDR_PROJECTLINES1;    
+  
 
 #define _EASY_REDISPLAY 10000
 #define _FAST_REDISPLAY 100

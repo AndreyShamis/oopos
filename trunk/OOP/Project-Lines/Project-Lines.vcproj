@@ -487,10 +487,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\resource.h"
-				>
-			</File>
-			<File
 				RelativePath=".\Sprite.h"
 				>
 			</File>
