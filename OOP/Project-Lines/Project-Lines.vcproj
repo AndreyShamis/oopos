@@ -209,7 +209,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="add &quot;fmodex.lib&quot;"
+				AdditionalOptions="&quot;fmod/fmodex_vc.lib&quot;"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"
